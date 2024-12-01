@@ -1,13 +1,23 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .card_shadow {
+    box-shadow: rgba(17, 51, 90, 0.4) 0px 3px 3px 0px;
+  }
+
+  .card_shadow_hover {
+    box-shadow: rgba(32, 42, 53, 0.8) 0px 3px 2px 0px;
+  }
+
+  .card_shadow_click {
+    box-shadow: none;
+  }
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@layer base {
+  html {
+    @apply !overflow-visible !p-0;
+  }
 }
