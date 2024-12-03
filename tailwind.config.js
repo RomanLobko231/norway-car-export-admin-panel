@@ -5,7 +5,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        lighthouse: "#F3F4F4",
+        lighthouse: "#F7F8F8",
         lightwhite: "#F5F6F6",
         cornsilk: "#FEFAF0",
         gunmental: "#1c2628",

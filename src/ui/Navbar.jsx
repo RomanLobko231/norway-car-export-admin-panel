@@ -2,6 +2,10 @@ import {
   Disclosure,
   DisclosureButton,
   DisclosurePanel,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
 } from "@headlessui/react";
 import { Link } from "react-router-dom";
 
@@ -22,30 +26,67 @@ export default function Navbar() {
         as="nav"
         className="mx-4 my-3 flex w-full max-w-7xl flex-col items-center justify-center rounded-lg border border-medium-gray bg-lighthouse/50 backdrop-blur"
       >
-        <div className="w-full max-w-7xl px-6 lg:px-8">
+        <div className="w-full max-w-7xl px-6 py-1 lg:px-8">
           <div className="flex h-12 flex-row items-center justify-between md:h-14">
             <div className="flex flex-1 items-center justify-between sm:items-stretch">
               <div className="hidden py-1 sm:block">
                 <div className="flex space-x-3">
-                  {navigation.map((item, index) => (
-                    <Link
-                      key={index}
-                      aria-current={item.current ? "page" : undefined}
-                      className={classNames(
-                        item.current
-                          ? "bg-gunmental text-lighthouse"
-                          : "text-gunmental hover:bg-gunmental hover:text-lighthouse",
-                        "rounded-lg px-4 pb-2 pt-1 text-xl font-semibold",
-                      )}
-                      to={item.href}
+                  <Link
+                    className="rounded-lg px-3 py-2 pb-2 pt-1 text-2xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse md:mr-2"
+                    to="/"
+                  >
+                    {" "}
+                    Main Page
+                  </Link>
+                  <Menu>
+                    <MenuButton className="group flex flex-row items-center justify-center rounded-lg px-3 py-2 pb-2 pt-1 text-2xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse">
+                      Cars
+                      <img
+                        src="../icons/arrow_down_dark.png"
+                        className="ml-2 mt-1 block h-2 w-auto group-hover:hidden"
+                      />
+                      <img
+                        src="../icons/arrow_down_light.png"
+                        className="ml-2 mt-1 hidden h-2 w-auto group-hover:block"
+                      />{" "}
+                    </MenuButton>
+                    <MenuItems
+                      className="mt-4 rounded-md border border-light-gray bg-lighthouse p-2"
+                      anchor="bottom"
                     >
-                      {item.name}
-                    </Link>
-                  ))}
+                      <MenuItem>
+                        <Link
+                          className="block rounded-lg p-2 text-xl font-medium text-gunmental hover:bg-gunmental hover:text-lighthouse"
+                          to="/cars?status=in-review"
+                        >
+                          {" "}
+                          In Review
+                        </Link>
+                      </MenuItem>
+                      <MenuItem>
+                        <Link
+                          className="block rounded-lg p-2 text-xl font-medium text-gunmental hover:bg-gunmental hover:text-lighthouse"
+                          to="/cars?status=auctioning"
+                        >
+                          {" "}
+                          Auctioning
+                        </Link>
+                      </MenuItem>
+                      <MenuItem>
+                        <Link
+                          className="block rounded-lg p-2 text-xl font-medium text-gunmental hover:bg-gunmental hover:text-lighthouse"
+                          to="/cars?status=sold"
+                        >
+                          {" "}
+                          Sold
+                        </Link>
+                      </MenuItem>
+                    </MenuItems>
+                  </Menu>
                 </div>
               </div>
               <Link
-                className="group my-1 flex flex-row items-center rounded-lg border border-medium-gray bg-distant-cloud px-3 pb-1 pt-1 text-xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse"
+                className="group my-1 flex flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-3 pb-1 pt-1 text-xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse"
                 to="/add-new"
               >
                 <img

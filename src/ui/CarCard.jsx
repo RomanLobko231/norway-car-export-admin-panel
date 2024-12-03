@@ -9,7 +9,7 @@ const CarCard = ({ carInfo, setIsOpen }) => {
       onClick={() => {
         navigate(`/car/${carInfo.id}`);
       }}
-      className="card_shadow hover:card_shadow_hover active:card_shadow_click flex w-[300px] cursor-pointer flex-col items-center rounded-lg border border-light-gray bg-distant-cloud p-3 duration-300 hover:-translate-y-1"
+      className="card_shadow hover:card_shadow_hover active:card_shadow_click flex w-[300px] cursor-pointer flex-col items-center rounded-md border border-light-gray bg-lighthouse p-3 duration-300 hover:-translate-y-1"
     >
       <img
         src="./car_example.jpg"
@@ -17,7 +17,7 @@ const CarCard = ({ carInfo, setIsOpen }) => {
         className="w-full rounded border border-medium-gray object-cover"
       />
       <h1 className="my-1 text-xl font-semibold leading-6 text-gunmental">
-        Car name and its short description
+        Polestar 2 | Long Range Single Motor
       </h1>
       <hr className="bg-slate-950 mb-2 mt-1 h-[2px] w-full" />
       <div className="flex flex-wrap items-center gap-2">
@@ -27,7 +27,7 @@ const CarCard = ({ carInfo, setIsOpen }) => {
         <CarInfoElement info="In Review" />
       </div>
       <div className="flex w-full flex-row items-center justify-center gap-3">
-        <button className="card_shadow hover: group mb-2 mt-5 flex flex-row items-center rounded-full border border-medium-gray bg-lighthouse px-4 pb-1 pt-1 text-xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse">
+        <button className="card_shadow hover: group mb-2 mt-5 flex flex-row items-center rounded-full border border-medium-gray bg-white px-4 pb-1 pt-1 text-xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse">
           Edit
           <img
             src="../icons/edit_dark.png"
@@ -45,7 +45,7 @@ const CarCard = ({ carInfo, setIsOpen }) => {
             setIsOpen(true);
             e.stopPropagation();
           }}
-          className="card_shadow hover: group mb-2 mt-5 flex flex-row items-center rounded-full border border-medium-gray bg-lighthouse px-4 pb-1 pt-1 text-xl font-semibold text-danger-red hover:bg-danger-red hover:text-lighthouse"
+          className="card_shadow hover: group mb-2 mt-5 flex flex-row items-center rounded-full border border-medium-gray bg-white px-4 pb-1 pt-1 text-xl font-semibold text-danger-red hover:bg-danger-red hover:text-lighthouse"
         >
           Delete
           <img

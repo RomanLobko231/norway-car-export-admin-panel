@@ -20,12 +20,12 @@ const ImageCarousel = ({ images, options }) => {
   const { selectedSnap, snapCount } = useSelectedSnapDisplay(emblaApi);
 
   return (
-    <section className="mx-auto max-w-[700px]">
+    <section className="mx-auto max-w-[300px] md:max-w-[700px]">
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex">
           {images.map((image, index) => (
             <div
-              className="max-w-[700px] flex-none translate-x-0 pl-4"
+              className="max-w-[300px] flex-none translate-x-0 md:max-w-[700px]"
               key={index}
             >
               <img className="rounded object-contain" src={image.image} />
@@ -34,7 +34,7 @@ const ImageCarousel = ({ images, options }) => {
         </div>
       </div>
 
-      <div className="mt-7 flex flex-row items-center justify-between">
+      <div className="mt-4 flex flex-row items-center justify-between">
         <div className="flex flex-row items-center gap-3">
           <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
           <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
