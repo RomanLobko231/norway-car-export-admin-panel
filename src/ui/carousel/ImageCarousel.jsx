@@ -21,6 +21,13 @@ const ImageCarousel = ({ images, options }) => {
 
   return (
     <section className="mx-auto max-w-[300px] md:max-w-[700px]">
+      <div className="mb-2 flex flex-row items-center justify-between">
+        <div className="flex flex-row items-center gap-3">
+          <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
+          <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
+        </div>
+        <ImageNumbers selectedSnap={selectedSnap} snapCount={snapCount} />
+      </div>
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex">
           {images.map((image, index) => (
@@ -32,14 +39,6 @@ const ImageCarousel = ({ images, options }) => {
             </div>
           ))}
         </div>
-      </div>
-
-      <div className="mt-4 flex flex-row items-center justify-between">
-        <div className="flex flex-row items-center gap-3">
-          <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
-          <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
-        </div>
-        <ImageNumbers selectedSnap={selectedSnap} snapCount={snapCount} />
       </div>
     </section>
   );

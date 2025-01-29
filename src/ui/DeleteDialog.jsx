@@ -19,7 +19,7 @@ const DeleteDialog = ({ isOpen, setIsOpen }) => {
       />
       <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
         <DialogPanel className="max-w-lg space-y-4 rounded-lg border bg-lighthouse p-8">
-          <DialogTitle className="font-bold">Deactivate account</DialogTitle>
+          <DialogTitle className="font-bold">Delete a car</DialogTitle>
           <p className="text-lg font-semibold text-gunmental">
             Are you sure you want to delete this car? All of the data will be
             permanently removed.

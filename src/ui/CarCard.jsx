@@ -19,7 +19,7 @@ const CarCard = ({ carInfo, setIsOpen }) => {
       <h1 className="my-1 text-xl font-semibold leading-6 text-gunmental">
         Polestar 2 | Long Range Single Motor
       </h1>
-      <hr className="bg-slate-950 mb-2 mt-1 h-[2px] w-full" />
+      <hr className="mb-2 mt-1 h-[2px] w-full bg-slate-950" />
       <div className="flex flex-wrap items-center gap-2">
         <CarInfoElement info="26.11.2024" />
         <CarInfoElement info="EU Control: Yes" />
@@ -55,7 +55,7 @@ const CarCard = ({ carInfo, setIsOpen }) => {
           />
           <img
             src="../icons/delete_light.png"
-            className="mxr-1 ml-2 hidden h-[14px] w-auto group-hover:block"
+            className="ml-2 mr-1 hidden h-[14px] w-auto group-hover:block"
             alt="delete button"
           />
         </button>
