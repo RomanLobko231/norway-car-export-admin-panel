@@ -13,14 +13,6 @@ const ReviewPage = () => {
         <h1 className="text-xl font-light text-gunmental">Auctioning: 2</h1>
         <h1 className="text-xl font-light text-gunmental">Sold: 1</h1>
       </div>
-      <div className="flex max-w-7xl flex-wrap justify-center gap-4">
-        <CarCard setIsOpen={setIsOpen} carInfo={{ id: "cwwc", name: "name" }} />
-        <CarCard setIsOpen={setIsOpen} carInfo={{ id: "cwwc", name: "name" }} />
-        <CarCard setIsOpen={setIsOpen} carInfo={{ id: "cwwc", name: "name" }} />
-        <CarCard setIsOpen={setIsOpen} carInfo={{ id: "cwwc", name: "name" }} />
-        <CarCard setIsOpen={setIsOpen} carInfo={{ id: "cwwc", name: "name" }} />
-        <CarCard setIsOpen={setIsOpen} carInfo={{ id: "cwwc", name: "name" }} />
-      </div>
     </div>
   );
 };
