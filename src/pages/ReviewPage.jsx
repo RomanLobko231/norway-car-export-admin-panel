@@ -3,8 +3,6 @@ import CarCard from "../ui/CarCard";
 import DeleteDialog from "../ui/DeleteDialog";
 
 const ReviewPage = () => {
-  let [isOpen, setIsOpen] = useState(false);
-
   return (
     <div className="flex w-full flex-col items-center py-20">
       <h1 className="mb-2 mt-4 text-3xl font-bold text-gunmental">
@@ -23,7 +21,6 @@ const ReviewPage = () => {
         <CarCard setIsOpen={setIsOpen} carInfo={{ id: "cwwc", name: "name" }} />
         <CarCard setIsOpen={setIsOpen} carInfo={{ id: "cwwc", name: "name" }} />
       </div>
-      <DeleteDialog isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   );
 };

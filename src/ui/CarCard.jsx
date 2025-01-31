@@ -1,15 +1,18 @@
 import { useNavigate } from "react-router";
 import CarInfoElement from "./CarInfoElement";
+import DeleteDialog from "./DeleteDialog";
+import { useState } from "react";
 
-const CarCard = ({ carInfo, setIsOpen }) => {
+const CarCard = ({ carInfo }) => {
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div
       onClick={() => {
         navigate(`/car/${carInfo.id}`);
       }}
-      className="card_shadow hover:card_shadow_hover active:card_shadow_click flex w-[300px] cursor-pointer flex-col items-center rounded-md border border-light-gray bg-lighthouse p-3 duration-300 hover:-translate-y-1"
+      className="card_shadow hover:card_shadow_hover active:card_shadow_click flex w-[300px] cursor-pointer flex-col items-center rounded-md border border-light-gray bg-slate-50 p-3 duration-300 hover:-translate-y-1"
     >
       <img
         src="./car_example.jpg"
@@ -17,14 +20,14 @@ const CarCard = ({ carInfo, setIsOpen }) => {
         className="w-full rounded border border-medium-gray object-cover"
       />
       <h1 className="my-1 text-xl font-semibold leading-6 text-gunmental">
-        Polestar 2 | Long Range Single Motor
+        {carInfo.make} {carInfo.model}
       </h1>
       <hr className="mb-2 mt-1 h-[2px] w-full bg-slate-950" />
       <div className="flex flex-wrap items-center gap-2">
         <CarInfoElement info="26.11.2024" />
-        <CarInfoElement info="EU Control: Yes" />
-        <CarInfoElement info="45032 KM" />
-        <CarInfoElement info="In Review" />
+        <CarInfoElement info={`EU: ${carInfo.nextEUControl}`} />
+        <CarInfoElement info={`${carInfo.kilometers} KMs`} />
+        <CarInfoElement info={carInfo.status} />
       </div>
       <div className="flex w-full flex-row items-center justify-center gap-3">
         <button className="card_shadow hover: group mb-2 mt-5 flex flex-row items-center rounded-full border border-medium-gray bg-white px-4 pb-1 pt-1 text-xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse">
@@ -60,6 +63,7 @@ const CarCard = ({ carInfo, setIsOpen }) => {
           />
         </button>
       </div>
+      <DeleteDialog isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   );
 };

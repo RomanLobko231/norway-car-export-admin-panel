@@ -20,6 +20,9 @@
   html {
     @apply !overflow-visible !p-0;
   }
+  body {
+    background-color: #f7f8f8;
+  }
   input[type="number"]::-webkit-outer-spin-button,
   input[type="number"]::-webkit-inner-spin-button,
   input[type="number"] {
