@@ -1,25 +1,40 @@
 import { useEffect, useState } from "react";
-import CarCard from "../ui/CarCard";
+import CarCard from "../ui/car/CarCard";
 import DeleteDialog from "../ui/DeleteDialog";
 import ApiService from "../api/ApiService";
-import CarsList from "../ui/CarsList";
+import CarsList from "../ui/car/CarsList";
+import ErrorDialog from "../ui/ErrorDialog";
 
 const HomePage = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isErrorOpen, setIsErrorOpen] = useState(false);
   const [error, setError] = useState(null);
+
   const [isLoading, setIsLoading] = useState(false);
   const [cars, setCars] = useState([]);
 
   const fetchAllCars = async () => {
     try {
+      setIsLoading(true);
+      setError(null);
       const response = await ApiService.getAllCars();
-      console.log(response);
       setCars(response.data);
       setIsLoading(false);
     } catch (error) {
       setError(error);
+      setIsErrorOpen(true);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const deleteCar = async (id) => {
+    try {
+      setError(null);
+      await ApiService.deleteById(id);
+      setCars((prev) => prev.filter((element) => element.id !== id));
+    } catch (error) {
+      setError(error);
+      setIsErrorOpen(true);
     }
   };
 
@@ -37,7 +52,15 @@ const HomePage = () => {
         <h1 className="text-xl font-light text-gunmental">Auctioning: 2</h1>
         <h1 className="text-xl font-light text-gunmental">Sold: 1</h1>
       </div>
-      <CarsList cars={cars} />
+      {isLoading && <h1>Loading..</h1>}
+      <CarsList cars={cars} onDelete={deleteCar} />
+      {error && (
+        <ErrorDialog
+          isOpen={isErrorOpen}
+          setIsOpen={setIsErrorOpen}
+          error={error}
+        />
+      )}
     </div>
   );
 };

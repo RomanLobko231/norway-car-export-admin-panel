@@ -4,13 +4,15 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
+import { useNavigate } from "react-router";
 
-const DeleteDialog = ({ isOpen, setIsOpen, onDelete }) => {
+const ErrorDialog = ({ isOpen, setIsOpen, error }) => {
+  const navigate = useNavigate();
   return (
     <Dialog
       open={isOpen}
       onClose={() => setIsOpen(false)}
-      className="relative z-50"
+      className="relative z-[75]"
     >
       <DialogBackdrop
         transition
@@ -18,10 +20,14 @@ const DeleteDialog = ({ isOpen, setIsOpen, onDelete }) => {
       />
       <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
         <DialogPanel className="max-w-lg space-y-4 rounded-lg border bg-lighthouse p-8">
-          <DialogTitle className="font-bold">Delete a car</DialogTitle>
+          <DialogTitle className="font-bold">
+            {`Error: ${error.statusCode}`}
+          </DialogTitle>
           <p className="text-lg font-semibold text-gunmental">
-            Are you sure you want to delete this car? All of the data will be
-            permanently removed.
+            {error.message}
+          </p>
+          <p className="text-base font-normal text-medium-gray">
+            {error.timestamp}
           </p>
           <div className="flex gap-4">
             <button
@@ -31,13 +37,13 @@ const DeleteDialog = ({ isOpen, setIsOpen, onDelete }) => {
               Close
             </button>
             <button
-              className="card_shadow text group mb-2 mt-5 flex flex-row items-center rounded-full border border-medium-gray bg-lighthouse px-4 pb-1 pt-1 text-xl font-semibold text-danger-red hover:bg-danger-red hover:text-lighthouse"
+              className="card_shadow mb-2 mt-5 flex flex-row items-center rounded-full border border-medium-gray bg-lighthouse px-4 pb-1 pt-1 text-xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse"
               onClick={() => {
-                onDelete();
                 setIsOpen(false);
+                navigate("/");
               }}
             >
-              Delete
+              To Home
             </button>
           </div>
         </DialogPanel>
@@ -46,4 +52,4 @@ const DeleteDialog = ({ isOpen, setIsOpen, onDelete }) => {
   );
 };
 
-export default DeleteDialog;
+export default ErrorDialog;

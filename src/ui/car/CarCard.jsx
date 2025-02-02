@@ -1,21 +1,26 @@
 import { useNavigate } from "react-router";
 import CarInfoElement from "./CarInfoElement";
-import DeleteDialog from "./DeleteDialog";
-import { useState } from "react";
+import DeleteDialog from "../DeleteDialog";
+import { useCallback, useState } from "react";
 
-const CarCard = ({ carInfo }) => {
+const CarCard = ({ carInfo, onDelete }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+
+  const handleDelete = useCallback(() => {
+    onDelete(carInfo.id);
+  }, [onDelete, carInfo.id]);
 
   return (
     <div
       onClick={() => {
-        navigate(`/car/${carInfo.id}`);
+        console.log(carInfo);
+        navigate(`/car/${carInfo.id}`, { state: { car: carInfo } });
       }}
-      className="card_shadow hover:card_shadow_hover active:card_shadow_click flex w-[300px] cursor-pointer flex-col items-center rounded-md border border-light-gray bg-slate-50 p-3 duration-300 hover:-translate-y-1"
+      className="card_shadow hover:card_shadow_hover active:card_shadow_click flex h-[440px] w-[300px] cursor-pointer flex-col items-center rounded-md border border-light-gray bg-slate-50 p-3 duration-300 hover:-translate-y-1"
     >
       <img
-        src="./car_example.jpg"
+        src="./../car_example.jpg"
         alt="Car Name"
         className="w-full rounded border border-medium-gray object-cover"
       />
@@ -24,7 +29,7 @@ const CarCard = ({ carInfo }) => {
       </h1>
       <hr className="mb-2 mt-1 h-[2px] w-full bg-slate-950" />
       <div className="flex flex-wrap items-center gap-2">
-        <CarInfoElement info="26.11.2024" />
+        <CarInfoElement info={carInfo.registrationNumber} />
         <CarInfoElement info={`EU: ${carInfo.nextEUControl}`} />
         <CarInfoElement info={`${carInfo.kilometers} KMs`} />
         <CarInfoElement info={carInfo.status} />
@@ -63,7 +68,11 @@ const CarCard = ({ carInfo }) => {
           />
         </button>
       </div>
-      <DeleteDialog isOpen={isOpen} setIsOpen={setIsOpen} />
+      <DeleteDialog
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        onDelete={handleDelete}
+      />
     </div>
   );
 };

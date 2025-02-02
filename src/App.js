@@ -18,7 +18,7 @@ function App() {
           <Route path="/review" element={<ReviewPage />} exact={true} />
           <Route path="/auctioning" element={<AuctioningPage />} exact={true} />
           <Route path="/sold" element={<SoldPage />} exact={true} />
-          <Route path="/car/:car-id" element={<AddOrEditCar />} exact={true} />
+          <Route path="/car/:id" element={<AddOrEditCar />} exact={true} />
           <Route path="/add-new" element={<AddOrEditCar />} exact={true} />
         </Routes>
       </div>

@@ -1,16 +1,6 @@
 import { useEffect, useState } from "react";
 
-const InputField = ({ icon, label, alt, initialValue, type }) => {
-  const [inputValue, setInputValue] = useState(initialValue || "");
-
-  useEffect(() => {
-    setInputValue(initialValue || "");
-  }, [initialValue]);
-
-  const handleChange = (e) => {
-    setInputValue(e.target.value);
-  };
-
+const TextInputField = ({ icon, label, name, alt, initialValue, onChange }) => {
   return (
     <div className="mb-2 mt-1 w-full flex-col">
       <label
@@ -24,12 +14,11 @@ const InputField = ({ icon, label, alt, initialValue, type }) => {
           <img src={icon} alt={alt} className="h-4 w-4 md:h-5 md:w-5" />
         </div>
         <input
-          onWheel={(e) => e.currentTarget.blur()}
-          min={0}
-          type={type}
+          type="text"
           id={label}
-          value={inputValue}
-          onChange={handleChange}
+          name={name}
+          value={initialValue}
+          onChange={onChange}
           className="block w-full rounded-lg border border-medium-gray bg-white px-5 py-2.5 ps-11 text-base font-medium text-medium-gray md:ps-14 md:text-lg"
           required
         />
@@ -38,4 +27,4 @@ const InputField = ({ icon, label, alt, initialValue, type }) => {
   );
 };
 
-export default InputField;
+export default TextInputField;

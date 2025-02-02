@@ -25,15 +25,27 @@ function handleError(error) {
     const resolvedMessage = message ?? "An unexpected error occurred.";
     const resolvedTimestamp = timestamp ?? new Date().toISOString();
     return {
-      errorMessage: { resolvedStatusCode, resolvedMessage, resolvedStatusCode },
+      errorMessage: {
+        statusCode: resolvedStatusCode,
+        message: resolvedMessage,
+        timestamp: resolvedTimestamp,
+      },
     };
   } else if (error.request) {
     return {
-      errorMessage: "The server is not responding. Please try again later.",
+      errorMessage: {
+        statusCode: 500,
+        message: "The server is not responding. Please try again later.",
+        timestamp: new Date().toISOString(),
+      },
     };
   } else {
     return {
-      errorMessage: "An unexpected error occurred.",
+      errorMessage: {
+        statusCode: 500,
+        message: "An unexpected error occurred.",
+        timestamp: new Date().toISOString(),
+      },
     };
   }
 }

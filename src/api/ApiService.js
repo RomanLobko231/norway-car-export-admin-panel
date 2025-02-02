@@ -10,4 +10,24 @@ export default class ApiService {
       throw error;
     }
   }
+
+  static async getCarById(id) {
+    try {
+      const response = await api.get(`/api/v1/cars/${id}`);
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  static async deleteById(id) {
+    try {
+      const response = await api.delete(`/api/v1/cars/${id}`);
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
 }
