@@ -14,7 +14,6 @@ const CarCard = ({ carInfo, onDelete }) => {
   return (
     <div
       onClick={() => {
-        console.log(carInfo);
         navigate(`/car/${carInfo.id}`, { state: { car: carInfo } });
       }}
       className="card_shadow hover:card_shadow_hover active:card_shadow_click flex h-[440px] w-[300px] cursor-pointer flex-col items-center rounded-md border border-light-gray bg-slate-50 p-3 duration-300 hover:-translate-y-1"

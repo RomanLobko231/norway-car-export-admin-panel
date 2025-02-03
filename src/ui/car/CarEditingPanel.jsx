@@ -3,9 +3,18 @@ import ImageCarousel from "../carousel/ImageCarousel";
 import CarInfoElement from "./CarInfoElement";
 import TextInputField from "../input/TextInputField";
 import NumberInputField from "../input/NumberInputField";
+import OptionsInput from "../input/OptionsInput";
 
 const CarEditingPanel = ({ car, saveCar }) => {
   const [formData, setFormData] = useState(car);
+  const OPERATING_MODES = [
+    "Bakhjulstrekk",
+    "Framhjulstrekk",
+    "Firehjulstrekk",
+    "Annet",
+  ];
+  const GEARBOX_TYPES = ["Manuell", "Automat", "Annet"];
+  const STATUS_OPTIONS = ["In Review", "On Auction", "Sold", "Other"];
   const IMAGES = [
     { image: "../../car_images/car1.jpg" },
     { image: "../../car_images/car2.jpg" },
@@ -150,21 +159,21 @@ const CarEditingPanel = ({ car, saveCar }) => {
           initialValue={formData.engineVolume}
           onChange={handleInputChange}
         />
-        <TextInputField
-          label={"Driftstype"}
-          icon={"../icons/gear.png"}
-          alt={"Gears icon"}
-          name={"operatingMode"}
-          initialValue={formData.operatingMode}
-          onChange={handleInputChange}
+        <p className="mt-4 text-base font-medium text-light-gray">Driftstype</p>
+        <OptionsInput
+          options={OPERATING_MODES}
+          initialOption={formData.operatingMode}
+          optionName={"operatingMode"}
+          handleInputChange={handleInputChange}
         />
-        <TextInputField
-          label={"Girkassetype"}
-          icon={"../icons/gear.png"}
-          alt={"Gears icon"}
-          name={"gearboxType"}
-          initialValue={formData.gearboxType}
-          onChange={handleInputChange}
+        <p className="mt-4 text-base font-medium text-light-gray">
+          Girkassetype
+        </p>
+        <OptionsInput
+          options={GEARBOX_TYPES}
+          initialOption={formData.gearboxType}
+          optionName={"gearboxType"}
+          handleInputChange={handleInputChange}
         />
         <NumberInputField
           label={"Egenvekt"}
@@ -224,21 +233,18 @@ const CarEditingPanel = ({ car, saveCar }) => {
             placeholder="Ytterligere opplysninger*"
             required
             name={"additionalInformation"}
-            value={
-              formData.additionalInformation
-                ? formData.additionalInformation
-                : ""
-            }
+            value={formData.additionalInformation || ""}
             onChange={handleInputChange}
           />
         </div>
         <hr className="mb-4 mt-4 w-10/12 border-[1px] border-dashed border-gunmental px-2" />
         <h1 className="mt-8 text-2xl font-bold text-gunmental">STATUS</h1>
-        <div className="mt-6 flex w-full flex-row items-center justify-center gap-4">
-          <CarInfoElement info={"In Review"} />
-          <CarInfoElement info={"Auctioning"} />
-          <CarInfoElement info={"Sold"} />
-        </div>
+        <OptionsInput
+          options={STATUS_OPTIONS}
+          initialOption={formData.status}
+          optionName={"status"}
+          handleInputChange={handleInputChange}
+        />
         <div className="fixed bottom-0 flex w-full flex-row items-center justify-center gap-5 bg-lighthouse/50 backdrop-blur">
           <button
             type="submit"

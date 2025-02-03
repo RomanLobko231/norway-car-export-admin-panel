@@ -8,7 +8,7 @@ import { useLocation, useParams } from "react-router";
 import CarEditingPanel from "../ui/car/CarEditingPanel";
 import ErrorDialog from "../ui/ErrorDialog";
 
-const AddOrEditCar = () => {
+const EditCarPage = () => {
   const params = useParams();
 
   const location = useLocation();
@@ -34,7 +34,6 @@ const AddOrEditCar = () => {
     try {
       const response = await ApiService.getCarById(id);
       setCar(response.data);
-      console.log(response.data);
     } catch (error) {
       setError(error);
       setIsErrorOpen(true);
@@ -43,7 +42,19 @@ const AddOrEditCar = () => {
     }
   };
 
-  const saveCar = (carData) => [console.log(carData)];
+  const saveCar = async (carData) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      await ApiService.updateCar(carData);
+    } catch (error) {
+      setError(error);
+      setIsErrorOpen(true);
+    } finally {
+      setIsLoading(false);
+      fetchCar(params.id);
+    }
+  };
 
   return (
     <>
@@ -66,4 +77,4 @@ const AddOrEditCar = () => {
   );
 };
 
-export default AddOrEditCar;
+export default EditCarPage;
