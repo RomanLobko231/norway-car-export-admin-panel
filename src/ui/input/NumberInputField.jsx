@@ -8,6 +8,12 @@ const NumberInputField = ({
   initialValue,
   onChange,
 }) => {
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleCheckboxChange = () => {
+    setIsChecked((prev) => !prev);
+    onChange({ target: { name, value: !isChecked ? 0 : 0 } });
+  };
   return (
     <div className="mb-2 mt-1 w-full flex-col">
       <label
@@ -26,12 +32,28 @@ const NumberInputField = ({
           type="number"
           id={label}
           name={name}
-          value={initialValue}
+          value={isChecked ? 0 : initialValue}
+          disabled={isChecked}
           onChange={onChange}
-          className="block w-full rounded-lg border border-medium-gray bg-white px-5 py-2.5 ps-11 text-base font-medium text-medium-gray md:ps-14 md:text-lg"
+          className="block w-full rounded-lg border border-medium-gray bg-white px-5 py-2.5 ps-11 text-base font-medium text-medium-gray disabled:text-light-gray md:ps-14 md:text-lg"
           required
         />
       </div>
+      <label
+        className={`ml-6 mt-2 flex cursor-pointer items-center text-base ${
+          isChecked
+            ? "font-semibold text-medium-gray"
+            : "font-normal text-light-gray"
+        }`}
+      >
+        <input
+          type="checkbox"
+          checked={isChecked}
+          onChange={handleCheckboxChange}
+          className="mr-2 h-4 w-4 accent-gunmental"
+        />
+        Info is not available now
+      </label>
     </div>
   );
 };

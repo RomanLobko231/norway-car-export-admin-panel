@@ -1,12 +1,39 @@
 import { useEffect, useState } from "react";
 
-const TextInputField = ({ icon, label, name, alt, initialValue, onChange }) => {
-  const [isChecked, setIsChecked] = useState(initialValue === "N/A");
+const DateInputField = ({ icon, label, name, alt, initialValue, onChange }) => {
+  const [isChecked, setIsChecked] = useState(initialValue === "1111-11-11");
+  const [inputValue, setInputValue] = useState(initialValue || "");
+
+  const formatDate = (value) => {
+    let cleaned = value.replace(/\D/g, "");
+
+    if (cleaned.length > 4)
+      cleaned = cleaned.slice(0, 4) + "-" + cleaned.slice(4);
+    if (cleaned.length > 7)
+      cleaned = cleaned.slice(0, 7) + "-" + cleaned.slice(7, 10);
+
+    return cleaned;
+  };
+
+  const handleInputChange = (e) => {
+    let value = e.target.value;
+
+    if (value.endsWith("-")) {
+      value = value.slice(0, -1);
+    }
+
+    const formattedValue = formatDate(value);
+    setInputValue(formattedValue);
+    onChange({ target: { name, value: formattedValue } });
+  };
 
   const handleCheckboxChange = () => {
     setIsChecked((prev) => !prev);
-    onChange({ target: { name, value: !isChecked ? "N/A" : "" } });
+    const newValue = !isChecked ? "1111-11-11" : "";
+    setInputValue(newValue);
+    onChange({ target: { name, value: newValue } });
   };
+
   return (
     <div className="mb-2 mt-1 w-full flex-col">
       <label
@@ -23,11 +50,13 @@ const TextInputField = ({ icon, label, name, alt, initialValue, onChange }) => {
           type="text"
           id={label}
           name={name}
-          value={isChecked ? "N/A" : initialValue}
-          onChange={onChange}
+          value={isChecked ? "1111-11-11" : inputValue}
+          onChange={handleInputChange}
           className="block w-full rounded-lg border border-medium-gray bg-white px-5 py-2.5 ps-11 text-base font-medium text-medium-gray disabled:text-light-gray md:ps-14 md:text-lg"
           required
           disabled={isChecked}
+          placeholder="YYYY-MM-DD"
+          maxLength={10}
         />
       </div>
       <label
@@ -49,4 +78,4 @@ const TextInputField = ({ icon, label, name, alt, initialValue, onChange }) => {
   );
 };
 
-export default TextInputField;
+export default DateInputField;

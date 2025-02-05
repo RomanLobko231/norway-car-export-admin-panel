@@ -52,7 +52,6 @@ const EditCarPage = () => {
       setIsErrorOpen(true);
     } finally {
       setIsLoading(false);
-      fetchCar(params.id);
     }
   };
 

@@ -4,6 +4,7 @@ import CarInfoElement from "./CarInfoElement";
 import TextInputField from "../input/TextInputField";
 import NumberInputField from "../input/NumberInputField";
 import OptionsInput from "../input/OptionsInput";
+import DateInputField from "../input/DateInputField";
 
 const CarEditingPanel = ({ car, saveCar }) => {
   const [formData, setFormData] = useState(car);
@@ -52,19 +53,21 @@ const CarEditingPanel = ({ car, saveCar }) => {
         onSubmit={submitSaveRequest}
       >
         <h1 className="text-2xl font-bold text-medium-gray">PERSONALIA</h1>
-        <TextInputField
-          label={"Fullt Navn"}
-          icon={"../icons/person.png"}
-          alt={"Person icon"}
-          name={"name"}
-          initialValue={formData.ownerInfo.name}
-          onChange={(e) =>
-            setFormData((prev) => ({
-              ...prev,
-              ownerInfo: { ...prev.ownerInfo, name: e.target.value },
-            }))
-          }
-        />
+        <div className="flex w-full flex-col items-start">
+          <TextInputField
+            label={"Fullt Navn"}
+            icon={"../icons/person.png"}
+            alt={"Person icon"}
+            name={"name"}
+            initialValue={formData.ownerInfo.name}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                ownerInfo: { ...prev.ownerInfo, name: e.target.value },
+              }))
+            }
+          />
+        </div>
         <TextInputField
           label={"Mobilnummer"}
           icon={"../icons/phone.png"}
@@ -119,7 +122,7 @@ const CarEditingPanel = ({ car, saveCar }) => {
           initialValue={formData.registrationNumber}
           onChange={handleInputChange}
         />
-        <TextInputField
+        <DateInputField
           label={"Førstegangsregistrering i Norge"}
           icon={"../icons/date.png"}
           name={"firstTimeRegisteredInNorway"}
@@ -127,7 +130,7 @@ const CarEditingPanel = ({ car, saveCar }) => {
           initialValue={formData.firstTimeRegisteredInNorway}
           onChange={handleInputChange}
         />
-        <TextInputField
+        <DateInputField
           label={"Neste EU-kontroll"}
           icon={"../icons/date.png"}
           alt={"Calendar icon"}
@@ -231,7 +234,6 @@ const CarEditingPanel = ({ car, saveCar }) => {
             id="add_info"
             className="block min-h-48 w-full rounded-lg border border-medium-gray bg-white px-5 py-4 ps-11 text-base font-medium text-medium-gray md:ps-14 md:text-lg"
             placeholder="Ytterligere opplysninger*"
-            required
             name={"additionalInformation"}
             value={formData.additionalInformation || ""}
             onChange={handleInputChange}

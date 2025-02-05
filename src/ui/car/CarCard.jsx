@@ -24,14 +24,14 @@ const CarCard = ({ carInfo, onDelete }) => {
         className="w-full rounded border border-medium-gray object-cover"
       />
       <h1 className="my-1 text-xl font-semibold leading-6 text-gunmental">
-        {carInfo.make} {carInfo.model}
+        {carInfo.make ?? "-"} {carInfo.model ?? "-"}
       </h1>
       <hr className="mb-2 mt-1 h-[2px] w-full bg-slate-950" />
       <div className="flex flex-wrap items-center gap-2">
-        <CarInfoElement info={carInfo.registrationNumber} />
-        <CarInfoElement info={`EU: ${carInfo.nextEUControl}`} />
-        <CarInfoElement info={`${carInfo.kilometers} KMs`} />
-        <CarInfoElement info={carInfo.status} />
+        <CarInfoElement info={carInfo.registrationNumber ?? "-"} />
+        <CarInfoElement info={`EU: ${carInfo.nextEUControl ?? "-"}`} />
+        <CarInfoElement info={`${carInfo.kilometers ?? "-"} KMs`} />
+        <CarInfoElement info={carInfo.status ?? "-"} />
       </div>
       <div className="flex w-full flex-row items-center justify-center gap-3">
         <button className="card_shadow hover: group mb-2 mt-5 flex flex-row items-center rounded-full border border-medium-gray bg-white px-4 pb-1 pt-1 text-xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse">
