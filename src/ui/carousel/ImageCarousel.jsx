@@ -1,46 +1,117 @@
-import {
-  PrevButton,
-  NextButton,
-  usePrevNextButtons,
-} from "./ImageCarouselButtons";
+// import {
+//   PrevButton,
+//   NextButton,
+//   usePrevNextButtons,
+// } from "./ImageCarouselButtons";
 
-import useEmblaCarousel from "embla-carousel-react";
-import { ImageNumbers, useSelectedSnapDisplay } from "./ImageNumbers";
+// import useEmblaCarousel from "embla-carousel-react";
+// import { ImageNumbers, useSelectedSnapDisplay } from "./ImageNumbers";
 
-const ImageCarousel = ({ images, options }) => {
-  const [emblaRef, emblaApi] = useEmblaCarousel(options);
+// const ImageCarousel = ({ images, options }) => {
+//   const [emblaRef, emblaApi] = useEmblaCarousel(options);
 
-  const {
-    prevBtnDisabled,
-    nextBtnDisabled,
-    onPrevButtonClick,
-    onNextButtonClick,
-  } = usePrevNextButtons(emblaApi);
+//   const {
+//     prevBtnDisabled,
+//     nextBtnDisabled,
+//     onPrevButtonClick,
+//     onNextButtonClick,
+//   } = usePrevNextButtons(emblaApi);
 
-  const { selectedSnap, snapCount } = useSelectedSnapDisplay(emblaApi);
+//   const { selectedSnap, snapCount } = useSelectedSnapDisplay(emblaApi);
+
+//   return (
+//     <section className="mx-auto max-w-[300px] md:max-w-[700px]">
+//       {images == undefined && <p>No images yet</p>}
+
+//       <div className="mb-2 flex flex-row items-center justify-between">
+//         <div className="flex flex-row items-center gap-3">
+//           <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
+//           <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
+//         </div>
+//         <ImageNumbers selectedSnap={selectedSnap} snapCount={snapCount} />
+//       </div>
+//       <div className="overflow-hidden" ref={emblaRef}>
+//         <div className="flex">
+//           {images.map((image, index) => (
+//             <div
+//               className="max-w-[300px] flex-none translate-x-0 md:max-w-[700px]"
+//               key={index}
+//             >
+//               <img className="rounded object-contain" src={image} />
+//             </div>
+//           ))}
+//         </div>
+//       </div>
+//     </section>
+//   );
+// };
+
+// export default ImageCarousel;
+
+import React, { useState } from "react";
+import { RiArrowRightBoxLine, RiArrowLeftBoxLine } from "react-icons/ri";
+import { TiDelete } from "react-icons/ti";
+
+const ImageCarousel = ({ images, deleteImage }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const prevSlide = () => {
+    const isFirstSlide = currentIndex === 0;
+    const newIndex = isFirstSlide ? images.length - 1 : currentIndex - 1;
+    setCurrentIndex(newIndex);
+  };
+
+  const nextSlide = () => {
+    const isLastSlide = currentIndex === images.length - 1;
+    const newIndex = isLastSlide ? 0 : currentIndex + 1;
+    setCurrentIndex(newIndex);
+  };
 
   return (
-    <section className="mx-auto max-w-[300px] md:max-w-[700px]">
-      <div className="mb-2 flex flex-row items-center justify-between">
-        <div className="flex flex-row items-center gap-3">
-          <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
-          <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
-        </div>
-        <ImageNumbers selectedSnap={selectedSnap} snapCount={snapCount} />
-      </div>
-      <div className="overflow-hidden" ref={emblaRef}>
-        <div className="flex">
-          {images.map((image, index) => (
-            <div
-              className="max-w-[300px] flex-none translate-x-0 md:max-w-[700px]"
-              key={index}
-            >
-              <img className="rounded object-contain" src={image.image} />
+    <>
+      {images && images.length > 0 && (
+        <div className="mx-auto flex w-full max-w-[300px] flex-col items-center md:max-w-[700px]">
+          <div className="mb-2 flex w-full flex-row items-center justify-between">
+            <div className="flex flex-row items-center gap-3">
+              <RiArrowLeftBoxLine
+                onClick={prevSlide}
+                className="h-10 w-auto hover:opacity-50 active:opacity-10"
+                color="#333333"
+              />
+              <RiArrowRightBoxLine
+                onClick={nextSlide}
+                className="h-10 w-auto hover:opacity-50 active:opacity-10"
+                color="#333333"
+              />
             </div>
-          ))}
+            <p className="select-none text-2xl font-medium text-medium-gray">{`${currentIndex + 1} / ${images.length}`}</p>
+            <button
+              onClick={() => {
+                deleteImage(images[currentIndex]);
+                if (currentIndex != 0) setCurrentIndex(currentIndex - 1);
+              }}
+              className="card_shadow group mb-2 mt-2 flex select-none flex-row items-center gap-1 rounded-lg border border-medium-gray bg-lighthouse px-4 pb-1 pt-1 text-xl font-semibold text-medium-gray hover:bg-danger-red hover:text-lighthouse"
+            >
+              Delete Image
+              <TiDelete className="h-6 w-auto" />
+            </button>
+          </div>
+
+          <div className="mt-4 overflow-hidden">
+            <img
+              src={images[currentIndex]}
+              alt={`Slide ${currentIndex + 1}`}
+              className="h-auto w-full select-none object-contain"
+            />
+          </div>
         </div>
-      </div>
-    </section>
+      )}
+      {(images == null || images.length <= 0 || images == undefined) && (
+        <p className="mt-2 text-lg font-normal text-light-gray">
+          No images yet
+        </p>
+      )}
+    </>
   );
 };
 

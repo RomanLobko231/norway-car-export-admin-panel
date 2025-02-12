@@ -6,7 +6,7 @@ import InputField from "../ui/input/TextInputField";
 import ApiService from "../api/ApiService";
 import { useLocation, useParams } from "react-router";
 import CarEditingPanel from "../ui/car/CarEditingPanel";
-import ErrorDialog from "../ui/ErrorDialog";
+import ErrorDialog from "../ui/dialog/ErrorDialog";
 
 const EditCarPage = () => {
   const params = useParams();
@@ -42,16 +42,17 @@ const EditCarPage = () => {
     }
   };
 
-  const saveCar = async (carData) => {
+  const saveCar = async (carData, images) => {
     setIsLoading(true);
     setError(null);
     try {
-      await ApiService.updateCar(carData);
+      await ApiService.updateCar(carData, images);
     } catch (error) {
       setError(error);
       setIsErrorOpen(true);
     } finally {
       setIsLoading(false);
+      fetchCar(params.id);
     }
   };
 

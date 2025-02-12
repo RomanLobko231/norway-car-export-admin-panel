@@ -1,6 +1,6 @@
 import { useState } from "react";
 import CarCard from "../ui/car/CarCard";
-import DeleteDialog from "../ui/DeleteDialog";
+import DeleteDialog from "../ui/dialog/DeleteDialog";
 
 const ReviewPage = () => {
   return (

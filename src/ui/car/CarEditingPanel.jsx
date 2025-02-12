@@ -5,9 +5,11 @@ import TextInputField from "../input/TextInputField";
 import NumberInputField from "../input/NumberInputField";
 import OptionsInput from "../input/OptionsInput";
 import DateInputField from "../input/DateInputField";
+import ImageInputField from "../input/ImageInputField";
 
-const CarEditingPanel = ({ car, saveCar }) => {
-  const [formData, setFormData] = useState(car);
+const CarEditingPanel = ({ car, saveCar, deleteImage }) => {
+  const [carData, setCarData] = useState(car);
+  const [uploadImages, setUploadImages] = useState([]);
   const OPERATING_MODES = [
     "Bakhjulstrekk",
     "Framhjulstrekk",
@@ -16,38 +18,38 @@ const CarEditingPanel = ({ car, saveCar }) => {
   ];
   const GEARBOX_TYPES = ["Manuell", "Automat", "Annet"];
   const STATUS_OPTIONS = ["In Review", "On Auction", "Sold", "Other"];
-  const IMAGES = [
-    { image: "../../car_images/car1.jpg" },
-    { image: "../../car_images/car2.jpg" },
-    { image: "../../car_images/car10.jpg" },
-    { image: "../../car_images/car11.jpg" },
-    { image: "../../car_images/car3.jpg" },
-    { image: "../../car_images/car4.jpg" },
-    { image: "../../car_images/car5.jpg" },
-    { image: "../../car_images/car6.jpg" },
-    { image: "../../car_images/car7.jpg" },
-    { image: "../../car_images/car8.jpg" },
-    { image: "../../car_images/car9.jpg" },
-  ];
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
+    setCarData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
+  const deleteImageByName = (imageName) => {
+    setCarData((prevData) => ({
+      ...prevData,
+      imagePaths: prevData.imagePaths.filter(
+        (imageUrl) => !imageUrl.includes(imageName),
+      ),
+    }));
+  };
+
   const submitSaveRequest = (e) => {
     e.preventDefault();
-    saveCar(formData);
+    saveCar(carData, uploadImages);
   };
 
   return (
     <div className="flex w-full max-w-7xl flex-col items-center justify-center py-28">
       <hr className="mb-2 mt-1 h-[4px] w-full max-w-[700px] bg-gunmental px-2" />
-      <ImageCarousel images={IMAGES} />
-      <hr className="mb-4 mt-1 h-[4px] w-full max-w-[700px] bg-gunmental px-2" />
+      <ImageCarousel
+        images={carData.imagePaths}
+        deleteImage={deleteImageByName}
+      />
+      <hr className="mb-4 mt-4 w-full max-w-[700px] border-[1px] border-dashed border-gunmental px-2" />
+      <ImageInputField images={uploadImages} setImages={setUploadImages} />
       <form
         className="mt-4 flex w-full max-w-[700px] flex-col items-center"
         onSubmit={submitSaveRequest}
@@ -59,9 +61,9 @@ const CarEditingPanel = ({ car, saveCar }) => {
             icon={"../icons/person.png"}
             alt={"Person icon"}
             name={"name"}
-            initialValue={formData.ownerInfo.name}
+            initialValue={carData.ownerInfo.name}
             onChange={(e) =>
-              setFormData((prev) => ({
+              setCarData((prev) => ({
                 ...prev,
                 ownerInfo: { ...prev.ownerInfo, name: e.target.value },
               }))
@@ -73,9 +75,9 @@ const CarEditingPanel = ({ car, saveCar }) => {
           icon={"../icons/phone.png"}
           alt={"Phone icon"}
           name={"phoneNumber"}
-          initialValue={formData.ownerInfo.phoneNumber}
+          initialValue={carData.ownerInfo.phoneNumber}
           onChange={(e) =>
-            setFormData((prev) => ({
+            setCarData((prev) => ({
               ...prev,
               ownerInfo: { ...prev.ownerInfo, phoneNumber: e.target.value },
             }))
@@ -86,9 +88,9 @@ const CarEditingPanel = ({ car, saveCar }) => {
           icon={"../icons/email.png"}
           alt={"Email icon"}
           name={"email"}
-          initialValue={formData.ownerInfo.email}
+          initialValue={carData.ownerInfo.email}
           onChange={(e) =>
-            setFormData((prev) => ({
+            setCarData((prev) => ({
               ...prev,
               ownerInfo: { ...prev.ownerInfo, email: e.target.value },
             }))
@@ -103,7 +105,7 @@ const CarEditingPanel = ({ car, saveCar }) => {
           icon={"../icons/car.png"}
           alt={"Car icon"}
           name={"model"}
-          initialValue={formData.model}
+          initialValue={carData.model}
           onChange={handleInputChange}
         />
         <TextInputField
@@ -111,7 +113,7 @@ const CarEditingPanel = ({ car, saveCar }) => {
           icon={"../icons/car.png"}
           alt={"Car icon"}
           name={"make"}
-          initialValue={formData.make}
+          initialValue={carData.make}
           onChange={handleInputChange}
         />
         <TextInputField
@@ -119,7 +121,7 @@ const CarEditingPanel = ({ car, saveCar }) => {
           icon={"../icons/numbers.png"}
           alt={"Numbers icon"}
           name={"registrationNumber"}
-          initialValue={formData.registrationNumber}
+          initialValue={carData.registrationNumber}
           onChange={handleInputChange}
         />
         <DateInputField
@@ -127,7 +129,7 @@ const CarEditingPanel = ({ car, saveCar }) => {
           icon={"../icons/date.png"}
           name={"firstTimeRegisteredInNorway"}
           alt={"Calendar icon"}
-          initialValue={formData.firstTimeRegisteredInNorway}
+          initialValue={carData.firstTimeRegisteredInNorway}
           onChange={handleInputChange}
         />
         <DateInputField
@@ -135,7 +137,7 @@ const CarEditingPanel = ({ car, saveCar }) => {
           icon={"../icons/date.png"}
           alt={"Calendar icon"}
           name={"nextEUControl"}
-          initialValue={formData.nextEUControl}
+          initialValue={carData.nextEUControl}
           onChange={handleInputChange}
         />
         <NumberInputField
@@ -143,7 +145,7 @@ const CarEditingPanel = ({ car, saveCar }) => {
           icon={"../icons/numbers.png"}
           alt={"Numbers icon"}
           name={"kilometers"}
-          initialValue={formData.kilometers}
+          initialValue={carData.kilometers}
           onChange={handleInputChange}
         />
         <TextInputField
@@ -151,7 +153,7 @@ const CarEditingPanel = ({ car, saveCar }) => {
           icon={"../icons/fuel.png"}
           alt={"Fuel icon"}
           name={"engineType"}
-          initialValue={formData.engineType}
+          initialValue={carData.engineType}
           onChange={handleInputChange}
         />
         <NumberInputField
@@ -159,13 +161,13 @@ const CarEditingPanel = ({ car, saveCar }) => {
           icon={"../icons/numbers.png"}
           alt={"Numbers icon"}
           name={"engineVolume"}
-          initialValue={formData.engineVolume}
+          initialValue={carData.engineVolume}
           onChange={handleInputChange}
         />
         <p className="mt-4 text-base font-medium text-light-gray">Driftstype</p>
         <OptionsInput
           options={OPERATING_MODES}
-          initialOption={formData.operatingMode}
+          initialOption={carData.operatingMode}
           optionName={"operatingMode"}
           handleInputChange={handleInputChange}
         />
@@ -174,7 +176,7 @@ const CarEditingPanel = ({ car, saveCar }) => {
         </p>
         <OptionsInput
           options={GEARBOX_TYPES}
-          initialOption={formData.gearboxType}
+          initialOption={carData.gearboxType}
           optionName={"gearboxType"}
           handleInputChange={handleInputChange}
         />
@@ -183,7 +185,7 @@ const CarEditingPanel = ({ car, saveCar }) => {
           icon={"../icons/numbers.png"}
           alt={"Numbers icon"}
           name={"weight"}
-          initialValue={formData.weight}
+          initialValue={carData.weight}
           onChange={handleInputChange}
         />
         <TextInputField
@@ -191,7 +193,7 @@ const CarEditingPanel = ({ car, saveCar }) => {
           icon={"../icons/car.png"}
           alt={"Car icon"}
           name={"bodywork"}
-          initialValue={formData.bodywork}
+          initialValue={carData.bodywork}
           onChange={handleInputChange}
         />
         <NumberInputField
@@ -199,7 +201,7 @@ const CarEditingPanel = ({ car, saveCar }) => {
           icon={"../icons/numbers.png"}
           alt={"Numbers icon"}
           name={"numberOfDoors"}
-          initialValue={formData.numberOfDoors}
+          initialValue={carData.numberOfDoors}
           onChange={handleInputChange}
         />
         <NumberInputField
@@ -207,7 +209,7 @@ const CarEditingPanel = ({ car, saveCar }) => {
           icon={"../icons/numbers.png"}
           alt={"Numbers icon"}
           name={"numberOfSeats"}
-          initialValue={formData.numberOfSeats}
+          initialValue={carData.numberOfSeats}
           onChange={handleInputChange}
         />
         <TextInputField
@@ -215,7 +217,7 @@ const CarEditingPanel = ({ car, saveCar }) => {
           icon={"../icons/car.png"}
           alt={"Car icon"}
           name={"color"}
-          initialValue={formData.color}
+          initialValue={carData.color}
           onChange={handleInputChange}
         />
         <hr className="mb-4 mt-4 w-10/12 border-[1px] border-dashed border-gunmental px-2" />
@@ -235,7 +237,7 @@ const CarEditingPanel = ({ car, saveCar }) => {
             className="block min-h-48 w-full rounded-lg border border-medium-gray bg-white px-5 py-4 ps-11 text-base font-medium text-medium-gray md:ps-14 md:text-lg"
             placeholder="Ytterligere opplysninger*"
             name={"additionalInformation"}
-            value={formData.additionalInformation || ""}
+            value={carData.additionalInformation || ""}
             onChange={handleInputChange}
           />
         </div>
@@ -243,7 +245,7 @@ const CarEditingPanel = ({ car, saveCar }) => {
         <h1 className="mt-8 text-2xl font-bold text-gunmental">STATUS</h1>
         <OptionsInput
           options={STATUS_OPTIONS}
-          initialOption={formData.status}
+          initialOption={carData.status}
           optionName={"status"}
           handleInputChange={handleInputChange}
         />

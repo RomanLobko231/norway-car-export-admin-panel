@@ -21,9 +21,19 @@ export default class ApiService {
     }
   }
 
-  static async updateCar(car) {
+  static async updateCar(car, images) {
     try {
-      const response = await api.put("/api/v1/cars", car);
+      const data = new FormData();
+      const carDataBlob = new Blob([JSON.stringify(car)], {
+        type: "application/json",
+      });
+      data.append("carData", carDataBlob);
+
+      images.forEach((image) => {
+        data.append("images", image);
+      });
+
+      const response = await api.put("/api/v1/cars", data);
       return response;
     } catch (error) {
       console.log(error);
@@ -31,9 +41,19 @@ export default class ApiService {
     }
   }
 
-  static async saveCar(car) {
+  static async saveCar(car, images) {
     try {
-      const response = await api.post("/api/v1/cars/admin", car);
+      const data = new FormData();
+      const carDataBlob = new Blob([JSON.stringify(car)], {
+        type: "application/json",
+      });
+      data.append("carData", carDataBlob);
+
+      images.forEach((image) => {
+        data.append("images", image);
+      });
+
+      const response = await api.post("/api/v1/cars/admin", data);
       return response;
     } catch (error) {
       console.log(error);

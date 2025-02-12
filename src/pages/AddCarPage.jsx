@@ -1,6 +1,6 @@
 import { useState } from "react";
 import CarEditingPanel from "../ui/car/CarEditingPanel";
-import ErrorDialog from "../ui/ErrorDialog";
+import ErrorDialog from "../ui/dialog/ErrorDialog";
 import ApiService from "../api/ApiService";
 
 const AddCarPage = () => {
@@ -35,12 +35,12 @@ const AddCarPage = () => {
     imagePaths: [],
   });
 
-  const saveCar = async (carData) => {
+  const saveCar = async (carData, images) => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await ApiService.saveCar(carData);
       console.log(carData);
+      const response = await ApiService.saveCar(carData, images);
     } catch (error) {
       setError(error);
       setIsErrorOpen(true);
@@ -48,6 +48,7 @@ const AddCarPage = () => {
       setIsLoading(false);
     }
   };
+
   return (
     <>
       {isLoading && (

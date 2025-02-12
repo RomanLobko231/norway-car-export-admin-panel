@@ -4,7 +4,7 @@ const DEV_URL = "http://localhost:8080";
 const PROD_URL = "https://nce-backend-production.up.railway.app/";
 
 const api = axios.create({
-  baseURL: DEV_URL,
+  baseURL: PROD_URL,
 });
 
 api.interceptors.response.use(

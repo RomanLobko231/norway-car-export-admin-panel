@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import CarCard from "../ui/car/CarCard";
-import DeleteDialog from "../ui/DeleteDialog";
+import DeleteDialog from "../ui/dialog/DeleteDialog";
 import ApiService from "../api/ApiService";
 import CarsList from "../ui/car/CarsList";
-import ErrorDialog from "../ui/ErrorDialog";
+import ErrorDialog from "../ui/dialog/ErrorDialog";
 
 const HomePage = () => {
   const [isErrorOpen, setIsErrorOpen] = useState(false);

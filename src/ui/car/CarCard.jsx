@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 import CarInfoElement from "./CarInfoElement";
-import DeleteDialog from "../DeleteDialog";
+import DeleteDialog from "../dialog/DeleteDialog";
 import { useCallback, useState } from "react";
 
 const CarCard = ({ carInfo, onDelete }) => {
@@ -34,7 +34,7 @@ const CarCard = ({ carInfo, onDelete }) => {
         <CarInfoElement info={carInfo.status ?? "-"} />
       </div>
       <div className="flex w-full flex-row items-center justify-center gap-3">
-        <button className="card_shadow hover: group mb-2 mt-5 flex flex-row items-center rounded-full border border-medium-gray bg-white px-4 pb-1 pt-1 text-xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse">
+        <button className="card_shadow group mb-2 mt-5 flex flex-row items-center rounded-full border border-medium-gray bg-white px-4 pb-1 pt-1 text-xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse">
           Edit
           <img
             src="../icons/edit_dark.png"
@@ -52,7 +52,7 @@ const CarCard = ({ carInfo, onDelete }) => {
             setIsOpen(true);
             e.stopPropagation();
           }}
-          className="card_shadow hover: group mb-2 mt-5 flex flex-row items-center rounded-full border border-medium-gray bg-white px-4 pb-1 pt-1 text-xl font-semibold text-danger-red hover:bg-danger-red hover:text-lighthouse"
+          className="card_shadow group mb-2 mt-5 flex flex-row items-center rounded-full border border-medium-gray bg-white px-4 pb-1 pt-1 text-xl font-semibold text-danger-red hover:bg-danger-red hover:text-lighthouse"
         >
           Delete
           <img
