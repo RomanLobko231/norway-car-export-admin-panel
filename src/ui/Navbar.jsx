@@ -83,6 +83,13 @@ export default function Navbar() {
                       </MenuItem>
                     </MenuItems>
                   </Menu>
+                  <Link
+                    className="rounded-lg px-3 py-2 pb-2 pt-1 text-2xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse md:mr-2"
+                    to="/buyers"
+                  >
+                    {" "}
+                    Buyers
+                  </Link>
                 </div>
               </div>
               <Link

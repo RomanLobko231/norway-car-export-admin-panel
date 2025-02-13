@@ -8,6 +8,7 @@ import AddOrEditCar from "./pages/EditCarPage";
 import HomePage from "./pages/HomePage";
 import EditCarPage from "./pages/EditCarPage";
 import AddCarPage from "./pages/AddCarPage";
+import BuyersPage from "./pages/BuyersPage";
 
 function App() {
   return (
@@ -17,11 +18,9 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} exact={true} />
           <Route path="*" element={<HomePage />} exact={true} />
-          <Route path="/review" element={<ReviewPage />} exact={true} />
-          <Route path="/auctioning" element={<AuctioningPage />} exact={true} />
-          <Route path="/sold" element={<SoldPage />} exact={true} />
           <Route path="/car/:id" element={<EditCarPage />} exact={true} />
           <Route path="/add-new" element={<AddCarPage />} exact={true} />
+          <Route path="/buyers" element={<BuyersPage />} exact={true} />
         </Routes>
       </div>
     </BrowserRouter>
