@@ -51,7 +51,7 @@ const CarEditingPanel = ({ car, saveCar, deleteImage }) => {
       <hr className="mb-4 mt-4 w-full max-w-[700px] border-[1px] border-dashed border-gunmental px-2" />
       <ImageInputField images={uploadImages} setImages={setUploadImages} />
       <form
-        className="mt-4 flex w-full max-w-[700px] flex-col items-center"
+        className="mt-4 flex w-full max-w-[700px] flex-col items-center px-2 md:px-0"
         onSubmit={submitSaveRequest}
       >
         <h1 className="text-2xl font-bold text-medium-gray">PERSONALIA</h1>
@@ -252,11 +252,11 @@ const CarEditingPanel = ({ car, saveCar, deleteImage }) => {
         <div className="fixed bottom-0 flex w-full flex-row items-center justify-center gap-5 bg-lighthouse/50 backdrop-blur">
           <button
             type="submit"
-            className="card_shadow group mb-3 mt-3 flex flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-4 pb-2 pt-1 text-xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse md:text-2xl"
+            className="card_shadow group mb-3 mt-3 flex flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-2 pb-2 pt-1 text-lg font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse md:px-4 md:text-2xl"
           >
             Save For Now
           </button>
-          <button className="card_shadow group mb-3 mt-3 flex flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-4 pb-2 pt-1 text-xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse md:text-2xl">
+          <button className="card_shadow group mb-3 mt-3 flex flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-2 pb-2 pt-1 text-lg font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse md:px-4 md:text-2xl">
             Save & Put to the Auction
           </button>
         </div>

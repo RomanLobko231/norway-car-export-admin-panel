@@ -2,6 +2,8 @@ import { useNavigate } from "react-router";
 import CarInfoElement from "./CarInfoElement";
 import DeleteDialog from "../dialog/DeleteDialog";
 import { useCallback, useState } from "react";
+import TextInputField from "../input/TextInputField";
+import { TbCarOff } from "react-icons/tb";
 
 const CarCard = ({ carInfo, onDelete }) => {
   const navigate = useNavigate();
@@ -14,15 +16,22 @@ const CarCard = ({ carInfo, onDelete }) => {
   return (
     <div
       onClick={() => {
-        navigate(`/car/${carInfo.id}`, { state: { car: carInfo } });
+        navigate(`/car/${carInfo.id}`);
       }}
       className="card_shadow hover:card_shadow_hover active:card_shadow_click flex h-[440px] w-[300px] cursor-pointer flex-col items-center rounded-md border border-light-gray bg-slate-50 p-3 duration-300 hover:-translate-y-1"
     >
-      <img
-        src="./../car_example.jpg"
-        alt="Car Name"
-        className="w-full rounded border border-medium-gray object-cover"
-      />
+      {carInfo.imagePaths[0] ? (
+        <img
+          src={carInfo.imagePaths[0]}
+          alt="Car Name"
+          className="h-[185px] w-full rounded border border-medium-gray object-cover"
+        />
+      ) : (
+        <div className="from-swamp-100 flex h-[185px] w-full items-center justify-center rounded border border-medium-gray bg-lighthouse">
+          <TbCarOff className="h-10 w-auto" color="#888" />
+        </div>
+      )}
+
       <h1 className="my-1 text-xl font-semibold leading-6 text-gunmental">
         {carInfo.make ?? "-"} {carInfo.model ?? "-"}
       </h1>

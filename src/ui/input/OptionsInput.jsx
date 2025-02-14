@@ -5,7 +5,7 @@ const OptionsInput = ({
   handleInputChange,
 }) => {
   return (
-    <div className="flex gap-4 p-4">
+    <div className="flex flex-wrap gap-4 p-4">
       {options.map((option) => (
         <label
           key={option}

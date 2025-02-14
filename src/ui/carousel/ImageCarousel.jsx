@@ -20,7 +20,7 @@ const ImageCarousel = ({ images, deleteImage }) => {
   return (
     <>
       {images && images.length > 0 && (
-        <div className="mx-auto flex w-full max-w-[300px] flex-col items-center md:max-w-[700px]">
+        <div className="flex w-full flex-col items-center px-2 md:mx-auto md:max-w-[700px] md:px-0">
           <div className="mb-2 flex w-full flex-row items-center justify-between">
             <div className="flex flex-row items-center gap-3">
               <RiArrowLeftBoxLine
@@ -34,13 +34,13 @@ const ImageCarousel = ({ images, deleteImage }) => {
                 color="#333333"
               />
             </div>
-            <p className="select-none text-2xl font-medium text-medium-gray">{`${currentIndex + 1} / ${images.length}`}</p>
+            <p className="select-none text-base font-medium text-medium-gray md:text-2xl">{`${currentIndex + 1} / ${images.length}`}</p>
             <button
               onClick={() => {
                 deleteImage(images[currentIndex]);
                 if (currentIndex != 0) setCurrentIndex(currentIndex - 1);
               }}
-              className="card_shadow group mb-2 mt-2 flex select-none flex-row items-center gap-1 rounded-lg border border-medium-gray bg-lighthouse px-4 pb-1 pt-1 text-xl font-semibold text-medium-gray hover:bg-danger-red hover:text-lighthouse"
+              className="card_shadow group mb-2 mt-2 flex select-none flex-row items-center gap-1 rounded-lg border border-medium-gray bg-lighthouse px-1 pb-1 pt-1 text-base font-semibold text-medium-gray hover:bg-danger-red hover:text-lighthouse md:px-4 md:text-xl"
             >
               Delete Image
               <TiDelete className="h-6 w-auto" />

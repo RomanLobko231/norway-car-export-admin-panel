@@ -8,6 +8,8 @@ import {
   MenuItems,
 } from "@headlessui/react";
 import { Link } from "react-router-dom";
+import { TbMenu } from "react-icons/tb";
+import { MdOutlineAddBox, MdOutlineClose } from "react-icons/md";
 
 const navigation = [
   { name: "In Review", href: "/", current: false },
@@ -93,16 +95,16 @@ export default function Navbar() {
                 </div>
               </div>
               <Link
-                className="group my-1 flex flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-3 pb-1 pt-1 text-xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse"
+                className="group my-1 flex flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-3 pb-1 pt-1 text-base font-normal text-gunmental hover:bg-gunmental hover:text-lighthouse md:text-xl md:font-semibold"
                 to="/add-new"
               >
-                <img
-                  src="../icons/add.png"
-                  className="mr-2 block h-5 w-auto group-hover:hidden"
+                <MdOutlineAddBox
+                  className="mr-2 hidden h-7 w-auto group-hover:block"
+                  color="#F7F8F8"
                 />
-                <img
-                  src="../icons/add_light.png"
-                  className="mr-3 hidden h-4 w-auto group-hover:block"
+                <MdOutlineAddBox
+                  className="mr-2 block h-7 w-auto group-hover:hidden"
+                  color="#1c2628"
                 />
                 Add New
               </Link>
@@ -111,23 +113,15 @@ export default function Navbar() {
               <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-medium-gray hover:text-gunmental">
                 <span className="absolute -inset-0.5" />
                 <span className="sr-only">Open main menu</span>
-                <img
-                  src="../icons/menu.png"
-                  aria-hidden="true"
-                  className="block h-6 w-8 group-data-[open]:hidden"
-                />
-                <img
-                  src="../icons/close.png"
-                  aria-hidden="true"
-                  className="hidden h-6 w-6 group-data-[open]:block"
-                />
+                <TbMenu className="block h-6 w-auto group-data-[open]:hidden" />
+                <MdOutlineClose className="hidden h-6 w-6 group-data-[open]:block" />
               </DisclosureButton>
             </div>
           </div>
         </div>
 
         <DisclosurePanel className="sm:hidden">
-          <div className="w-full space-y-6 px-2 pb-9 pt-8">
+          <div className="flex w-full flex-col items-center space-y-6 px-2 pb-9 pt-8">
             {navigation.map((item, index) => (
               <DisclosureButton
                 key={index}
@@ -145,16 +139,16 @@ export default function Navbar() {
               </DisclosureButton>
             ))}
 
-            <button className="group my-1 flex flex-row items-center rounded-lg border border-medium-gray bg-distant-cloud px-3 pb-1 pt-1 text-xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse">
-              <img
-                src="../icons/add.png"
-                className="mr-2 block h-5 w-auto group-hover:hidden"
+            <button className="group my-1 flex flex-row items-center rounded-lg border border-medium-gray bg-distant-cloud px-3 pb-1 pt-1 text-center text-xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse">
+              <MdOutlineAddBox
+                className="mr-2 hidden h-6 w-auto group-hover:block"
+                color="#F7F8F8"
               />
-              <img
-                src="../icons/add_light.png"
-                className="mr-3 hidden h-4 w-auto group-hover:block"
+              <MdOutlineAddBox
+                className="mr-2 block h-6 w-auto group-hover:hidden"
+                color="#1c2628"
               />
-              Add New
+              New
             </button>
           </div>
         </DisclosurePanel>

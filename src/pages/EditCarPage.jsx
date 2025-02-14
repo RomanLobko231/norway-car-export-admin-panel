@@ -11,9 +11,6 @@ import ErrorDialog from "../ui/dialog/ErrorDialog";
 const EditCarPage = () => {
   const params = useParams();
 
-  const location = useLocation();
-  const carFromLocation = location.state?.car;
-
   const [isErrorOpen, setIsErrorOpen] = useState(false);
   const [error, setError] = useState(null);
 
@@ -21,11 +18,7 @@ const EditCarPage = () => {
   const [car, setCar] = useState(null);
 
   useEffect(() => {
-    if (carFromLocation == null) {
-      fetchCar(params.id);
-    } else {
-      setCar(carFromLocation);
-    }
+    fetchCar(params.id);
   }, []);
 
   const fetchCar = async (id) => {
@@ -46,13 +39,14 @@ const EditCarPage = () => {
     setIsLoading(true);
     setError(null);
     try {
-      await ApiService.updateCar(carData, images);
+      const response = await ApiService.updateCar(carData, images);
+      console.log(response);
+      await fetchCar(params.id);
     } catch (error) {
       setError(error);
       setIsErrorOpen(true);
     } finally {
       setIsLoading(false);
-      fetchCar(params.id);
     }
   };
 
