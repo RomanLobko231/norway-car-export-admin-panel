@@ -6,10 +6,13 @@ import NumberInputField from "../input/NumberInputField";
 import OptionsInput from "../input/OptionsInput";
 import DateInputField from "../input/DateInputField";
 import ImageInputField from "../input/ImageInputField";
+import DeleteDialog from "../dialog/DeleteDialog";
+import MessageDialog from "../dialog/MessageDialog";
 
-const CarEditingPanel = ({ car, saveCar, deleteImage }) => {
+const CarEditingPanel = ({ car, saveCar }) => {
   const [carData, setCarData] = useState(car);
   const [uploadImages, setUploadImages] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
   const OPERATING_MODES = [
     "Bakhjulstrekk",
     "Framhjulstrekk",
@@ -53,6 +56,9 @@ const CarEditingPanel = ({ car, saveCar, deleteImage }) => {
       <form
         className="mt-4 flex w-full max-w-[700px] flex-col items-center px-2 md:px-0"
         onSubmit={submitSaveRequest}
+        onReset={() => {
+          setIsOpen(true);
+        }}
       >
         <h1 className="text-2xl font-bold text-medium-gray">PERSONALIA</h1>
         <div className="flex w-full flex-col items-start">
@@ -249,18 +255,29 @@ const CarEditingPanel = ({ car, saveCar, deleteImage }) => {
           optionName={"status"}
           handleInputChange={handleInputChange}
         />
-        <div className="fixed bottom-0 flex w-full flex-row items-center justify-center gap-5 bg-lighthouse/50 backdrop-blur">
+        <div className="fixed bottom-0 flex w-full flex-row items-center justify-center gap-2 bg-lighthouse/50 backdrop-blur md:gap-5">
           <button
             type="submit"
-            className="card_shadow group mb-3 mt-3 flex flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-2 pb-2 pt-1 text-lg font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse md:px-4 md:text-2xl"
+            className="card_shadow group mb-3 mt-3 flex flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-3 pb-2 pt-1 text-lg font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse md:px-4 md:text-2xl"
           >
             Save For Now
           </button>
-          <button className="card_shadow group mb-3 mt-3 flex flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-2 pb-2 pt-1 text-lg font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse md:px-4 md:text-2xl">
-            Save & Put to the Auction
+          <button
+            type="reset"
+            className="card_shadow group mb-3 mt-3 flex flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-3 pb-2 pt-1 text-lg font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse md:px-4 md:text-2xl"
+          >
+            Reset
           </button>
         </div>
       </form>
+      <MessageDialog
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        message={
+          "Are you sure you want to reset all data? After confirming all unsaved data will be lost."
+        }
+        onFunc={() => setCarData(car)}
+      />
     </div>
   );
 };

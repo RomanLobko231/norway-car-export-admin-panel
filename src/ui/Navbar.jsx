@@ -92,10 +92,17 @@ export default function Navbar() {
                     {" "}
                     Buyers
                   </Link>
+                  <Link
+                    className="rounded-lg px-3 py-2 pb-2 pt-1 text-2xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse md:mr-2"
+                    to="/sellers"
+                  >
+                    {" "}
+                    Sellers
+                  </Link>
                 </div>
               </div>
               <Link
-                className="group my-1 flex flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-3 pb-1 pt-1 text-base font-normal text-gunmental hover:bg-gunmental hover:text-lighthouse md:text-xl md:font-semibold"
+                className="group my-1 hidden flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-3 pb-1 pt-1 text-base font-normal text-gunmental hover:bg-gunmental hover:text-lighthouse sm:flex md:text-xl md:font-semibold"
                 to="/add-new"
               >
                 <MdOutlineAddBox
@@ -107,6 +114,13 @@ export default function Navbar() {
                   color="#1c2628"
                 />
                 Add New
+              </Link>
+              <Link className="sm:hidden" to="/">
+                <img
+                  alt="NCE logo"
+                  src="./nce_logo.png"
+                  className="mr-2 h-7 w-auto"
+                />
               </Link>
             </div>
             <div className="flex items-center sm:hidden">
@@ -139,17 +153,20 @@ export default function Navbar() {
               </DisclosureButton>
             ))}
 
-            <button className="group my-1 flex flex-row items-center rounded-lg border border-medium-gray bg-distant-cloud px-3 pb-1 pt-1 text-center text-xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse">
+            <Link
+              className="group my-1 flex flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-3 pb-1 pt-1 text-base font-medium text-gunmental hover:bg-gunmental hover:text-lighthouse md:text-xl md:font-semibold"
+              to="/add-new"
+            >
               <MdOutlineAddBox
-                className="mr-2 hidden h-6 w-auto group-hover:block"
+                className="mr-2 hidden h-7 w-auto group-hover:block"
                 color="#F7F8F8"
               />
               <MdOutlineAddBox
-                className="mr-2 block h-6 w-auto group-hover:hidden"
+                className="mr-2 block h-7 w-auto group-hover:hidden"
                 color="#1c2628"
               />
-              New
-            </button>
+              Add New
+            </Link>
           </div>
         </DisclosurePanel>
       </Disclosure>

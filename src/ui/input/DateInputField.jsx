@@ -60,7 +60,7 @@ const DateInputField = ({ icon, label, name, alt, initialValue, onChange }) => {
         />
       </div>
       <label
-        className={`ml-6 mt-2 flex cursor-pointer items-center text-base ${
+        className={`ml-6 mt-2 flex cursor-pointer items-center text-sm sm:text-base ${
           isChecked
             ? "font-semibold text-medium-gray"
             : "font-normal text-light-gray"
