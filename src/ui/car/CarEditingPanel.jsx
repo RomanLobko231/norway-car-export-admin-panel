@@ -20,7 +20,7 @@ const CarEditingPanel = ({ car, saveCar }) => {
     "Annet",
   ];
   const GEARBOX_TYPES = ["Manuell", "Automat", "Annet"];
-  const STATUS_OPTIONS = ["In Review", "On Auction", "Sold", "Other"];
+  const STATUS_OPTIONS = ["Vurdering", "Auksjon", "Solgt", "Annet"];
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -51,7 +51,7 @@ const CarEditingPanel = ({ car, saveCar }) => {
         images={carData.imagePaths}
         deleteImage={deleteImageByName}
       />
-      <hr className="mb-4 mt-4 w-full max-w-[700px] border-[1px] border-dashed border-gunmental px-2" />
+      <hr className="mb-4 mt-2 w-full max-w-[700px] border-[1px] border-dashed border-gunmental px-2" />
       <ImageInputField images={uploadImages} setImages={setUploadImages} />
       <form
         className="mt-4 flex w-full max-w-[700px] flex-col items-center px-2 md:px-0"

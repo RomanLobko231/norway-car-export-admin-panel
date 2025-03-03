@@ -45,12 +45,18 @@ const HomePage = () => {
   return (
     <div className="flex w-full flex-col items-center py-20">
       <h1 className="mb-2 mt-4 text-3xl font-bold text-gunmental">
-        TOTAL CARS: 8
+        BILER TOTALT: {cars.length}
       </h1>
       <div className="mb-8 flex flex-row items-center gap-4">
-        <h1 className="text-xl font-light text-gunmental">In Review: 5</h1>
-        <h1 className="text-xl font-light text-gunmental">Auctioning: 2</h1>
-        <h1 className="text-xl font-light text-gunmental">Sold: 1</h1>
+        <h1 className="text-xl font-light text-gunmental">
+          In Review: {cars.filter((car) => car.status === "Vurdering").length}
+        </h1>
+        <h1 className="text-xl font-light text-gunmental">
+          Auksjon: {cars.filter((car) => car.status === "Auksjon").length}
+        </h1>
+        <h1 className="text-xl font-light text-gunmental">
+          Solgt: {cars.filter((car) => car.status === "Solgt").length}
+        </h1>
       </div>
       {isLoading && <h1>Loading..</h1>}
       <CarsList cars={cars} onDelete={deleteCar} />

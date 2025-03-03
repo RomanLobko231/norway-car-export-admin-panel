@@ -47,11 +47,11 @@ const ImageCarousel = ({ images, deleteImage }) => {
             </button>
           </div>
 
-          <div className="mt-4 overflow-hidden">
+          <div className="mt-4 flex max-h-[550px] w-full overflow-hidden">
             <img
               src={images[currentIndex]}
               alt={`Slide ${currentIndex + 1}`}
-              className="h-auto w-full select-none object-contain"
+              className="h-auto w-full select-none object-cover"
             />
           </div>
         </div>
