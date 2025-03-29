@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ImageCarousel from "../carousel/ImageCarousel";
 import CarInfoElement from "./CarInfoElement";
 import TextInputField from "../input/TextInputField";

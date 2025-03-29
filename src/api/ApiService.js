@@ -70,4 +70,36 @@ export default class ApiService {
       throw error;
     }
   }
+
+  static async getAllBuyers() {
+    try {
+      const response = await api.get("/api/v1/users/buyers");
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  static async setUserLock(id, isLocked) {
+    try {
+      const response = await api.patch(
+        `/api/v1/users/${id}/set_lock?isLocked=${isLocked}`,
+      );
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  static async deleteUserById(id) {
+    try {
+      const response = await api.delete(`/api/v1/users/${id}`);
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
 }

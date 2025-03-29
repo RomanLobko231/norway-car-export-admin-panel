@@ -70,7 +70,7 @@ const DateInputField = ({ icon, label, name, alt, initialValue, onChange }) => {
           type="checkbox"
           checked={isChecked}
           onChange={handleCheckboxChange}
-          className="mr-2 h-4 w-4 accent-gunmental"
+          className="mr-2 h-4 w-4 cursor-pointer accent-gunmental"
         />
         Info is not available now
       </label>

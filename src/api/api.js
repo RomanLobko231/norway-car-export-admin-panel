@@ -1,11 +1,32 @@
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 const DEV_URL = "http://localhost:8080";
 const PROD_URL = "https://nce-backend-production.up.railway.app/";
 
 const api = axios.create({
-  baseURL: PROD_URL,
+  baseURL: DEV_URL,
 });
+
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      const decoded = jwtDecode(token);
+      const currentTime = Date.now() / 1000;
+
+      if (decoded.exp < currentTime) {
+        localStorage.removeItem("token");
+      } else {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    }
+
+    return config;
+  },
+  (error) => Promise.reject(error),
+);
 
 api.interceptors.response.use(
   (response) => {
@@ -19,9 +40,9 @@ api.interceptors.response.use(
 
 function handleError(error) {
   if (error.response) {
-    const { statusCode, message, timestamp } = error.response?.data ?? {};
+    const { status, message, timestamp } = error.response ?? {};
 
-    const resolvedStatusCode = statusCode ?? 500;
+    const resolvedStatusCode = status ?? 500;
     const resolvedMessage = message ?? "An unexpected error occurred.";
     const resolvedTimestamp = timestamp ?? new Date().toISOString();
     return {
@@ -32,6 +53,7 @@ function handleError(error) {
       },
     };
   } else if (error.request) {
+    console.log(error);
     return {
       errorMessage: {
         statusCode: 500,
