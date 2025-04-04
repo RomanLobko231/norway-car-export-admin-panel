@@ -44,7 +44,7 @@ const DateInputField = ({ icon, label, name, alt, initialValue, onChange }) => {
       </label>
       <div className="relative mt-1 w-full">
         <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-4">
-          <img src={icon} alt={alt} className="h-4 w-4 md:h-5 md:w-5" />
+          {icon}
         </div>
         <input
           type="text"

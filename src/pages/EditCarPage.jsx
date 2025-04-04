@@ -16,6 +16,7 @@ const EditCarPage = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [car, setCar] = useState(null);
+  const [owner, setOwner] = useState(null);
 
   useEffect(() => {
     fetchCar(params.id);
@@ -25,8 +26,10 @@ const EditCarPage = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await ApiService.getCarById(id);
-      setCar(response.data);
+      const car = await ApiService.getCarById(id);
+      setCar(car.data);
+      const owner = await ApiService.getUserById(car.data.ownerId);
+      setOwner(owner.data);
     } catch (error) {
       setError(error);
       setIsErrorOpen(true);
@@ -35,12 +38,12 @@ const EditCarPage = () => {
     }
   };
 
-  const saveCar = async (carData, images) => {
+  const saveCar = async (carData, ownerData, images) => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await ApiService.updateCar(carData, images);
-      console.log(response);
+      const carResponse = await ApiService.updateCar(carData, images);
+      const ownerResponse = await ApiService.updateOwner(ownerData);
       await fetchCar(params.id);
     } catch (error) {
       setError(error);
@@ -65,7 +68,7 @@ const EditCarPage = () => {
         />
       )}
       {!isLoading && !error && car && (
-        <CarEditingPanel car={car} saveCar={saveCar} />
+        <CarEditingPanel car={car} owner={owner} saveInfo={saveCar} />
       )}
     </>
   );

@@ -2,26 +2,23 @@ import {
   Disclosure,
   DisclosureButton,
   DisclosurePanel,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
 } from "@headlessui/react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { TbMenu } from "react-icons/tb";
 import { MdOutlineAddBox, MdOutlineClose } from "react-icons/md";
+import { useState } from "react";
+import LoginModal from "./security/LoginModal";
 
 const navigation = [
-  { name: "In Review", href: "/", current: false },
-  { name: "Auctioning", href: "/", current: false },
-  { name: "Sold", href: "/", current: false },
+  { name: "Cars", href: "/cars", current: false },
+  { name: "Buyers", href: "/buyers", current: false },
 ];
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
-
 export default function Navbar() {
+  const location = useLocation();
+  const [modalOpen, setModalOpen] = useState(false);
+  const token = localStorage.getItem("token");
+
   return (
     <div className="fixed z-10 flex w-full justify-center">
       <Disclosure
@@ -30,91 +27,77 @@ export default function Navbar() {
       >
         <div className="w-full max-w-7xl px-6 py-1 lg:px-8">
           <div className="flex h-12 flex-row items-center justify-between md:h-14">
-            <div className="flex flex-1 items-center justify-between sm:items-stretch">
+            <div className="flex flex-1 items-center sm:items-stretch sm:justify-between">
               <div className="hidden py-1 sm:block">
-                <div className="flex space-x-3">
+                <div className="flex">
                   <Link
-                    className="rounded-lg px-3 py-2 pb-2 pt-1 text-2xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse md:mr-2"
+                    className={`rounded-lg px-3 pb-2 pt-1 text-2xl font-semibold text-gunmental ${location.pathname == "/" && "bg-gunmental text-lighthouse"} hover:bg-gunmental hover:text-lighthouse md:mr-2`}
                     to="/"
                   >
                     {" "}
                     Main Page
                   </Link>
-                  <Menu>
-                    <MenuButton className="group flex flex-row items-center justify-center rounded-lg px-3 py-2 pb-2 pt-1 text-2xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse">
-                      Cars
-                      <img
-                        src="../icons/arrow_down_dark.png"
-                        className="ml-2 mt-1 block h-2 w-auto group-hover:hidden"
-                      />
-                      <img
-                        src="../icons/arrow_down_light.png"
-                        className="ml-2 mt-1 hidden h-2 w-auto group-hover:block"
-                      />{" "}
-                    </MenuButton>
-                    <MenuItems
-                      className="mt-4 rounded-md border border-light-gray bg-lighthouse p-2"
-                      anchor="bottom"
-                    >
-                      <MenuItem>
-                        <Link
-                          className="block rounded-lg p-2 text-xl font-medium text-gunmental hover:bg-gunmental hover:text-lighthouse"
-                          to="/cars?status=in-review"
-                        >
-                          {" "}
-                          In Review
-                        </Link>
-                      </MenuItem>
-                      <MenuItem>
-                        <Link
-                          className="block rounded-lg p-2 text-xl font-medium text-gunmental hover:bg-gunmental hover:text-lighthouse"
-                          to="/cars?status=auctioning"
-                        >
-                          {" "}
-                          Auctioning
-                        </Link>
-                      </MenuItem>
-                      <MenuItem>
-                        <Link
-                          className="block rounded-lg p-2 text-xl font-medium text-gunmental hover:bg-gunmental hover:text-lighthouse"
-                          to="/cars?status=sold"
-                        >
-                          {" "}
-                          Sold
-                        </Link>
-                      </MenuItem>
-                    </MenuItems>
-                  </Menu>
                   <Link
-                    className="rounded-lg px-3 py-2 pb-2 pt-1 text-2xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse md:mr-2"
+                    className={`rounded-lg px-3 pb-2 pt-1 text-2xl font-semibold text-gunmental ${location.pathname == "/cars" && "bg-gunmental text-lighthouse"} hover:bg-gunmental hover:text-lighthouse md:mr-2`}
+                    to="/cars"
+                  >
+                    {" "}
+                    Cars
+                  </Link>
+                  <Link
+                    className={`rounded-lg px-3 pb-2 pt-1 text-2xl font-semibold text-gunmental ${location.pathname == "/buyers" && "bg-gunmental text-lighthouse"} hover:bg-gunmental hover:text-lighthouse md:mr-2`}
                     to="/buyers"
                   >
                     {" "}
                     Buyers
                   </Link>
-                  <Link
-                    className="rounded-lg px-3 py-2 pb-2 pt-1 text-2xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse md:mr-2"
-                    to="/sellers"
-                  >
-                    {" "}
-                    Sellers
-                  </Link>
                 </div>
               </div>
-              <Link
-                className="group my-1 hidden flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-3 pb-1 pt-1 text-base font-normal text-gunmental hover:bg-gunmental hover:text-lighthouse sm:flex md:text-xl md:font-semibold"
-                to="/add-new"
-              >
-                <MdOutlineAddBox
-                  className="mr-2 hidden h-7 w-auto group-hover:block"
-                  color="#F7F8F8"
-                />
-                <MdOutlineAddBox
-                  className="mr-2 block h-7 w-auto group-hover:hidden"
-                  color="#1c2628"
-                />
-                Add New
-              </Link>
+              <div className="flex flex-row gap-3">
+                <Link
+                  className="group my-1 hidden flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-3 pb-1 pt-1 text-base font-normal text-gunmental hover:bg-gunmental hover:text-lighthouse sm:flex md:text-xl md:font-semibold"
+                  to="/add-new"
+                >
+                  <MdOutlineAddBox
+                    className="mr-2 hidden h-7 w-auto group-hover:block"
+                    color="#F7F8F8"
+                  />
+                  <MdOutlineAddBox
+                    className="mr-2 block h-7 w-auto group-hover:hidden"
+                    color="#1c2628"
+                  />
+                  Add Car
+                </Link>
+                {token ? (
+                  <div
+                    className="my-1 hidden cursor-pointer flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-3 pb-1 pt-1 text-base font-normal text-gunmental hover:bg-gunmental hover:text-lighthouse sm:flex md:text-xl md:font-semibold"
+                    onClick={() => {
+                      localStorage.removeItem("token");
+                      window.location.href = "/";
+                    }}
+                  >
+                    Log out
+                  </div>
+                ) : (
+                  <div
+                    className="my-1 hidden cursor-pointer flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-3 pb-1 pt-1 text-base font-normal text-gunmental hover:bg-gunmental hover:text-lighthouse sm:flex md:text-xl md:font-semibold"
+                    onClick={() => {
+                      setModalOpen(true);
+                    }}
+                  >
+                    Login
+                  </div>
+                )}
+                {/* <div
+                  className="my-1 hidden flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-3 pb-1 pt-1 text-base font-normal text-gunmental hover:bg-gunmental hover:text-lighthouse sm:flex md:text-xl md:font-semibold"
+                  onClick={() => {
+                    setModalOpen(true);
+                  }}
+                >
+                  Login
+                </div> */}
+              </div>
+
               <Link className="sm:hidden" to="/">
                 <img
                   alt="NCE logo"
@@ -142,12 +125,11 @@ export default function Navbar() {
                 as="a"
                 href={item.href}
                 aria-current={item.current ? "page" : undefined}
-                className={classNames(
-                  item.current
+                className={`${
+                  location.pathname === item.href
                     ? "bg-gunmental text-lighthouse"
-                    : "text-gunmental hover:bg-gray-700 hover:text-lighthouse",
-                  "block rounded-full px-4 pb-3 pt-2 text-center text-2xl font-semibold",
-                )}
+                    : "text-gunmental hover:bg-gunmental hover:text-lighthouse"
+                } , "block rounded-lg px-4 pb-2 pt-1 text-center text-2xl font-semibold`}
               >
                 {item.name}
               </DisclosureButton>
@@ -167,9 +149,30 @@ export default function Navbar() {
               />
               Add New
             </Link>
+            {token ? (
+              <div
+                className="my-1 flex flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-3 pb-1 pt-1 text-base font-medium text-gunmental hover:bg-gunmental hover:text-lighthouse md:text-xl md:font-semibold"
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  window.location.href = "/";
+                }}
+              >
+                Log out
+              </div>
+            ) : (
+              <div
+                className="my-1 flex flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-3 pb-1 pt-1 text-base font-medium text-gunmental hover:bg-gunmental hover:text-lighthouse md:text-xl md:font-semibold"
+                onClick={() => {
+                  setModalOpen(true);
+                }}
+              >
+                Login
+              </div>
+            )}
           </div>
         </DisclosurePanel>
       </Disclosure>
+      <LoginModal open={modalOpen} setOpen={setModalOpen} />
     </div>
   );
 }

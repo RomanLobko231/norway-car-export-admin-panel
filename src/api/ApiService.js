@@ -41,6 +41,16 @@ export default class ApiService {
     }
   }
 
+  static async updateOwner(owner) {
+    try {
+      const response = await api.put("/api/v1/users", owner);
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
   static async saveCar(car, images) {
     try {
       const data = new FormData();
@@ -64,6 +74,16 @@ export default class ApiService {
   static async deleteById(id) {
     try {
       const response = await api.delete(`/api/v1/cars/${id}`);
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  static async getUserById(id) {
+    try {
+      const response = await api.get(`/api/v1/users/${id}`);
       return response;
     } catch (error) {
       console.log(error);
@@ -96,6 +116,17 @@ export default class ApiService {
   static async deleteUserById(id) {
     try {
       const response = await api.delete(`/api/v1/users/${id}`);
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  static async loginUser(loginData) {
+    try {
+      const response = await api.post("/api/v1/users/login", loginData);
+      localStorage.setItem("token", response.data.token);
       return response;
     } catch (error) {
       console.log(error);

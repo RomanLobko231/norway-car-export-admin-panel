@@ -8,9 +8,24 @@ import DateInputField from "../input/DateInputField";
 import ImageInputField from "../input/ImageInputField";
 import DeleteDialog from "../dialog/DeleteDialog";
 import MessageDialog from "../dialog/MessageDialog";
+import {
+  MdEdit,
+  MdLocationOn,
+  MdNumbers,
+  MdOutlineAirlineSeatReclineNormal,
+  MdOutlineAlternateEmail,
+  MdOutlineCalendarMonth,
+  MdOutlineDirectionsCar,
+  MdOutlineFormatColorFill,
+  MdOutlineLocationOn,
+  MdOutlinePerson2,
+  MdOutlinePhone,
+} from "react-icons/md";
+import { LuFuel, LuMailbox } from "react-icons/lu";
 
-const CarEditingPanel = ({ car, saveCar }) => {
+const CarEditingPanel = ({ car, owner, saveInfo }) => {
   const [carData, setCarData] = useState(car);
+  const [ownerData, setOwnerData] = useState(owner);
   const [uploadImages, setUploadImages] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const OPERATING_MODES = [
@@ -30,6 +45,14 @@ const CarEditingPanel = ({ car, saveCar }) => {
     }));
   };
 
+  const handleOwnerInputChange = (e) => {
+    const { name, value } = e.target;
+    setOwnerData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   const deleteImageByName = (imageName) => {
     setCarData((prevData) => ({
       ...prevData,
@@ -41,7 +64,7 @@ const CarEditingPanel = ({ car, saveCar }) => {
 
   const submitSaveRequest = (e) => {
     e.preventDefault();
-    saveCar(carData, uploadImages);
+    saveInfo(carData, ownerData, uploadImages);
   };
 
   return (
@@ -64,108 +87,156 @@ const CarEditingPanel = ({ car, saveCar }) => {
         <div className="flex w-full flex-col items-start">
           <TextInputField
             label={"Fullt Navn"}
-            icon={"../icons/person.png"}
-            alt={"Person icon"}
+            icon={<MdOutlinePerson2 className="h-4 w-4 md:h-5 md:w-5" />}
             name={"name"}
-            initialValue={carData.ownerInfo.name}
-            onChange={(e) =>
-              setCarData((prev) => ({
-                ...prev,
-                ownerInfo: { ...prev.ownerInfo, name: e.target.value },
-              }))
-            }
+            initialValue={ownerData.name}
+            onChange={handleOwnerInputChange}
           />
         </div>
         <TextInputField
           label={"Mobilnummer"}
-          icon={"../icons/phone.png"}
-          alt={"Phone icon"}
+          icon={<MdOutlinePhone className="h-4 w-4 md:h-5 md:w-5" />}
           name={"phoneNumber"}
-          initialValue={carData.ownerInfo.phoneNumber}
-          onChange={(e) =>
-            setCarData((prev) => ({
-              ...prev,
-              ownerInfo: { ...prev.ownerInfo, phoneNumber: e.target.value },
-            }))
-          }
+          initialValue={ownerData.phoneNumber}
+          onChange={handleOwnerInputChange}
         />
         <TextInputField
           label={"Epost"}
-          icon={"../icons/email.png"}
-          alt={"Email icon"}
+          icon={<MdOutlineAlternateEmail className="h-4 w-4 md:h-5 md:w-5" />}
           name={"email"}
-          initialValue={carData.ownerInfo.email}
-          onChange={(e) =>
-            setCarData((prev) => ({
-              ...prev,
-              ownerInfo: { ...prev.ownerInfo, email: e.target.value },
-            }))
-          }
+          initialValue={ownerData.email}
+          onChange={handleOwnerInputChange}
         />
+        {owner.role !== "ONE_TIME_SELLER" && (
+          <>
+            {owner.role == "BUYER" && (
+              <TextInputField
+                label={"Land"}
+                name="country"
+                icon={
+                  <MdOutlineLocationOn className="h-6 w-auto" color="#333" />
+                }
+                initialValue={ownerData.address.country}
+                onChange={(e) =>
+                  setOwnerData((prev) => ({
+                    ...prev,
+                    address: {
+                      ...prev.address,
+                      country: e.target.value,
+                    },
+                  }))
+                }
+              />
+            )}
+            <TextInputField
+              label={"Gateadresse"}
+              name="streetAddress"
+              icon={<MdOutlineLocationOn className="h-6 w-auto" color="#333" />}
+              initialValue={ownerData.address.streetAddress}
+              onChange={(e) =>
+                setOwnerData((prev) => ({
+                  ...prev,
+                  address: {
+                    ...prev.address,
+                    streetAddress: e.target.value,
+                  },
+                }))
+              }
+            />
+            <div className="flex w-full flex-row gap-2">
+              <div className="basis-7/12">
+                <TextInputField
+                  label={"Poststed (By)"}
+                  name="postalLocation"
+                  icon={<LuMailbox className="h-4 w-4 md:h-5 md:w-5" />}
+                  initialValue={ownerData.address.postalLocation}
+                  onChange={(e) =>
+                    setOwnerData((prev) => ({
+                      ...prev,
+                      address: {
+                        ...prev.address,
+                        postalLocation: e.target.value,
+                      },
+                    }))
+                  }
+                />
+              </div>
+              <div className="basis-5/12">
+                <TextInputField
+                  label={"Postnummer"}
+                  name="postalCode"
+                  icon={<MdNumbers className="h-4 w-4 md:h-5 md:w-5" />}
+                  initialValue={ownerData.address.postalCode}
+                  onChange={(e) =>
+                    setOwnerData((prev) => ({
+                      ...prev,
+                      address: {
+                        ...prev.address,
+                        postalCode: e.target.value,
+                      },
+                    }))
+                  }
+                />
+              </div>
+            </div>
+          </>
+        )}
         <hr className="mb-4 mt-4 w-10/12 border-[1px] border-dashed border-gunmental px-2" />
         <h1 className="mt-8 text-2xl font-bold text-medium-gray">
           BILENS INFO
         </h1>
         <TextInputField
           label={"Modell"}
-          icon={"../icons/car.png"}
-          alt={"Car icon"}
+          icon={<MdOutlineDirectionsCar className="h-4 w-4 md:h-5 md:w-5" />}
           name={"model"}
           initialValue={carData.model}
           onChange={handleInputChange}
         />
         <TextInputField
           label={"Merke"}
-          icon={"../icons/car.png"}
-          alt={"Car icon"}
+          icon={<MdOutlineDirectionsCar className="h-4 w-4 md:h-5 md:w-5" />}
           name={"make"}
           initialValue={carData.make}
           onChange={handleInputChange}
         />
         <TextInputField
           label={"Registrasjonsnummer"}
-          icon={"../icons/numbers.png"}
-          alt={"Numbers icon"}
+          icon={<MdNumbers className="h-4 w-4 md:h-5 md:w-5" />}
           name={"registrationNumber"}
           initialValue={carData.registrationNumber}
           onChange={handleInputChange}
         />
         <DateInputField
           label={"Førstegangsregistrering i Norge"}
-          icon={"../icons/date.png"}
+          icon={<MdOutlineCalendarMonth className="h-4 w-4 md:h-5 md:w-5" />}
           name={"firstTimeRegisteredInNorway"}
-          alt={"Calendar icon"}
           initialValue={carData.firstTimeRegisteredInNorway}
           onChange={handleInputChange}
         />
         <DateInputField
           label={"Neste EU-kontroll"}
-          icon={"../icons/date.png"}
-          alt={"Calendar icon"}
+          icon={<MdOutlineCalendarMonth className="h-4 w-4 md:h-5 md:w-5" />}
           name={"nextEUControl"}
           initialValue={carData.nextEUControl}
           onChange={handleInputChange}
         />
         <NumberInputField
           label={"Kilometerstand"}
-          icon={"../icons/numbers.png"}
-          alt={"Numbers icon"}
+          icon={<MdNumbers className="h-4 w-4 md:h-5 md:w-5" />}
           name={"kilometers"}
           initialValue={carData.kilometers}
           onChange={handleInputChange}
         />
         <TextInputField
           label={"Drivstoff"}
-          icon={"../icons/fuel.png"}
-          alt={"Fuel icon"}
+          icon={<LuFuel className="h-4 w-4 md:h-5 md:w-5" />}
           name={"engineType"}
           initialValue={carData.engineType}
           onChange={handleInputChange}
         />
         <NumberInputField
           label={"Motorvolum/slagvolum"}
-          icon={"../icons/numbers.png"}
-          alt={"Numbers icon"}
+          icon={<MdNumbers className="h-4 w-4 md:h-5 md:w-5" />}
           name={"engineVolume"}
           initialValue={carData.engineVolume}
           onChange={handleInputChange}
@@ -188,40 +259,37 @@ const CarEditingPanel = ({ car, saveCar }) => {
         />
         <NumberInputField
           label={"Egenvekt"}
-          icon={"../icons/numbers.png"}
-          alt={"Numbers icon"}
+          icon={<MdNumbers className="h-4 w-4 md:h-5 md:w-5" />}
           name={"weight"}
           initialValue={carData.weight}
           onChange={handleInputChange}
         />
         <TextInputField
           label={"Karosseri"}
-          icon={"../icons/car.png"}
-          alt={"Car icon"}
+          icon={<MdOutlineDirectionsCar className="h-4 w-4 md:h-5 md:w-5" />}
           name={"bodywork"}
           initialValue={carData.bodywork}
           onChange={handleInputChange}
         />
         <NumberInputField
           label={"Dørantall"}
-          icon={"../icons/numbers.png"}
-          alt={"Numbers icon"}
+          icon={<MdNumbers className="h-4 w-4 md:h-5 md:w-5" />}
           name={"numberOfDoors"}
           initialValue={carData.numberOfDoors}
           onChange={handleInputChange}
         />
         <NumberInputField
           label={"Seteantall"}
-          icon={"../icons/numbers.png"}
-          alt={"Numbers icon"}
+          icon={
+            <MdOutlineAirlineSeatReclineNormal className="h-4 w-4 md:h-5 md:w-5" />
+          }
           name={"numberOfSeats"}
           initialValue={carData.numberOfSeats}
           onChange={handleInputChange}
         />
         <TextInputField
           label={"Farge"}
-          icon={"../icons/car.png"}
-          alt={"Car icon"}
+          icon={<MdOutlineFormatColorFill className="h-4 w-4 md:h-5 md:w-5" />}
           name={"color"}
           initialValue={carData.color}
           onChange={handleInputChange}
@@ -232,11 +300,7 @@ const CarEditingPanel = ({ car, saveCar }) => {
         </h1>
         <div className="relative mb-3 mt-5 w-full">
           <div className="pointer-events-none absolute inset-y-0 start-0 top-5 flex items-baseline ps-5">
-            <img
-              src="../icons/edit_dark.png"
-              alt="numbers icon"
-              className="h-4 w-4 md:h-5 md:w-5"
-            />
+            <MdEdit className="h-4 w-4 md:h-5 md:w-5" />
           </div>
           <textarea
             id="add_info"
@@ -276,7 +340,10 @@ const CarEditingPanel = ({ car, saveCar }) => {
         message={
           "Are you sure you want to reset all data? After confirming all unsaved data will be lost."
         }
-        onFunc={() => setCarData(car)}
+        onFunc={() => {
+          setCarData(car);
+          setOwnerData(owner);
+        }}
       />
     </div>
   );

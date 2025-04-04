@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 
-const TextInputField = ({ icon, label, name, alt, initialValue, onChange }) => {
+const TextInputField = ({
+  icon,
+  label,
+  name,
+  disableCheckbox,
+  initialValue,
+  onChange,
+}) => {
   const [isChecked, setIsChecked] = useState(initialValue === "N/A");
 
   const handleCheckboxChange = () => {
@@ -17,7 +24,7 @@ const TextInputField = ({ icon, label, name, alt, initialValue, onChange }) => {
       </label>
       <div className="relative mt-1 w-full">
         <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-4">
-          <img src={icon} alt={alt} className="h-4 w-4 md:h-5 md:w-5" />
+          {icon}
         </div>
         <input
           type="text"
@@ -30,21 +37,23 @@ const TextInputField = ({ icon, label, name, alt, initialValue, onChange }) => {
           disabled={isChecked}
         />
       </div>
-      <label
-        className={`ml-6 mt-2 flex cursor-pointer items-center text-sm sm:text-base ${
-          isChecked
-            ? "font-semibold text-medium-gray"
-            : "font-normal text-light-gray"
-        }`}
-      >
-        <input
-          type="checkbox"
-          checked={isChecked}
-          onChange={handleCheckboxChange}
-          className="mr-2 h-4 w-4 cursor-pointer accent-gunmental"
-        />
-        Info is not available now
-      </label>
+      {!disableCheckbox && (
+        <label
+          className={`ml-6 mt-2 flex cursor-pointer items-center text-sm sm:text-base ${
+            isChecked
+              ? "font-semibold text-medium-gray"
+              : "font-normal text-light-gray"
+          }`}
+        >
+          <input
+            type="checkbox"
+            checked={isChecked}
+            onChange={handleCheckboxChange}
+            className="mr-2 h-4 w-4 cursor-pointer accent-gunmental"
+          />
+          Info is not available now
+        </label>
+      )}
     </div>
   );
 };

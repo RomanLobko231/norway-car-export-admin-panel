@@ -25,14 +25,6 @@ const BuyersPage = () => {
     }
   };
 
-  const setBuyerApprovedById = (id, accountLocked) => {
-    setBuyers((prevBuyers) =>
-      prevBuyers.map((b) =>
-        b.id === id ? { ...b, accountLocked: !accountLocked } : b,
-      ),
-    );
-  };
-
   const countInReview = () => {
     return buyers.filter((b) => b.accountLocked).length;
   };

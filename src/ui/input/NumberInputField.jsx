@@ -1,13 +1,6 @@
 import { useState } from "react";
 
-const NumberInputField = ({
-  icon,
-  label,
-  alt,
-  name,
-  initialValue,
-  onChange,
-}) => {
+const NumberInputField = ({ icon, label, name, initialValue, onChange }) => {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleCheckboxChange = () => {
@@ -24,7 +17,7 @@ const NumberInputField = ({
       </label>
       <div className="relative mt-1 w-full">
         <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-4">
-          <img src={icon} alt={alt} className="h-4 w-4 md:h-5 md:w-5" />
+          {icon}
         </div>
         <input
           onWheel={(e) => e.currentTarget.blur()}

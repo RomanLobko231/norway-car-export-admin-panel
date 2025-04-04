@@ -114,7 +114,11 @@ const BuyerCard = ({ buyer, setBuyers }) => {
               info={`Organisasjonsnr.: ${buyer.organisationNumber}`}
             />
             <CarInfoElement
-              info={`${buyer.organisationAddress.streetAddress} - ${buyer.organisationAddress.postalCode} - ${buyer.organisationAddress.postalLocation}`}
+              info={`
+                ${buyer.organisationAddress.streetAddress}
+               - ${buyer.organisationAddress.postalCode}
+               - ${buyer.organisationAddress.postalLocation}
+               - ${buyer.organisationAddress.country}`}
             />
           </div>
           <h1 className="mb-2 mt-4 w-full text-start text-lg font-medium text-light-gray">
@@ -143,7 +147,7 @@ const BuyerCard = ({ buyer, setBuyers }) => {
                 onClick={() => {
                   approveBuyer(buyer.id);
                 }}
-                className="buttonsh hover:button_shadow_hover active:button_shadow_click disabled:button_shadow_click mb-2 mt-5 flex flex-row items-center rounded-lg border border-medium-gray bg-gunmental px-3 pb-1 pt-1 text-xl font-semibold text-lighthouse hover:text-lighthouse disabled:bg-light-gray/50 disabled:text-light-gray"
+                className="buttonsh hover:button_shadow_hover active:button_shadow_click disabled:button_shadow_click mb-2 mt-5 flex flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-3 pb-1 pt-1 text-xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse disabled:bg-light-gray/50 disabled:text-light-gray"
                 disabled={isLoading}
               >
                 <MdOutlineCheckBox className="mr-2 h-6 w-auto" />
@@ -154,7 +158,7 @@ const BuyerCard = ({ buyer, setBuyers }) => {
                 onClick={() => {
                   revokeBuyer(buyer.id);
                 }}
-                className="buttonsh hover:button_shadow_hover active:button_shadow_click disabled:button_shadow_click mb-2 mt-5 flex flex-row items-center rounded-lg border border-medium-gray bg-gunmental px-3 pb-1 pt-1 text-xl font-semibold text-lighthouse hover:text-lighthouse disabled:bg-light-gray/50 disabled:text-light-gray"
+                className="buttonsh hover:button_shadow_hover active:button_shadow_click disabled:button_shadow_click mb-2 mt-5 flex flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-3 pb-1 pt-1 text-xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse disabled:bg-light-gray/50 disabled:text-light-gray"
                 disabled={isLoading}
               >
                 <MdOutlineCheckBox className="mr-2 h-6 w-auto" />
