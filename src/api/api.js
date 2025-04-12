@@ -5,19 +5,19 @@ const DEV_URL = "http://localhost:8080";
 const PROD_URL = "https://nce-backend-production.up.railway.app/";
 
 const api = axios.create({
-  baseURL: PROD_URL,
+  baseURL: DEV_URL,
 });
 
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     if (token) {
       const decoded = jwtDecode(token);
       const currentTime = Date.now() / 1000;
 
       if (decoded.exp < currentTime) {
-        localStorage.removeItem("token");
+        sessionStorage.removeItem("token");
       } else {
         config.headers.Authorization = `Bearer ${token}`;
       }
@@ -46,6 +46,11 @@ function handleError(error) {
     const resolvedStatusCode = statusCode ?? 500;
     const resolvedMessage = message ?? "An unexpected error occurred.";
     const resolvedTimestamp = timestamp ?? new Date().toISOString();
+
+    if (error.status == 401 || error.status == 403) {
+      sessionStorage.removeItem("token");
+    }
+
     return {
       errorMessage: {
         statusCode: resolvedStatusCode,

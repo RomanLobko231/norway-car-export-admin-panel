@@ -16,6 +16,7 @@ const BuyersPage = () => {
       setError(null);
       const response = await ApiService.getAllBuyers();
       setBuyers(response.data);
+      console.log(response);
       setIsLoading(false);
     } catch (error) {
       setError(error);

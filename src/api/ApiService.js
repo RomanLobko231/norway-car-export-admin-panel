@@ -51,7 +51,7 @@ export default class ApiService {
     }
   }
 
-  static async saveCar(car, images) {
+  static async saveCarNewUser(car, images) {
     try {
       const data = new FormData();
       const carDataBlob = new Blob([JSON.stringify(car)], {
@@ -63,7 +63,7 @@ export default class ApiService {
         data.append("images", image);
       });
 
-      const response = await api.post("/api/v1/cars/admin", data);
+      const response = await api.post("/api/v1/cars/add_complete", data);
       return response;
     } catch (error) {
       console.log(error);
@@ -71,9 +71,55 @@ export default class ApiService {
     }
   }
 
-  static async deleteById(id) {
+  static async saveCarExistingUser(car, images) {
+    try {
+      const data = new FormData();
+      const carDataBlob = new Blob([JSON.stringify(car)], {
+        type: "application/json",
+      });
+      data.append("carData", carDataBlob);
+
+      images.forEach((image) => {
+        data.append("images", image);
+      });
+
+      const response = await api.post("/api/v1/cars/add_complete_user", data);
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  static async deleteCarById(id) {
     try {
       const response = await api.delete(`/api/v1/cars/${id}`);
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  static async registerSeller(sellerData) {
+    try {
+      const response = await api.post(
+        "/api/v1/users/register_seller",
+        sellerData,
+      );
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  static async registerOneTimeSeller(sellerData) {
+    try {
+      const response = await api.post(
+        "/api/v1/users/register_one_time_seller",
+        sellerData,
+      );
       return response;
     } catch (error) {
       console.log(error);
@@ -84,6 +130,16 @@ export default class ApiService {
   static async getUserById(id) {
     try {
       const response = await api.get(`/api/v1/users/${id}`);
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  static async getUserByEmail(email) {
+    try {
+      const response = await api.get(`/api/v1/users/by_email/${email}`);
       return response;
     } catch (error) {
       console.log(error);
@@ -126,7 +182,7 @@ export default class ApiService {
   static async loginUser(loginData) {
     try {
       const response = await api.post("/api/v1/users/login", loginData);
-      localStorage.setItem("token", response.data.token);
+      sessionStorage.setItem("token", response.data.token);
       return response;
     } catch (error) {
       console.log(error);

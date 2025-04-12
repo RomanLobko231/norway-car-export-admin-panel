@@ -34,6 +34,7 @@
   }
   body {
     background-color: #f7f8f8;
+    overflow-y: scroll;
   }
   input[type="number"]::-webkit-outer-spin-button,
   input[type="number"]::-webkit-inner-spin-button,

@@ -115,10 +115,10 @@ const BuyerCard = ({ buyer, setBuyers }) => {
             />
             <CarInfoElement
               info={`
-                ${buyer.organisationAddress.streetAddress}
-               - ${buyer.organisationAddress.postalCode}
-               - ${buyer.organisationAddress.postalLocation}
-               - ${buyer.organisationAddress.country}`}
+                ${buyer.address.streetAddress}
+               - ${buyer.address.postalCode}
+               - ${buyer.address.postalLocation}
+               - ${buyer.address.country}`}
             />
           </div>
           <h1 className="mb-2 mt-4 w-full text-start text-lg font-medium text-light-gray">

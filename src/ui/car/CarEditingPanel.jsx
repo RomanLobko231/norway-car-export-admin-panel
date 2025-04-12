@@ -22,8 +22,13 @@ import {
   MdOutlinePhone,
 } from "react-icons/md";
 import { LuFuel, LuMailbox } from "react-icons/lu";
+import ErrorMessage from "../ErrorMessage";
+import ApiService from "../../api/ApiService";
+import SuccessMessage from "../SuccessMessage";
+import { useParams } from "react-router";
 
 const CarEditingPanel = ({ car, owner, saveInfo }) => {
+  const params = useParams();
   const [carData, setCarData] = useState(car);
   const [ownerData, setOwnerData] = useState(owner);
   const [uploadImages, setUploadImages] = useState([]);
@@ -36,6 +41,9 @@ const CarEditingPanel = ({ car, owner, saveInfo }) => {
   ];
   const GEARBOX_TYPES = ["Manuell", "Automat", "Annet"];
   const STATUS_OPTIONS = ["Vurdering", "Auksjon", "Solgt", "Annet"];
+  const USER_TYPES = ["Ny Bruker", "Ekisterende"];
+  const [userType, setUserType] = useState("Ny Bruker");
+  const [userError, setUserError] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -67,6 +75,23 @@ const CarEditingPanel = ({ car, owner, saveInfo }) => {
     saveInfo(carData, ownerData, uploadImages);
   };
 
+  const checkUserExistsByEmail = async (email) => {
+    setUserError(null);
+    setCarData((prevData) => ({
+      ...prevData,
+      ownerId: "",
+    }));
+    try {
+      const user = await ApiService.getUserByEmail(email);
+      setCarData((prevData) => ({
+        ...prevData,
+        ownerId: user.data.id,
+      }));
+    } catch (error) {
+      setUserError(error);
+    }
+  };
+
   return (
     <div className="flex w-full max-w-7xl flex-col items-center justify-center py-28">
       <hr className="mb-2 mt-1 h-[4px] w-full max-w-[700px] bg-gunmental px-2" />
@@ -84,101 +109,151 @@ const CarEditingPanel = ({ car, owner, saveInfo }) => {
         }}
       >
         <h1 className="text-2xl font-bold text-medium-gray">PERSONALIA</h1>
-        <div className="flex w-full flex-col items-start">
-          <TextInputField
-            label={"Fullt Navn"}
-            icon={<MdOutlinePerson2 className="h-4 w-4 md:h-5 md:w-5" />}
-            name={"name"}
-            initialValue={ownerData.name}
-            onChange={handleOwnerInputChange}
+        {!params.id && (
+          <OptionsInput
+            options={USER_TYPES}
+            initialOption={userType}
+            optionName={"userType"}
+            handleInputChange={(e) => {
+              setUserType(e.target.value);
+            }}
           />
-        </div>
-        <TextInputField
-          label={"Mobilnummer"}
-          icon={<MdOutlinePhone className="h-4 w-4 md:h-5 md:w-5" />}
-          name={"phoneNumber"}
-          initialValue={ownerData.phoneNumber}
-          onChange={handleOwnerInputChange}
-        />
-        <TextInputField
-          label={"Epost"}
-          icon={<MdOutlineAlternateEmail className="h-4 w-4 md:h-5 md:w-5" />}
-          name={"email"}
-          initialValue={ownerData.email}
-          onChange={handleOwnerInputChange}
-        />
-        {owner.role !== "ONE_TIME_SELLER" && (
+        )}
+
+        {userType == "Ny Bruker" ? (
           <>
-            {owner.role == "BUYER" && (
+            <div className="flex w-full flex-col items-start">
               <TextInputField
-                label={"Land"}
-                name="country"
-                icon={
-                  <MdOutlineLocationOn className="h-6 w-auto" color="#333" />
-                }
-                initialValue={ownerData.address.country}
-                onChange={(e) =>
-                  setOwnerData((prev) => ({
-                    ...prev,
-                    address: {
-                      ...prev.address,
-                      country: e.target.value,
-                    },
-                  }))
-                }
+                label={"Fullt Navn"}
+                icon={<MdOutlinePerson2 className="h-4 w-4 md:h-5 md:w-5" />}
+                name={"name"}
+                initialValue={ownerData.name}
+                onChange={handleOwnerInputChange}
+              />
+            </div>
+            <TextInputField
+              label={"Mobilnummer"}
+              icon={<MdOutlinePhone className="h-4 w-4 md:h-5 md:w-5" />}
+              name={"phoneNumber"}
+              initialValue={ownerData.phoneNumber}
+              onChange={handleOwnerInputChange}
+            />
+            {owner.role !== "ONE_TIME_SELLER" && (
+              <>
+                <TextInputField
+                  label={"Epost"}
+                  icon={
+                    <MdOutlineAlternateEmail className="h-4 w-4 md:h-5 md:w-5" />
+                  }
+                  name={"email"}
+                  disableCheckbox={true}
+                  initialValue={ownerData.email}
+                  onChange={handleOwnerInputChange}
+                />
+                {owner.role == "BUYER" && (
+                  <TextInputField
+                    label={"Land"}
+                    name="country"
+                    icon={
+                      <MdOutlineLocationOn
+                        className="h-6 w-auto"
+                        color="#333"
+                      />
+                    }
+                    initialValue={ownerData.address.country}
+                    onChange={(e) =>
+                      setOwnerData((prev) => ({
+                        ...prev,
+                        address: {
+                          ...prev.address,
+                          country: e.target.value,
+                        },
+                      }))
+                    }
+                  />
+                )}
+                <TextInputField
+                  label={"Gateadresse"}
+                  name="streetAddress"
+                  icon={
+                    <MdOutlineLocationOn className="h-6 w-auto" color="#333" />
+                  }
+                  initialValue={ownerData.address.streetAddress}
+                  onChange={(e) =>
+                    setOwnerData((prev) => ({
+                      ...prev,
+                      address: {
+                        ...prev.address,
+                        streetAddress: e.target.value,
+                      },
+                    }))
+                  }
+                />
+                <div className="flex w-full flex-row gap-2">
+                  <div className="basis-7/12">
+                    <TextInputField
+                      label={"Poststed (By)"}
+                      name="postalLocation"
+                      icon={<LuMailbox className="h-4 w-4 md:h-5 md:w-5" />}
+                      initialValue={ownerData.address.postalLocation}
+                      onChange={(e) =>
+                        setOwnerData((prev) => ({
+                          ...prev,
+                          address: {
+                            ...prev.address,
+                            postalLocation: e.target.value,
+                          },
+                        }))
+                      }
+                    />
+                  </div>
+                  <div className="basis-5/12">
+                    <TextInputField
+                      label={"Postnummer"}
+                      name="postalCode"
+                      icon={<MdNumbers className="h-4 w-4 md:h-5 md:w-5" />}
+                      initialValue={ownerData.address.postalCode}
+                      onChange={(e) =>
+                        setOwnerData((prev) => ({
+                          ...prev,
+                          address: {
+                            ...prev.address,
+                            postalCode: e.target.value,
+                          },
+                        }))
+                      }
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+          </>
+        ) : (
+          <>
+            <TextInputField
+              label={"Epost"}
+              icon={
+                <MdOutlineAlternateEmail className="h-4 w-4 md:h-5 md:w-5" />
+              }
+              name={"email"}
+              initialValue={ownerData.email}
+              onChange={handleOwnerInputChange}
+              disableCheckbox={true}
+            />
+            {userError && <ErrorMessage error={userError.message} />}
+            {carData.ownerId && (
+              <SuccessMessage
+                message={`Bruker med epost '${ownerData.email}' finnes og ble lagt til`}
               />
             )}
-            <TextInputField
-              label={"Gateadresse"}
-              name="streetAddress"
-              icon={<MdOutlineLocationOn className="h-6 w-auto" color="#333" />}
-              initialValue={ownerData.address.streetAddress}
-              onChange={(e) =>
-                setOwnerData((prev) => ({
-                  ...prev,
-                  address: {
-                    ...prev.address,
-                    streetAddress: e.target.value,
-                  },
-                }))
-              }
-            />
-            <div className="flex w-full flex-row gap-2">
-              <div className="basis-7/12">
-                <TextInputField
-                  label={"Poststed (By)"}
-                  name="postalLocation"
-                  icon={<LuMailbox className="h-4 w-4 md:h-5 md:w-5" />}
-                  initialValue={ownerData.address.postalLocation}
-                  onChange={(e) =>
-                    setOwnerData((prev) => ({
-                      ...prev,
-                      address: {
-                        ...prev.address,
-                        postalLocation: e.target.value,
-                      },
-                    }))
-                  }
-                />
-              </div>
-              <div className="basis-5/12">
-                <TextInputField
-                  label={"Postnummer"}
-                  name="postalCode"
-                  icon={<MdNumbers className="h-4 w-4 md:h-5 md:w-5" />}
-                  initialValue={ownerData.address.postalCode}
-                  onChange={(e) =>
-                    setOwnerData((prev) => ({
-                      ...prev,
-                      address: {
-                        ...prev.address,
-                        postalCode: e.target.value,
-                      },
-                    }))
-                  }
-                />
-              </div>
-            </div>
+            <p
+              className={`mb-1 mt-3 flex w-auto cursor-pointer border-b-2 border-light-gray text-center text-xl font-medium text-light-gray hover:border-gunmental hover:text-gunmental`}
+              onClick={() => {
+                checkUserExistsByEmail(ownerData.email);
+              }}
+            >
+              Skjekk bruker
+            </p>
           </>
         )}
         <hr className="mb-4 mt-4 w-10/12 border-[1px] border-dashed border-gunmental px-2" />
@@ -204,6 +279,7 @@ const CarEditingPanel = ({ car, owner, saveInfo }) => {
           icon={<MdNumbers className="h-4 w-4 md:h-5 md:w-5" />}
           name={"registrationNumber"}
           initialValue={carData.registrationNumber}
+          disableCheckbox={true}
           onChange={handleInputChange}
         />
         <DateInputField
@@ -324,13 +400,13 @@ const CarEditingPanel = ({ car, owner, saveInfo }) => {
             type="submit"
             className="card_shadow group mb-3 mt-3 flex flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-3 pb-2 pt-1 text-lg font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse md:px-4 md:text-2xl"
           >
-            Save For Now
+            Lagre
           </button>
           <button
             type="reset"
             className="card_shadow group mb-3 mt-3 flex flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-3 pb-2 pt-1 text-lg font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse md:px-4 md:text-2xl"
           >
-            Reset
+            Tilbakestille
           </button>
         </div>
       </form>

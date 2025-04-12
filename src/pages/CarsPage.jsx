@@ -30,7 +30,7 @@ const CarsPage = () => {
   const deleteCar = async (id) => {
     try {
       setError(null);
-      await ApiService.deleteById(id);
+      await ApiService.deleteCarById(id);
       setCars((prev) => prev.filter((element) => element.id !== id));
     } catch (error) {
       setError(error);
