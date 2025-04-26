@@ -1,12 +1,21 @@
 import { useState } from "react";
 
-const NumberInputField = ({ icon, label, name, initialValue, onChange }) => {
+const NumberInputField = ({
+  icon,
+  label,
+  name,
+  initialValue,
+  onChange,
+  disableCheckbox,
+  optional,
+}) => {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleCheckboxChange = () => {
     setIsChecked((prev) => !prev);
-    onChange({ target: { name, value: !isChecked ? 0 : 0 } });
+    onChange({ target: { name, value: !isChecked ? initialValue : 0 } });
   };
+
   return (
     <div className="mb-2 mt-1 w-full flex-col">
       <label
@@ -29,24 +38,26 @@ const NumberInputField = ({ icon, label, name, initialValue, onChange }) => {
           disabled={isChecked}
           onChange={onChange}
           className="block w-full rounded-lg border border-medium-gray bg-white px-5 py-2.5 ps-11 text-base font-medium text-medium-gray disabled:text-light-gray md:ps-12 md:text-lg"
-          required
+          required={!optional}
         />
       </div>
-      <label
-        className={`ml-6 mt-2 flex cursor-pointer items-center text-sm sm:text-base ${
-          isChecked
-            ? "font-semibold text-medium-gray"
-            : "font-normal text-light-gray"
-        }`}
-      >
-        <input
-          type="checkbox"
-          checked={isChecked}
-          onChange={handleCheckboxChange}
-          className="mr-2 h-4 w-4 cursor-pointer accent-gunmental"
-        />
-        Info is not available now
-      </label>
+      {!disableCheckbox && (
+        <label
+          className={`ml-6 mt-2 flex cursor-pointer items-center text-sm sm:text-base ${
+            isChecked
+              ? "font-semibold text-medium-gray"
+              : "font-normal text-light-gray"
+          }`}
+        >
+          <input
+            type="checkbox"
+            checked={isChecked}
+            onChange={handleCheckboxChange}
+            className="mr-2 h-4 w-4 cursor-pointer accent-gunmental"
+          />
+          Info is not available now
+        </label>
+      )}
     </div>
   );
 };

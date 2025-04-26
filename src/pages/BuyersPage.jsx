@@ -70,7 +70,7 @@ const BuyersPage = () => {
         </h1>
       </div>
       {isLoading && <h1>Loading..</h1>}
-      <div className="flex w-[700px] flex-col items-center gap-2">
+      <div className="flex w-full flex-col items-center gap-2 px-4 md:w-[700px] md:px-0">
         {buyers
           .filter((b) => b.accountLocked == showLocked)
           .map((buyer) => (

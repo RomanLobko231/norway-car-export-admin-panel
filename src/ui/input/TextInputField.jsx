@@ -7,13 +7,17 @@ const TextInputField = ({
   disableCheckbox,
   initialValue,
   onChange,
+  optional,
 }) => {
-  const [isChecked, setIsChecked] = useState(initialValue === "N/A");
+  const [isChecked, setIsChecked] = useState(
+    initialValue === "N/A" || initialValue === null,
+  );
 
   const handleCheckboxChange = () => {
     setIsChecked((prev) => !prev);
     onChange({ target: { name, value: !isChecked ? "N/A" : "" } });
   };
+
   return (
     <div className="mb-2 mt-1 w-full flex-col">
       <label
@@ -33,7 +37,7 @@ const TextInputField = ({
           value={isChecked ? "N/A" : initialValue}
           onChange={onChange}
           className="block w-full rounded-lg border border-medium-gray bg-white px-5 py-2.5 ps-11 text-base font-medium text-medium-gray disabled:text-light-gray md:ps-12 md:text-lg"
-          required
+          required={!optional}
           disabled={isChecked}
         />
       </div>

@@ -10,8 +10,9 @@ import { useState } from "react";
 import LoginModal from "./security/LoginModal";
 
 const navigation = [
-  { name: "Cars", href: "/cars", current: false },
-  { name: "Buyers", href: "/buyers", current: false },
+  { name: "Biler", href: "/cars", current: false },
+  { name: "Buyere", href: "/buyers", current: false },
+  { name: "Auksjon", href: "/auction", current: false },
 ];
 
 export default function Navbar() {
@@ -20,7 +21,7 @@ export default function Navbar() {
   const token = localStorage.getItem("token");
 
   return (
-    <div className="fixed z-10 flex w-full justify-center">
+    <div className="fixed z-50 flex w-full justify-center">
       <Disclosure
         as="nav"
         className="mx-4 my-3 flex w-full max-w-7xl flex-col items-center justify-center rounded-lg border border-medium-gray bg-lighthouse/50 backdrop-blur"
@@ -35,21 +36,28 @@ export default function Navbar() {
                     to="/"
                   >
                     {" "}
-                    Main Page
+                    Hjem
                   </Link>
                   <Link
                     className={`rounded-lg px-3 pb-2 pt-1 text-2xl font-semibold text-gunmental ${location.pathname == "/cars" && "bg-gunmental text-lighthouse"} hover:bg-gunmental hover:text-lighthouse md:mr-2`}
                     to="/cars"
                   >
                     {" "}
-                    Cars
+                    Biler
+                  </Link>
+                  <Link
+                    className={`rounded-lg px-3 pb-2 pt-1 text-2xl font-semibold text-gunmental ${location.pathname == "/auction" && "bg-gunmental text-lighthouse"} hover:bg-gunmental hover:text-lighthouse md:mr-2`}
+                    to="/auction"
+                  >
+                    {" "}
+                    Auksjon
                   </Link>
                   <Link
                     className={`rounded-lg px-3 pb-2 pt-1 text-2xl font-semibold text-gunmental ${location.pathname == "/buyers" && "bg-gunmental text-lighthouse"} hover:bg-gunmental hover:text-lighthouse md:mr-2`}
                     to="/buyers"
                   >
                     {" "}
-                    Buyers
+                    Buyere
                   </Link>
                 </div>
               </div>
@@ -66,7 +74,7 @@ export default function Navbar() {
                     className="mr-2 block h-7 w-auto group-hover:hidden"
                     color="#1c2628"
                   />
-                  Add Car
+                  Legg til
                 </Link>
                 {token ? (
                   <div
@@ -76,7 +84,7 @@ export default function Navbar() {
                       window.location.href = "/";
                     }}
                   >
-                    Log out
+                    Logg ut
                   </div>
                 ) : (
                   <div
@@ -85,7 +93,7 @@ export default function Navbar() {
                       setModalOpen(true);
                     }}
                   >
-                    Login
+                    Logg inn
                   </div>
                 )}
                 {/* <div
@@ -147,7 +155,7 @@ export default function Navbar() {
                 className="mr-2 block h-7 w-auto group-hover:hidden"
                 color="#1c2628"
               />
-              Add New
+              Legg til
             </Link>
             {token ? (
               <div
@@ -157,7 +165,7 @@ export default function Navbar() {
                   window.location.href = "/";
                 }}
               >
-                Log out
+                Logg ut
               </div>
             ) : (
               <div
@@ -166,7 +174,7 @@ export default function Navbar() {
                   setModalOpen(true);
                 }}
               >
-                Login
+                Logg inn
               </div>
             )}
           </div>

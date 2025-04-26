@@ -9,7 +9,8 @@ const AddCarPage = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const [car, setCar] = useState({
+
+  const defaultCar = {
     registrationNumber: "",
     kilometers: 0,
     make: "",
@@ -28,64 +29,40 @@ const AddCarPage = () => {
     ownerId: "",
     status: "Annet",
     additionalInformation: "",
+    expectedPrice: "",
     imagePaths: [],
-  });
-  const [owner, setOwner] = useState({
+  };
+
+  const defaultAuction = { minStep: 0, durationHours: 0, startPrice: 0 };
+
+  const createDefaultOwner = () => ({
     name: "",
     phoneNumber: "",
     email: "",
-    password: randomString(32),
+    password: generateRandomString(32),
     address: { streetAddress: "", postalLocation: "", postalCode: "" },
     role: "SELLER",
   });
 
-  const resetFormData = () => {
-    setCar({
-      registrationNumber: "",
-      kilometers: 0,
-      make: "",
-      model: "",
-      firstTimeRegisteredInNorway: "",
-      engineType: "",
-      engineVolume: 0,
-      bodywork: "",
-      numberOfSeats: 0,
-      numberOfDoors: 0,
-      color: "",
-      gearboxType: "",
-      operatingMode: "",
-      weight: 0,
-      nextEUControl: "",
-      ownerId: "",
-      status: "",
-      additionalInformation: "",
-      imagePaths: [],
-    });
+  const [car, setCar] = useState(defaultCar);
+  const [auction, setAuction] = useState(defaultAuction);
+  const [owner, setOwner] = useState(createDefaultOwner);
 
-    setOwner({
-      name: "",
-      phoneNumber: "",
-      email: "",
-      password: randomString(32),
-      address: { streetAddress: "", postalLocation: "", postalCode: "" },
-      role: "SELLER",
-    });
+  const resetFormData = () => {
+    setCar(defaultCar);
+    setOwner(createDefaultOwner());
   };
 
   const handleSaveCar = async (carData, ownerData, images) => {
-    try {
-      if (carData.ownerId) {
-        return await ApiService.saveCarExistingUser(carData, images);
-      } else {
-        const savedUser = await ApiService.registerSeller(ownerData);
-        const updatedCarData = {
-          ...carData,
-          ownerId: savedUser.data.userId,
-        };
-        return await ApiService.saveCarNewUser(updatedCarData, images);
-      }
-    } catch (error) {
-      throw error;
+    if (carData.ownerId) {
+      return await ApiService.saveCarExistingUser(carData, images);
+    } else {
+      const savedUser = await ApiService.registerSeller(ownerData);
+      const updatedCarData = {
+        ...carData,
+        ownerId: savedUser.data.userId,
+      };
+      return await ApiService.saveCarNewUser(updatedCarData, images);
     }
   };
 
@@ -104,13 +81,13 @@ const AddCarPage = () => {
     }
   };
 
-  function randomString(length) {
-    var chars =
+  function generateRandomString(length) {
+    const chars =
       "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()";
-    var result = "";
-    for (var i = length; i > 0; --i)
-      result += chars[Math.floor(Math.random() * chars.length)];
-    return result;
+    return Array.from(
+      { length },
+      () => chars[Math.floor(Math.random() * chars.length)],
+    ).join("");
   }
 
   return (
@@ -128,7 +105,12 @@ const AddCarPage = () => {
         />
       )}
 
-      <CarEditingPanel car={car} owner={owner} saveInfo={saveCar} />
+      <CarEditingPanel
+        car={car}
+        owner={owner}
+        saveInfo={saveCar}
+        auction={auction}
+      />
     </>
   );
 };

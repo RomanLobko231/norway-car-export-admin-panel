@@ -11,6 +11,16 @@ export default class ApiService {
     }
   }
 
+  static async getAllCarsByStatus(status) {
+    try {
+      const response = await api.get(`/api/v1/cars?status=${status}`);
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
   static async getCarById(id) {
     try {
       const response = await api.get(`/api/v1/cars/${id}`);
@@ -34,6 +44,16 @@ export default class ApiService {
       });
 
       const response = await api.put("/api/v1/cars", data);
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  static async setCarStatus(status, carId) {
+    try {
+      const response = await api.put(`/api/v1/cars/${carId}?status=${status}`);
       return response;
     } catch (error) {
       console.log(error);

@@ -57,9 +57,7 @@ const ImageCarousel = ({ images, deleteImage }) => {
         </div>
       )}
       {(images == null || images.length <= 0 || images == undefined) && (
-        <p className="mt-2 text-lg font-normal text-light-gray">
-          No images yet
-        </p>
+        <p className="text-lg font-normal text-light-gray">No images yet</p>
       )}
     </>
   );

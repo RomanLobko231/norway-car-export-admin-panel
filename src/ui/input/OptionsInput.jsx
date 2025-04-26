@@ -9,7 +9,7 @@ const OptionsInput = ({
       {options.map((option) => (
         <label
           key={option}
-          className={`cursor-pointer rounded-lg border px-4 py-2 text-base font-medium transition ${
+          className={`cursor-pointer rounded-lg border px-4 py-1 text-lg font-medium transition ${
             initialOption === option
               ? "border-gunmental bg-gunmental text-lighthouse"
               : "border-medium-gray bg-lighthouse text-gunmental hover:bg-gray-200"

@@ -40,14 +40,14 @@ api.interceptors.response.use(
 
 function handleError(error) {
   if (error.response) {
-    console.log(error);
     const { statusCode, message, timestamp } = error.response?.data ?? {};
 
     const resolvedStatusCode = statusCode ?? 500;
-    const resolvedMessage = message ?? "An unexpected error occurred.";
+    const resolvedMessage =
+      message ?? "An error occurred. Please try again or refresh page";
     const resolvedTimestamp = timestamp ?? new Date().toISOString();
 
-    if (error.status == 401 || error.status == 403) {
+    if (error.status == 401) {
       sessionStorage.removeItem("token");
     }
 

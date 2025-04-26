@@ -22,7 +22,7 @@ const ImageInputField = ({ images, setImages }) => {
         multiple
         accept="image/jpeg, image/png"
         onChange={handleFileChange}
-        className="block w-full text-base text-gunmental file:mr-4 file:rounded-lg file:border file:border-gunmental file:bg-lighthouse file:px-4 file:py-2 file:text-base file:font-medium hover:file:bg-blue-100"
+        className="block w-full text-base text-gunmental file:mr-4 file:rounded-lg file:border file:border-gunmental file:bg-lighthouse file:px-4 file:py-1 file:text-base file:font-medium hover:file:bg-blue-100"
       />
 
       {images.length > 0 && (

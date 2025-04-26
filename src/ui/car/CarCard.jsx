@@ -3,16 +3,24 @@ import CarInfoElement from "./CarInfoElement";
 import DeleteDialog from "../dialog/DeleteDialog";
 import { useCallback, useState } from "react";
 import TextInputField from "../input/TextInputField";
-import { TbCarOff } from "react-icons/tb";
+import { TbCarOff, TbDotsVertical } from "react-icons/tb";
 import { MdDelete, MdEdit } from "react-icons/md";
 
-const CarCard = ({ carInfo, onDelete }) => {
+const CarCard = ({ carInfo, onDelete, setCarStatus }) => {
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isDelOpen, setIsDelOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleDelete = useCallback(() => {
     onDelete(carInfo.id);
   }, [onDelete, carInfo.id]);
+
+  const handleSetStatus = useCallback(
+    (status) => {
+      setCarStatus(status, carInfo.id);
+    },
+    [setCarStatus, carInfo.id],
+  );
 
   return (
     <div
@@ -51,25 +59,96 @@ const CarCard = ({ carInfo, onDelete }) => {
         <CarInfoElement info={`${carInfo.kilometers ?? "-"} KMs`} />
       </div>
       <hr className="mt-3 h-[1px] w-full border border-dashed bg-light-gray opacity-50" />
-      <div className="flex w-full flex-row items-center justify-center gap-3">
-        <button className="card_shadow mb-2 mt-5 flex flex-row items-center gap-2 rounded-lg border border-medium-gray bg-white px-4 pb-1 pt-1 text-xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse">
-          Edit
+
+      <div className="mb-2 mt-5 flex w-full flex-row flex-wrap items-center justify-between">
+        <button className="card_shadow disabled:card_shadow_click flex flex-row items-center gap-2 rounded-lg border border-medium-gray bg-white px-4 pb-1 pt-1 text-xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse disabled:border-light-gray disabled:text-light-gray disabled:hover:bg-white disabled:hover:text-light-gray">
+          Endre
           <MdEdit />
         </button>
         <button
           onClick={(e) => {
-            setIsOpen(true);
+            setIsDelOpen(true);
             e.stopPropagation();
           }}
-          className="card_shadow mb-2 mt-5 flex flex-row items-center gap-2 rounded-lg border border-medium-gray bg-white px-4 pb-1 pt-1 text-xl font-semibold text-danger-red hover:bg-danger-red hover:text-lighthouse"
+          className="card_shadow disabled:card_shadow_click flex flex-row items-center gap-2 rounded-lg border border-danger-red bg-white px-4 pb-1 pt-1 text-xl font-semibold text-danger-red hover:bg-danger-red hover:text-lighthouse disabled:border-danger-red/50 disabled:text-danger-red/50 disabled:hover:bg-white disabled:hover:text-danger-red/50"
         >
-          Delete
+          Slette
           <MdDelete />
         </button>
+        <div className="relative flex items-center">
+          <TbDotsVertical
+            className="h-7 w-auto hover:opacity-35"
+            color="#333333"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsMenuOpen((prev) => !prev);
+            }}
+          />
+          {isMenuOpen && (
+            <div className="absolute right-8 top-12 z-10 rounded-md border border-medium-gray bg-lighthouse md:-left-2 md:right-auto md:top-10">
+              {carInfo.status !== "Auksjon" && (
+                <>
+                  <div
+                    className="cursor-pointer text-nowrap rounded-md px-4 py-2 text-base font-medium text-medium-gray hover:bg-swamp-100 md:text-lg"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      // send to auction create page/form/modal
+                    }}
+                  >
+                    Sette til Auksjon
+                  </div>
+                  <hr className="h-[1px] w-full border border-dashed bg-light-gray opacity-50" />
+                </>
+              )}
+              {carInfo.status !== "Vurdering" && (
+                <>
+                  <div
+                    className="cursor-pointer text-nowrap rounded-md px-4 py-2 text-base font-medium text-medium-gray hover:bg-swamp-100 md:text-lg"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSetStatus("Vurdering");
+                    }}
+                  >
+                    Sette til Vurdering
+                  </div>
+                  <hr className="h-[1px] w-full border border-dashed bg-light-gray opacity-50" />
+                </>
+              )}
+              {carInfo.status !== "Annet" && (
+                <>
+                  <div
+                    className="cursor-pointer text-nowrap rounded-md px-4 py-2 text-base font-medium text-medium-gray hover:bg-swamp-100 md:text-lg"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSetStatus("Annet");
+                    }}
+                  >
+                    Sette til Annet
+                  </div>
+                  <hr className="h-[1px] w-full border border-dashed bg-light-gray opacity-50" />
+                </>
+              )}
+              {carInfo.status !== "Solgt" && (
+                <>
+                  <div
+                    className="cursor-pointer text-nowrap rounded-md px-4 py-2 text-base font-medium text-medium-gray hover:bg-swamp-100 md:text-lg"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSetStatus("Solgt");
+                    }}
+                  >
+                    Markere som Solgt
+                  </div>
+                  <hr className="h-[1px] w-full border border-dashed bg-light-gray opacity-50" />
+                </>
+              )}
+            </div>
+          )}
+        </div>
       </div>
       <DeleteDialog
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
+        isOpen={isDelOpen}
+        setIsOpen={setIsDelOpen}
         onDelete={handleDelete}
       />
     </div>

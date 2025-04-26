@@ -19,17 +19,15 @@ const EditCarPage = () => {
   const [owner, setOwner] = useState(null);
 
   useEffect(() => {
-    fetchCar(params.id);
+    loadCarAndOwner(params.id);
   }, []);
 
-  const fetchCar = async (id) => {
+  const loadCarAndOwner = async (id) => {
     setIsLoading(true);
     setError(null);
     try {
-      const car = await ApiService.getCarById(id);
-      setCar(car.data);
-      const owner = await ApiService.getUserById(car.data.ownerId);
-      setOwner(owner.data);
+      await fetchCar(id);
+      await fetchOwner(car.ownerId);
     } catch (error) {
       setError(error);
       setIsErrorOpen(true);
@@ -38,13 +36,23 @@ const EditCarPage = () => {
     }
   };
 
+  const fetchCar = async (id) => {
+    const carResponse = await ApiService.getCarById(id);
+    setCar(carResponse.data);
+  };
+
+  const fetchOwner = async (ownerId) => {
+    const ownerResponse = await ApiService.getUserById(ownerId);
+    setOwner(ownerResponse.data);
+  };
+
   const saveCar = async (carData, ownerData, images) => {
     setIsLoading(true);
     setError(null);
     try {
-      const carResponse = await ApiService.updateCar(carData, images);
-      const ownerResponse = await ApiService.updateOwner(ownerData);
-      await fetchCar(params.id);
+      await ApiService.updateCar(carData, images);
+      await ApiService.updateOwner(ownerData);
+      await loadCarAndOwner(params.id);
     } catch (error) {
       setError(error);
       setIsErrorOpen(true);
