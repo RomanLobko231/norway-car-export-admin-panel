@@ -13,7 +13,7 @@ const NumberInputField = ({
 
   const handleCheckboxChange = () => {
     setIsChecked((prev) => !prev);
-    onChange({ target: { name, value: !isChecked ? initialValue : 0 } });
+    onChange({ target: { name, value: isChecked ? initialValue : 0 } });
   };
 
   return (
@@ -29,6 +29,12 @@ const NumberInputField = ({
           {icon}
         </div>
         <input
+          onKeyDown={(e) =>
+            ["e", "E", "+", "-", ".", ","].includes(e.key) && e.preventDefault()
+          }
+          onPaste={(e) => {
+            e.preventDefault();
+          }}
           onWheel={(e) => e.currentTarget.blur()}
           min={0}
           type="number"

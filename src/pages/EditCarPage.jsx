@@ -3,10 +3,11 @@ import ImageCarousel from "../ui/carousel/ImageCarousel";
 import CarInfoElement from "../ui/car/CarInfoElement";
 import TextInput from "../ui/input/TextInputField";
 import InputField from "../ui/input/TextInputField";
-import ApiService from "../api/ApiService";
 import { useLocation, useParams } from "react-router";
 import CarEditingPanel from "../ui/car/CarEditingPanel";
 import ErrorDialog from "../ui/dialog/ErrorDialog";
+import CarApiService from "../api/CarApiService";
+import UserApiService from "../api/UserApiService";
 
 const EditCarPage = () => {
   const params = useParams();
@@ -26,8 +27,12 @@ const EditCarPage = () => {
     setIsLoading(true);
     setError(null);
     try {
-      await fetchCar(id);
-      await fetchOwner(car.ownerId);
+      const carResponse = await CarApiService.getCarById(id);
+      setCar(carResponse.data);
+      const ownerResponse = await UserApiService.getUserById(
+        carResponse.data.ownerId,
+      );
+      setOwner(ownerResponse.data);
     } catch (error) {
       setError(error);
       setIsErrorOpen(true);
@@ -36,22 +41,13 @@ const EditCarPage = () => {
     }
   };
 
-  const fetchCar = async (id) => {
-    const carResponse = await ApiService.getCarById(id);
-    setCar(carResponse.data);
-  };
-
-  const fetchOwner = async (ownerId) => {
-    const ownerResponse = await ApiService.getUserById(ownerId);
-    setOwner(ownerResponse.data);
-  };
-
   const saveCar = async (carData, ownerData, images) => {
     setIsLoading(true);
     setError(null);
+    console.log(carData);
     try {
-      await ApiService.updateCar(carData, images);
-      await ApiService.updateOwner(ownerData);
+      await CarApiService.updateCar(carData, images);
+      await UserApiService.updateUser(ownerData);
       await loadCarAndOwner(params.id);
     } catch (error) {
       setError(error);
@@ -75,7 +71,7 @@ const EditCarPage = () => {
           error={error}
         />
       )}
-      {!isLoading && !error && car && (
+      {!isLoading && car && (
         <CarEditingPanel car={car} owner={owner} saveInfo={saveCar} />
       )}
     </>

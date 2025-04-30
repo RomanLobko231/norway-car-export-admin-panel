@@ -5,11 +5,45 @@ import { useCallback, useState } from "react";
 import TextInputField from "../input/TextInputField";
 import { TbCarOff, TbDotsVertical } from "react-icons/tb";
 import { MdDelete, MdEdit } from "react-icons/md";
+import NewAuctionDialog from "../auction/NewAuctionDialog";
+import CarContextMenu from "./CarContextMenu";
 
 const CarCard = ({ carInfo, onDelete, setCarStatus }) => {
   const navigate = useNavigate();
   const [isDelOpen, setIsDelOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAuctionOpen, setIsAuctionOpen] = useState(false);
+
+  const menuOptions = [
+    {
+      label: "Sette til Auksjon",
+      onClick: () => {
+        setIsAuctionOpen(true);
+        setIsMenuOpen(false);
+      },
+    },
+    {
+      label: "Sette til Vurdering",
+      onClick: () => {
+        handleSetStatus("Vurdering");
+        setIsMenuOpen(false);
+      },
+    },
+    {
+      label: "Sette til Annet",
+      onClick: () => {
+        handleSetStatus("Annet");
+        setIsMenuOpen(false);
+      },
+    },
+    {
+      label: "Markere som Solgt",
+      onClick: () => {
+        handleSetStatus("Solgt");
+        setIsMenuOpen(false);
+      },
+    },
+  ];
 
   const handleDelete = useCallback(() => {
     onDelete(carInfo.id);
@@ -85,64 +119,11 @@ const CarCard = ({ carInfo, onDelete, setCarStatus }) => {
             }}
           />
           {isMenuOpen && (
-            <div className="absolute right-8 top-12 z-10 rounded-md border border-medium-gray bg-lighthouse md:-left-2 md:right-auto md:top-10">
-              {carInfo.status !== "Auksjon" && (
-                <>
-                  <div
-                    className="cursor-pointer text-nowrap rounded-md px-4 py-2 text-base font-medium text-medium-gray hover:bg-swamp-100 md:text-lg"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      // send to auction create page/form/modal
-                    }}
-                  >
-                    Sette til Auksjon
-                  </div>
-                  <hr className="h-[1px] w-full border border-dashed bg-light-gray opacity-50" />
-                </>
+            <CarContextMenu
+              options={menuOptions.filter(
+                (o) => o.label.trim().split(" ").pop() !== carInfo.status,
               )}
-              {carInfo.status !== "Vurdering" && (
-                <>
-                  <div
-                    className="cursor-pointer text-nowrap rounded-md px-4 py-2 text-base font-medium text-medium-gray hover:bg-swamp-100 md:text-lg"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleSetStatus("Vurdering");
-                    }}
-                  >
-                    Sette til Vurdering
-                  </div>
-                  <hr className="h-[1px] w-full border border-dashed bg-light-gray opacity-50" />
-                </>
-              )}
-              {carInfo.status !== "Annet" && (
-                <>
-                  <div
-                    className="cursor-pointer text-nowrap rounded-md px-4 py-2 text-base font-medium text-medium-gray hover:bg-swamp-100 md:text-lg"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleSetStatus("Annet");
-                    }}
-                  >
-                    Sette til Annet
-                  </div>
-                  <hr className="h-[1px] w-full border border-dashed bg-light-gray opacity-50" />
-                </>
-              )}
-              {carInfo.status !== "Solgt" && (
-                <>
-                  <div
-                    className="cursor-pointer text-nowrap rounded-md px-4 py-2 text-base font-medium text-medium-gray hover:bg-swamp-100 md:text-lg"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleSetStatus("Solgt");
-                    }}
-                  >
-                    Markere som Solgt
-                  </div>
-                  <hr className="h-[1px] w-full border border-dashed bg-light-gray opacity-50" />
-                </>
-              )}
-            </div>
+            />
           )}
         </div>
       </div>
@@ -150,6 +131,11 @@ const CarCard = ({ carInfo, onDelete, setCarStatus }) => {
         isOpen={isDelOpen}
         setIsOpen={setIsDelOpen}
         onDelete={handleDelete}
+      />
+      <NewAuctionDialog
+        open={isAuctionOpen}
+        setOpen={setIsAuctionOpen}
+        auctionedCar={carInfo}
       />
     </div>
   );

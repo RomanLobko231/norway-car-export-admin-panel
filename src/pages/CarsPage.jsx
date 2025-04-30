@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import CarCard from "../ui/car/CarCard";
 import DeleteDialog from "../ui/dialog/DeleteDialog";
-import ApiService from "../api/ApiService";
 import CarsList from "../ui/car/CarsList";
 import ErrorDialog from "../ui/dialog/ErrorDialog";
+import CarApiService from "../api/CarApiService";
 
 const CarsPage = () => {
   const [isErrorOpen, setIsErrorOpen] = useState(false);
@@ -23,7 +23,7 @@ const CarsPage = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await ApiService.getAllCarsByStatus(status);
+      const response = await CarApiService.getAllCarsByStatus(status);
       setCars(response.data);
     } catch (error) {
       setError(error);
@@ -36,7 +36,7 @@ const CarsPage = () => {
   const deleteCar = async (id) => {
     try {
       setError(null);
-      await ApiService.deleteCarById(id);
+      await CarApiService.deleteCarById(id);
       setCars((prev) => prev.filter((element) => element.id !== id));
     } catch (error) {
       setError(error);
@@ -47,7 +47,7 @@ const CarsPage = () => {
   const setCarStatus = async (status, carId) => {
     setError(null);
     try {
-      await ApiService.setCarStatus(status, carId);
+      await CarApiService.setCarStatus(status, carId);
       setCars((prev) => prev.filter((element) => element.id !== carId));
     } catch (error) {
       setError(error);
@@ -71,6 +71,7 @@ const CarsPage = () => {
             onClick={() => {
               setCarFilter(filter);
             }}
+            key={filter}
           >
             {filter}
           </h1>

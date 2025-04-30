@@ -42,12 +42,11 @@ const ImageCarousel = ({ images, deleteImage }) => {
               }}
               className="card_shadow group mb-2 mt-2 flex select-none flex-row items-center gap-1 rounded-lg border border-medium-gray bg-lighthouse px-1 pb-1 pt-1 text-base font-semibold text-medium-gray hover:bg-danger-red hover:text-lighthouse md:px-4 md:text-xl"
             >
-              Delete Image
-              <TiDelete className="h-6 w-auto" />
+              Slette Bilde <TiDelete className="h-6 w-auto" />
             </button>
           </div>
 
-          <div className="mt-4 flex max-h-[550px] w-full overflow-hidden">
+          <div className="mt-2 flex max-h-[550px] w-full overflow-hidden">
             <img
               src={images[currentIndex]}
               alt={`Slide ${currentIndex + 1}`}

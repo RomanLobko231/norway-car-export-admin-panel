@@ -4,8 +4,8 @@ import { useState } from "react";
 import TextInputField from "../input/TextInputField";
 import PasswordInputField from "../input/PasswordInputField";
 import { useNavigate } from "react-router-dom";
-import ApiService from "../../api/ApiService";
 import ErrorMessage from "../ErrorMessage";
+import UserApiService from "../../api/UserApiService";
 
 const LoginModal = ({ open, setOpen }) => {
   const [loginData, setLoginData] = useState({ password: "", email: "" });
@@ -15,7 +15,7 @@ const LoginModal = ({ open, setOpen }) => {
 
   const loginUser = async () => {
     try {
-      const response = await ApiService.loginUser(loginData);
+      const response = await UserApiService.loginUser(loginData);
       navigate(`/user/${response.data.userId}`);
       setLoginData({ password: "", email: "" });
       setOpen(false);
@@ -41,7 +41,7 @@ const LoginModal = ({ open, setOpen }) => {
   };
 
   return (
-    <Dialog open={open} onClose={setOpen} className="relative z-10">
+    <Dialog open={open} onClose={setOpen} className="relative z-30">
       <DialogBackdrop
         transition
         className="fixed inset-0 bg-gray-500/75 backdrop-blur-sm transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"

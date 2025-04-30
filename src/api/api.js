@@ -42,9 +42,9 @@ function handleError(error) {
   if (error.response) {
     const { statusCode, message, timestamp } = error.response?.data ?? {};
 
-    const resolvedStatusCode = statusCode ?? 500;
+    const resolvedStatusCode = error.status ?? 500;
     const resolvedMessage =
-      message ?? "An error occurred. Please try again or refresh page";
+      message ?? "An error occurred. Please try again, refresh page or login";
     const resolvedTimestamp = timestamp ?? new Date().toISOString();
 
     if (error.status == 401) {
@@ -59,7 +59,6 @@ function handleError(error) {
       },
     };
   } else if (error.request) {
-    console.log(error);
     return {
       errorMessage: {
         statusCode: 500,

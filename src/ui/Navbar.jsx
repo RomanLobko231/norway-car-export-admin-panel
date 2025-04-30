@@ -21,39 +21,39 @@ export default function Navbar() {
   const token = localStorage.getItem("token");
 
   return (
-    <div className="fixed z-50 flex w-full justify-center">
+    <div className="fixed z-20 flex w-full justify-center">
       <Disclosure
         as="nav"
         className="mx-4 my-3 flex w-full max-w-7xl flex-col items-center justify-center rounded-lg border border-medium-gray bg-lighthouse/50 backdrop-blur"
       >
-        <div className="w-full max-w-7xl px-6 py-1 lg:px-8">
+        <div className="w-full max-w-7xl px-6">
           <div className="flex h-12 flex-row items-center justify-between md:h-14">
             <div className="flex flex-1 items-center sm:items-stretch sm:justify-between">
               <div className="hidden py-1 sm:block">
                 <div className="flex">
                   <Link
-                    className={`rounded-lg px-3 pb-2 pt-1 text-2xl font-semibold text-gunmental ${location.pathname == "/" && "bg-gunmental text-lighthouse"} hover:bg-gunmental hover:text-lighthouse md:mr-2`}
+                    className={`rounded-lg px-3 pb-2 pt-1 text-xl font-semibold text-gunmental ${location.pathname == "/" && "bg-gunmental text-lighthouse"} hover:bg-gunmental hover:text-lighthouse md:mr-2`}
                     to="/"
                   >
                     {" "}
                     Hjem
                   </Link>
                   <Link
-                    className={`rounded-lg px-3 pb-2 pt-1 text-2xl font-semibold text-gunmental ${location.pathname == "/cars" && "bg-gunmental text-lighthouse"} hover:bg-gunmental hover:text-lighthouse md:mr-2`}
+                    className={`rounded-lg px-3 pb-2 pt-1 text-xl font-semibold text-gunmental ${location.pathname == "/cars" && "bg-gunmental text-lighthouse"} hover:bg-gunmental hover:text-lighthouse md:mr-2`}
                     to="/cars"
                   >
                     {" "}
                     Biler
                   </Link>
                   <Link
-                    className={`rounded-lg px-3 pb-2 pt-1 text-2xl font-semibold text-gunmental ${location.pathname == "/auction" && "bg-gunmental text-lighthouse"} hover:bg-gunmental hover:text-lighthouse md:mr-2`}
+                    className={`rounded-lg px-3 pb-2 pt-1 text-xl font-semibold text-gunmental ${location.pathname == "/auction" && "bg-gunmental text-lighthouse"} hover:bg-gunmental hover:text-lighthouse md:mr-2`}
                     to="/auction"
                   >
                     {" "}
                     Auksjon
                   </Link>
                   <Link
-                    className={`rounded-lg px-3 pb-2 pt-1 text-2xl font-semibold text-gunmental ${location.pathname == "/buyers" && "bg-gunmental text-lighthouse"} hover:bg-gunmental hover:text-lighthouse md:mr-2`}
+                    className={`rounded-lg px-3 pb-2 pt-1 text-xl font-semibold text-gunmental ${location.pathname == "/buyers" && "bg-gunmental text-lighthouse"} hover:bg-gunmental hover:text-lighthouse md:mr-2`}
                     to="/buyers"
                   >
                     {" "}

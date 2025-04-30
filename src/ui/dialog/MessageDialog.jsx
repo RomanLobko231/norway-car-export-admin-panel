@@ -17,7 +17,7 @@ const MessageDialog = ({ isOpen, setIsOpen, onFunc, message }) => {
         className="fixed inset-0 bg-gray-500/75 backdrop-blur-sm transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
       />
       <div className="fixed inset-0 flex w-screen items-center justify-center p-2">
-        <DialogPanel className="mr-4 max-w-lg space-y-4 rounded-lg border bg-lighthouse p-6 md:p-8">
+        <DialogPanel className="max-w-lg space-y-3 rounded-lg border border-swamp-500 bg-lighthouse p-7">
           <DialogTitle className="text-2xl font-bold">Caution!</DialogTitle>
           <p className="text-lg font-semibold text-gunmental">{message}</p>
           <div className="flex gap-4">

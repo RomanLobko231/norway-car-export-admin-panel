@@ -1,8 +1,9 @@
 import { useState } from "react";
 import CarEditingPanel from "../ui/car/CarEditingPanel";
 import ErrorDialog from "../ui/dialog/ErrorDialog";
-import ApiService from "../api/ApiService";
 import { useNavigate } from "react-router";
+import CarApiService from "../api/CarApiService";
+import UserApiService from "../api/UserApiService";
 
 const AddCarPage = () => {
   const [isErrorOpen, setIsErrorOpen] = useState(false);
@@ -12,28 +13,26 @@ const AddCarPage = () => {
 
   const defaultCar = {
     registrationNumber: "",
-    kilometers: 0,
+    kilometers: "",
     make: "",
     model: "",
     firstTimeRegisteredInNorway: "",
     engineType: "",
-    engineVolume: 0,
+    engineVolume: "",
     bodywork: "",
-    numberOfSeats: 0,
-    numberOfDoors: 0,
+    numberOfSeats: "",
+    numberOfDoors: "",
     color: "",
     gearboxType: "Annet",
     operatingMode: "Annet",
-    weight: 0,
+    weight: "",
     nextEUControl: "",
     ownerId: "",
-    status: "Annet",
+    status: "Vurdering",
     additionalInformation: "",
     expectedPrice: "",
     imagePaths: [],
   };
-
-  const defaultAuction = { minStep: 0, durationHours: 0, startPrice: 0 };
 
   const createDefaultOwner = () => ({
     name: "",
@@ -45,7 +44,6 @@ const AddCarPage = () => {
   });
 
   const [car, setCar] = useState(defaultCar);
-  const [auction, setAuction] = useState(defaultAuction);
   const [owner, setOwner] = useState(createDefaultOwner);
 
   const resetFormData = () => {
@@ -53,26 +51,49 @@ const AddCarPage = () => {
     setOwner(createDefaultOwner());
   };
 
+  // --- API call: check if car already exists ---
+  const checkIfCarExists = async (regNumber) => {
+    try {
+      const response = await CarApiService.existsByRegNumber(regNumber);
+      return response.data;
+    } catch (error) {
+      setError(error);
+      setIsErrorOpen(true);
+    }
+  };
+
+  // --- Main save logic ---
   const handleSaveCar = async (carData, ownerData, images) => {
+    const carExists = await checkIfCarExists(carData.registrationNumber);
+    if (carExists) {
+      throw {
+        statusCode: 409,
+        message: "Car with this Registration number already exists.",
+        timestamp: new Date().toISOString(),
+      };
+    }
+
     if (carData.ownerId) {
-      return await ApiService.saveCarExistingUser(carData, images);
+      return await CarApiService.saveCarExistingUser(carData, images);
     } else {
-      const savedUser = await ApiService.registerSeller(ownerData);
+      const savedUser = await UserApiService.registerSeller(ownerData);
       const updatedCarData = {
         ...carData,
         ownerId: savedUser.data.userId,
       };
-      return await ApiService.saveCarNewUser(updatedCarData, images);
+
+      return await CarApiService.saveCarNewUser(updatedCarData, images);
     }
   };
 
+  // --- UI handler ---
   const saveCar = async (carData, ownerData, images) => {
     setIsLoading(true);
     setError(null);
     try {
-      const carResponse = await handleSaveCar(carData, ownerData, images);
+      const response = await handleSaveCar(carData, ownerData, images);
       resetFormData();
-      navigate(`/car/${carResponse.data.id}`);
+      navigate(`/car/${response.data.id}`);
     } catch (error) {
       setError(error);
       setIsErrorOpen(true);
@@ -105,12 +126,7 @@ const AddCarPage = () => {
         />
       )}
 
-      <CarEditingPanel
-        car={car}
-        owner={owner}
-        saveInfo={saveCar}
-        auction={auction}
-      />
+      <CarEditingPanel car={car} owner={owner} saveInfo={saveCar} />
     </>
   );
 };

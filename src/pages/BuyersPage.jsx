@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import BuyerCard from "../ui/buyer/BuyerCard";
-import ApiService from "../api/ApiService";
 import ErrorDialog from "../ui/dialog/ErrorDialog";
+import UserApiService from "../api/UserApiService";
 
 const BuyersPage = () => {
   const [isErrorOpen, setIsErrorOpen] = useState(false);
@@ -14,7 +14,7 @@ const BuyersPage = () => {
     try {
       setIsLoading(true);
       setError(null);
-      const response = await ApiService.getAllBuyers();
+      const response = await UserApiService.getAllBuyers();
       setBuyers(response.data);
       console.log(response);
       setIsLoading(false);

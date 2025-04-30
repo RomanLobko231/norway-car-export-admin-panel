@@ -24,17 +24,16 @@ import { LiaMoneyBillWaveAltSolid } from "react-icons/lia";
 
 import { LuFuel, LuMailbox } from "react-icons/lu";
 import ErrorMessage from "../ErrorMessage";
-import ApiService from "../../api/ApiService";
 import SuccessMessage from "../SuccessMessage";
 import { useParams } from "react-router";
-import { TbCoins } from "react-icons/tb";
+import { TbCoins, TbHorse } from "react-icons/tb";
 import AuctionEditPanel from "../auction/AuctionEditPanel";
+import UserApiService from "../../api/UserApiService";
 
-const CarEditingPanel = ({ car, owner, saveInfo, auction }) => {
+const CarEditingPanel = ({ car, owner, saveInfo }) => {
   const params = useParams();
   const [carData, setCarData] = useState(car);
   const [ownerData, setOwnerData] = useState(owner);
-  const [auctionData, setAuctionData] = useState(auction);
   const [uploadImages, setUploadImages] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const OPERATING_MODES = [
@@ -44,7 +43,6 @@ const CarEditingPanel = ({ car, owner, saveInfo, auction }) => {
     "Annet",
   ];
   const GEARBOX_TYPES = ["Manuell", "Automat", "Annet"];
-  const STATUS_OPTIONS = ["Vurdering", "Auksjon", "Solgt", "Annet"];
   const USER_TYPES = ["Ny Bruker", "Ekisterende"];
   const [userType, setUserType] = useState("Ny Bruker");
   const [userError, setUserError] = useState(null);
@@ -81,7 +79,7 @@ const CarEditingPanel = ({ car, owner, saveInfo, auction }) => {
 
   const checkUserExistsByEmail = async (email) => {
     if (email == "") {
-      setUserError({ message: "Fyll inn epost feltet" });
+      setUserError({ message: "Fyll inn epost adresse" });
       return;
     }
 
@@ -92,7 +90,12 @@ const CarEditingPanel = ({ car, owner, saveInfo, auction }) => {
     }));
 
     try {
-      const user = await ApiService.getUserByEmail(email);
+      const user = await UserApiService.getUserByEmail(email);
+      if (user.data.role !== "SELLER" && user.data.role !== "ONE_TIME_SELLER") {
+        throw {
+          message: "User is not registered as a seller. Cannot add a car",
+        };
+      }
       setCarData((prevData) => ({
         ...prevData,
         ownerId: user.data.id,
@@ -228,7 +231,10 @@ const CarEditingPanel = ({ car, owner, saveInfo, auction }) => {
                       initialValue={ownerData.address.postalCode}
                       onChange={(e) => {
                         const value = e.target.value;
-                        const numericValue = value.replace(/\D/g, "");
+                        let numericValue = value;
+                        if (!e.target.value == "N/A") {
+                          numericValue = value.replace(/\D/g, "");
+                        }
 
                         setOwnerData((prev) => ({
                           ...prev,
@@ -274,22 +280,14 @@ const CarEditingPanel = ({ car, owner, saveInfo, auction }) => {
         <h1 className="mt-8 text-2xl font-bold text-medium-gray">
           BILENS INFO
         </h1>
-        <TextInputField
+        <NumberInputField
           label={"Forventet Pris"}
           name="expectedPrice"
           icon={
             <LiaMoneyBillWaveAltSolid className="h-6 w-auto" color="#333" />
           }
           initialValue={carData.expectedPrice}
-          onChange={(e) => {
-            const value = e.target.value;
-            const numericValue = value.replace(/\D/g, "");
-
-            setCarData((prev) => ({
-              ...prev,
-              expectedPrice: numericValue,
-            }));
-          }}
+          onChange={handleCarInputChange}
         />
         <TextInputField
           label={"Modell"}
@@ -417,21 +415,14 @@ const CarEditingPanel = ({ car, owner, saveInfo, auction }) => {
           />
         </div>
         <hr className="mb-4 mt-4 w-10/12 border-[1px] border-dashed border-gunmental px-2" />
-        <h1 className="mt-8 text-2xl font-bold text-gunmental">STATUS</h1>
+        {/* <h1 className="mt-8 text-2xl font-bold text-gunmental">STATUS</h1>
         <OptionsInput
           options={STATUS_OPTIONS}
           initialOption={carData.status}
           optionName={"status"}
           handleInputChange={handleCarInputChange}
-        />
+        /> */}
 
-        {/* update new info for car, set status Auksjon, so it will not be displayed in Vurdering tab, send create new auction */}
-        {carData.status === "Auksjon" && (
-          <AuctionEditPanel
-            auctionData={auctionData}
-            setAuctionData={setAuctionData}
-          />
-        )}
         <div className="fixed bottom-0 flex w-full flex-row items-center justify-center gap-2 bg-lighthouse/50 backdrop-blur md:gap-5">
           <button
             type="submit"

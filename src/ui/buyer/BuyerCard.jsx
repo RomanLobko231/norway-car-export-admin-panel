@@ -2,9 +2,9 @@ import { useCallback, useState } from "react";
 import { RiArrowDownBoxLine, RiArrowUpBoxLine } from "react-icons/ri";
 import CarInfoElement from "../car/CarInfoElement";
 import { MdClose, MdLink, MdOutlineCheckBox } from "react-icons/md";
-import ApiService from "../../api/ApiService";
 import ErrorMessage from "../ErrorMessage";
 import MessageDialog from "../dialog/MessageDialog";
+import UserApiService from "../../api/UserApiService";
 
 const BuyerCard = ({ buyer, setBuyers }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -16,7 +16,7 @@ const BuyerCard = ({ buyer, setBuyers }) => {
     try {
       setIsLoading(true);
       setError(null);
-      await ApiService.setUserLock(id, false);
+      await UserApiService.setUserLock(id, false);
       setIsLoading(false);
       setBuyers((prevBuyers) =>
         prevBuyers.map((b) =>
@@ -34,7 +34,7 @@ const BuyerCard = ({ buyer, setBuyers }) => {
     try {
       setIsLoading(true);
       setError(null);
-      await ApiService.setUserLock(id, true);
+      await UserApiService.setUserLock(id, true);
       setIsLoading(false);
       setBuyers((prevBuyers) =>
         prevBuyers.map((b) =>
@@ -52,7 +52,7 @@ const BuyerCard = ({ buyer, setBuyers }) => {
     try {
       setIsLoading(true);
       setError(null);
-      await ApiService.deleteUserById(id);
+      await UserApiService.deleteUserById(id);
       setIsLoading(false);
       setBuyers((prevBuyers) => prevBuyers.filter((b) => b.id !== id));
     } catch (error) {
@@ -150,8 +150,8 @@ const BuyerCard = ({ buyer, setBuyers }) => {
                 className="buttonsh hover:button_shadow_hover active:button_shadow_click disabled:button_shadow_click mb-2 mt-5 flex flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-3 pb-1 pt-1 text-xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse disabled:bg-light-gray/50 disabled:text-light-gray"
                 disabled={isLoading}
               >
-                <MdOutlineCheckBox className="mr-2 h-6 w-auto" />
                 Godkjenne
+                <MdOutlineCheckBox className="ml-2 h-6 w-auto" />
               </button>
             ) : (
               <button
@@ -161,8 +161,8 @@ const BuyerCard = ({ buyer, setBuyers }) => {
                 className="buttonsh hover:button_shadow_hover active:button_shadow_click disabled:button_shadow_click mb-2 mt-5 flex flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-3 pb-1 pt-1 text-xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse disabled:bg-light-gray/50 disabled:text-light-gray"
                 disabled={isLoading}
               >
-                <MdOutlineCheckBox className="mr-2 h-6 w-auto" />
                 Oppheve
+                <MdOutlineCheckBox className="ml-2 h-6 w-auto" />
               </button>
             )}
 
