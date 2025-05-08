@@ -7,6 +7,7 @@ import BuyersPage from "./pages/BuyersPage";
 import ProtectedRoute from "./ui/security/ProtectedRoute";
 import CarsPage from "./pages/CarsPage";
 import HomePage from "./pages/HomePage";
+import AuctionPage from "./pages/AuctionPage";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/car/:id" element={<EditCarPage />} exact={true} />
             <Route path="/add-new" element={<AddCarPage />} exact={true} />
             <Route path="/buyers" element={<BuyersPage />} exact={true} />
+            <Route path="/auctions" element={<AuctionPage />} exact={true} />
           </Route>
         </Routes>
       </div>

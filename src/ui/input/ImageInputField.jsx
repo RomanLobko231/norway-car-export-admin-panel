@@ -1,52 +1,91 @@
+import { useState } from "react";
+import { MdClose, MdOutlineFileUpload } from "react-icons/md";
+
+const MAX_TOTAL_SIZE = 20 * 1024 * 1024;
+
 const ImageInputField = ({ images, setImages }) => {
+  const [totalSize, setTotalSize] = useState(0);
+
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files).filter(
       (file) => file.type === "image/jpeg" || file.type === "image/png",
     );
-    setImages((prevFiles) => [...prevFiles, ...files]);
+
+    const newFiles = [];
+    let currentSize = totalSize;
+
+    for (const file of files) {
+      if (currentSize + file.size <= MAX_TOTAL_SIZE) {
+        newFiles.push(file);
+        currentSize += file.size;
+      } else {
+        alert("20 MB total upload limit reached. File skipped: " + file.name);
+        break;
+      }
+    }
+
+    if (newFiles.length > 0) {
+      setImages((prev) => [...prev, ...newFiles]);
+      setTotalSize(currentSize);
+    }
   };
 
   const handleFileDelete = (indexToDelete) => {
-    setImages((prevFiles) =>
-      prevFiles.filter((_, index) => index !== indexToDelete),
-    );
+    setImages((prevFiles) => {
+      const removedFile = prevFiles[indexToDelete];
+      setTotalSize((prevSize) => prevSize - removedFile.size);
+      return prevFiles.filter((_, index) => index !== indexToDelete);
+    });
   };
 
   return (
-    <div className="mx-auto flex flex-col items-center p-4">
-      <label className="mb-4 block text-center text-2xl font-bold text-medium-gray">
-        LASTE OPP BILDER
+    <div className="mb-2 mt-1 flex w-full max-w-[300px] flex-col items-center">
+      <label className="flex w-full cursor-pointer flex-row items-center justify-center gap-1 rounded-lg border border-gunmental bg-white px-4 py-2 text-base font-medium text-light-gray hover:bg-gray-200 hover:text-medium-gray md:text-lg">
+        <MdOutlineFileUpload className="h-6 w-auto" />
+        Velg filer
+        <input
+          type="file"
+          multiple
+          accept="image/jpeg, image/png"
+          onChange={handleFileChange}
+          className="hidden"
+        />
       </label>
-      <input
-        type="file"
-        multiple
-        accept="image/jpeg, image/png"
-        onChange={handleFileChange}
-        className="block w-full text-base text-gunmental file:mr-4 file:rounded-lg file:border file:border-gunmental file:bg-lighthouse file:px-4 file:py-1 file:text-base file:font-medium hover:file:bg-blue-100"
-      />
 
       {images.length > 0 && (
-        <div className="mt-4">
-          <ul className="mt-2 list-inside list-disc">
-            {images.map((file, index) => (
-              <li
-                key={index}
-                className="mt-2 flex flex-row items-center text-gray-700"
-              >
-                <span className="text-base font-medium text-medium-gray">
-                  {file.name}
-                </span>
-                <div className="mx-2 h-[1px] w-full bg-light-gray opacity-50"></div>
-                <img
-                  src="../icons/cross_dark.png"
-                  alt="Delete"
-                  onClick={() => handleFileDelete(index)}
-                  className="ml-4 mt-1 h-4 w-4 cursor-pointer hover:opacity-70"
-                />
-              </li>
-            ))}
-          </ul>
-        </div>
+        <>
+          <div className="mt-3 w-full">
+            <div className="mb-2 text-sm text-medium-gray">
+              {(totalSize / (1024 * 1024)).toFixed(2)} MB / 20.00 MB
+            </div>
+            <div className="h-2 w-full overflow-hidden rounded-sm bg-light-gray/50">
+              <div
+                className="h-full bg-swamp transition-all duration-200"
+                style={{ width: `${(totalSize / MAX_TOTAL_SIZE) * 100}%` }}
+              ></div>
+            </div>
+          </div>
+          <div className="mt-3 w-full">
+            <ul className="mt-2 list-inside list-disc">
+              {images.map((file, index) => (
+                <li
+                  key={index}
+                  className="mt-2 flex flex-row items-center text-gray-700"
+                >
+                  <p className="max-w-[70%] truncate text-sm font-medium text-medium-gray md:text-base">
+                    {file.name}
+                  </p>
+                  <div className="mx-3 h-[1px] flex-grow bg-light-gray opacity-50"></div>
+                  <MdClose
+                    className="h-5 w-5 flex-shrink-0 hover:opacity-25"
+                    color="#333333"
+                    onClick={() => handleFileDelete(index)}
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
+        </>
       )}
     </div>
   );

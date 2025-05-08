@@ -51,7 +51,6 @@ const AddCarPage = () => {
     setOwner(createDefaultOwner());
   };
 
-  // --- API call: check if car already exists ---
   const checkIfCarExists = async (regNumber) => {
     try {
       const response = await CarApiService.existsByRegNumber(regNumber);
@@ -62,7 +61,6 @@ const AddCarPage = () => {
     }
   };
 
-  // --- Main save logic ---
   const handleSaveCar = async (carData, ownerData, images) => {
     const carExists = await checkIfCarExists(carData.registrationNumber);
     if (carExists) {
@@ -86,7 +84,6 @@ const AddCarPage = () => {
     }
   };
 
-  // --- UI handler ---
   const saveCar = async (carData, ownerData, images) => {
     setIsLoading(true);
     setError(null);

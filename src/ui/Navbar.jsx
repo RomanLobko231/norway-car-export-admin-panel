@@ -12,7 +12,7 @@ import LoginModal from "./security/LoginModal";
 const navigation = [
   { name: "Biler", href: "/cars", current: false },
   { name: "Buyere", href: "/buyers", current: false },
-  { name: "Auksjon", href: "/auction", current: false },
+  { name: "Auksjon", href: "/auctions", current: false },
 ];
 
 export default function Navbar() {
@@ -47,7 +47,7 @@ export default function Navbar() {
                   </Link>
                   <Link
                     className={`rounded-lg px-3 pb-2 pt-1 text-xl font-semibold text-gunmental ${location.pathname == "/auction" && "bg-gunmental text-lighthouse"} hover:bg-gunmental hover:text-lighthouse md:mr-2`}
-                    to="/auction"
+                    to="/auctions"
                   >
                     {" "}
                     Auksjon
@@ -96,14 +96,6 @@ export default function Navbar() {
                     Logg inn
                   </div>
                 )}
-                {/* <div
-                  className="my-1 hidden flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-3 pb-1 pt-1 text-base font-normal text-gunmental hover:bg-gunmental hover:text-lighthouse sm:flex md:text-xl md:font-semibold"
-                  onClick={() => {
-                    setModalOpen(true);
-                  }}
-                >
-                  Login
-                </div> */}
               </div>
 
               <Link className="sm:hidden" to="/">

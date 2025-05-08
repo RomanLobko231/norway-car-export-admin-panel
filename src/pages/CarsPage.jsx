@@ -33,11 +33,11 @@ const CarsPage = () => {
     }
   };
 
-  const deleteCar = async (id) => {
+  const deleteCar = async (carId) => {
     try {
       setError(null);
-      await CarApiService.deleteCarById(id);
-      setCars((prev) => prev.filter((element) => element.id !== id));
+      await CarApiService.deleteCarById(carId);
+      setCars((prev) => prev.filter((c) => c.id !== carId));
     } catch (error) {
       setError(error);
       setIsErrorOpen(true);

@@ -41,6 +41,11 @@ const NumberInputField = ({
           id={label}
           name={name}
           value={isChecked ? 0 : initialValue}
+          onFocus={(e) => {
+            if (!isChecked && parseFloat(e.target.value) === 0) {
+              e.target.value = "";
+            }
+          }}
           disabled={isChecked}
           onChange={onChange}
           className="block w-full rounded-lg border border-medium-gray bg-white px-5 py-2.5 ps-11 text-base font-medium text-medium-gray disabled:text-light-gray md:ps-12 md:text-lg"

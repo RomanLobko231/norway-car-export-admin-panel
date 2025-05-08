@@ -62,8 +62,7 @@ function handleError(error) {
     return {
       errorMessage: {
         statusCode: 500,
-        message:
-          "The server is not responding. Edit your request and try again",
+        message: "The server is not responding.",
         timestamp: new Date().toISOString(),
       },
     };

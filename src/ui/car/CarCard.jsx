@@ -5,7 +5,7 @@ import { useCallback, useState } from "react";
 import TextInputField from "../input/TextInputField";
 import { TbCarOff, TbDotsVertical } from "react-icons/tb";
 import { MdDelete, MdEdit } from "react-icons/md";
-import NewAuctionDialog from "../auction/NewAuctionDialog";
+import NewAuctionDialog from "../auction/dialog/NewAuctionDialog";
 import CarContextMenu from "./CarContextMenu";
 
 const CarCard = ({ carInfo, onDelete, setCarStatus }) => {

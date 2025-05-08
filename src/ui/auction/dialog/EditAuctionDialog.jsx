@@ -7,35 +7,27 @@ import {
   MdOutlineTrendingUp,
 } from "react-icons/md";
 import { TbCoins } from "react-icons/tb";
-import NumberInputField from "../input/NumberInputField";
-import AuctionApiService from "../../api/AuctionApiService";
-import ErrorMessage from "../ErrorMessage";
-import { RiArrowUpBoxLine } from "react-icons/ri";
+import NumberInputField from "../../input/NumberInputField";
+import AuctionApiService from "../../../api/AuctionApiService";
+import ErrorMessage from "../../ErrorMessage";
 import { LiaMoneyBillWaveAltSolid } from "react-icons/lia";
-import CarApiService from "../../api/CarApiService";
+import { addHours, format } from "date-fns";
+import { useNavigate } from "react-router";
+import { getHoursUntil } from "../../../utils/dateTimeUtils";
 
-const NewAuctionDialog = ({ open, setOpen, auctionedCar }) => {
-  const defaultAuction = {
-    minStep: 0,
-    durationHours: 0,
-    startPrice: 0,
-    carId: auctionedCar.id,
-    expectedPrice: auctionedCar.expectedPrice || 0,
-  };
-  const [auctionData, setAuctionData] = useState(defaultAuction);
+const EditAuctionDialog = ({ open, setOpen, auction }) => {
+  const [auctionData, setAuctionData] = useState({
+    minimalStep: auction.minimalStep,
+    auctionDuration: getHoursUntil(auction.endDateTime),
+    startingPrice: auction.startingPrice,
+    id: auction.id,
+    expectedPrice: auction.expectedPrice,
+  });
+
+  console.log(auction);
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  const calculateAuctionEnd = (hours) => {
-    let currentTime = new Date().getTime();
-    let updatedTime = new Date(currentTime + hours * 60 * 60 * 1000);
-
-    const offset = updatedTime.getTimezoneOffset();
-    updatedTime = new Date(updatedTime.getTime() - offset * 60 * 1000);
-
-    return updatedTime.toISOString().replace("T", " ").substring(0, 19);
-  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -45,23 +37,36 @@ const NewAuctionDialog = ({ open, setOpen, auctionedCar }) => {
     }));
   };
 
-  const saveAuction = async (auction) => {
+  const updateAuction = async (auction) => {
     setIsLoading(true);
     setError(null);
     try {
-      console.log(auction);
-      // const response = await AuctionApiService.saveNewAuction(auction);
-      await CarApiService.setCarStatus("Auksjon", auctionedCar.id);
+      const response = await AuctionApiService.updateAuction(auction);
+      setOpen(false);
     } catch (error) {
       setError(error);
+      setIsLoading(false);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const submitSaveAuction = (e) => {
+  const submitUpdateAuction = (e) => {
     e.preventDefault();
-    saveAuction(auctionData);
+    const updatePayload = {
+      minimalStep: auctionData.minimalStep,
+      endDateTime: addHours(new Date(), auctionData.auctionDuration),
+      startingPrice: auctionData.startingPrice,
+      carId: auctionData.carId,
+      id: auctionData.id,
+      expectedPrice: auctionData.expectedPrice,
+    };
+    updateAuction(updatePayload);
+  };
+
+  const calculateAuctionEnd = (hours) => {
+    const newDate = addHours(new Date(), hours);
+    return format(newDate, "yyyy-MM-dd HH:mm:ss");
   };
 
   return (
@@ -79,7 +84,7 @@ const NewAuctionDialog = ({ open, setOpen, auctionedCar }) => {
           >
             <div className="mb-2 flex flex-row items-center justify-between md:px-2">
               <h1 className="mb-1 whitespace-nowrap text-center text-2xl font-bold text-medium-gray md:text-3xl">
-                Ny Aukjson
+                Endre Auksjon
               </h1>
               <div className="mx-3 h-[1px] flex-grow bg-light-gray opacity-50"></div>
               <MdClose
@@ -91,23 +96,23 @@ const NewAuctionDialog = ({ open, setOpen, auctionedCar }) => {
 
             <form
               className="flex w-full flex-col items-center md:px-2"
-              onSubmit={submitSaveAuction}
+              onSubmit={submitUpdateAuction}
             >
               <NumberInputField
                 label={"Start Pris"}
-                name="startPrice"
+                name="startingPrice"
                 icon={<TbCoins className="h-6 w-auto" color="#333" />}
-                initialValue={auctionData.startPrice}
+                initialValue={auctionData.startingPrice}
                 onChange={handleInputChange}
                 disableCheckbox={true}
               />
               <NumberInputField
                 label={"Min Steg"}
-                name="minStep"
+                name="minimalStep"
                 icon={
                   <MdOutlineTrendingUp className="h-6 w-auto" color="#333" />
                 }
-                initialValue={auctionData.minStep}
+                initialValue={auctionData.minimalStep}
                 onChange={handleInputChange}
                 disableCheckbox={true}
               />
@@ -127,15 +132,15 @@ const NewAuctionDialog = ({ open, setOpen, auctionedCar }) => {
               <NumberInputField
                 label={"Varighet (timer)"}
                 icon={<MdAlarm className="h-6 w-auto" />}
-                name={"durationHours"}
-                initialValue={auctionData.durationHours}
+                name={"auctionDuration"}
+                initialValue={auctionData.auctionDuration}
                 onChange={handleInputChange}
                 disableCheckbox={true}
               />
-              {auctionData.durationHours > 0 && (
+              {auctionData.auctionDuration > 0 && (
                 <p className="mt-1 text-center text-base font-medium text-light-gray">
                   Auksjonen avsluttes:{" "}
-                  {calculateAuctionEnd(auctionData.durationHours)}
+                  {calculateAuctionEnd(auctionData.auctionDuration)}
                 </p>
               )}
               {error && <ErrorMessage error={error.message} />}
@@ -147,7 +152,7 @@ const NewAuctionDialog = ({ open, setOpen, auctionedCar }) => {
                   disabled={isLoading}
                   type="submit"
                 >
-                  Lagre
+                  Lagre Aukjson
                   <MdOutlineCheckBox className="ml-1 h-6 w-auto" />
                 </button>
               )}
@@ -159,4 +164,4 @@ const NewAuctionDialog = ({ open, setOpen, auctionedCar }) => {
   );
 };
 
-export default NewAuctionDialog;
+export default EditAuctionDialog;
