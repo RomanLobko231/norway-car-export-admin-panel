@@ -4,21 +4,38 @@ import {
   DisclosurePanel,
 } from "@headlessui/react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { TbMenu } from "react-icons/tb";
-import { MdOutlineAddBox, MdOutlineClose } from "react-icons/md";
+import { TbCar, TbHome, TbMenu } from "react-icons/tb";
+import {
+  MdHome,
+  MdOutlineAddBox,
+  MdOutlineClose,
+  MdOutlinePerson2,
+} from "react-icons/md";
 import { useState } from "react";
 import LoginModal from "./security/LoginModal";
+import { RiAuctionLine } from "react-icons/ri";
 
 const navigation = [
-  { name: "Biler", href: "/cars", current: false },
-  { name: "Buyere", href: "/buyers", current: false },
-  { name: "Auksjon", href: "/auctions", current: false },
+  { name: "Hjem", href: "/", current: false, icon: <TbHome /> },
+  { name: "Biler", href: "/cars", current: false, icon: <TbCar /> },
+  {
+    name: "Buyere",
+    href: "/buyers",
+    current: false,
+    icon: <MdOutlinePerson2 />,
+  },
+  {
+    name: "Auksjon",
+    href: "/auctions",
+    current: false,
+    icon: <RiAuctionLine />,
+  },
 ];
 
 export default function Navbar() {
   const location = useLocation();
   const [modalOpen, setModalOpen] = useState(false);
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
 
   return (
     <div className="fixed z-20 flex w-full justify-center">
@@ -29,56 +46,32 @@ export default function Navbar() {
         <div className="w-full max-w-7xl px-6">
           <div className="flex h-12 flex-row items-center justify-between md:h-14">
             <div className="flex flex-1 items-center sm:items-stretch sm:justify-between">
-              <div className="hidden py-1 sm:block">
+              <div className="hidden flex-row items-center py-1 sm:flex">
+                <span className="mr-4 hidden bg-gradient-to-b from-gunmental to-swamp-500 bg-clip-text text-xl font-black text-transparent md:inline-block">
+                  ADMIN
+                </span>
                 <div className="flex">
-                  <Link
-                    className={`rounded-lg px-3 pb-2 pt-1 text-xl font-semibold text-gunmental ${location.pathname == "/" && "bg-gunmental text-lighthouse"} hover:bg-gunmental hover:text-lighthouse md:mr-2`}
-                    to="/"
-                  >
-                    {" "}
-                    Hjem
-                  </Link>
-                  <Link
-                    className={`rounded-lg px-3 pb-2 pt-1 text-xl font-semibold text-gunmental ${location.pathname == "/cars" && "bg-gunmental text-lighthouse"} hover:bg-gunmental hover:text-lighthouse md:mr-2`}
-                    to="/cars"
-                  >
-                    {" "}
-                    Biler
-                  </Link>
-                  <Link
-                    className={`rounded-lg px-3 pb-2 pt-1 text-xl font-semibold text-gunmental ${location.pathname == "/auction" && "bg-gunmental text-lighthouse"} hover:bg-gunmental hover:text-lighthouse md:mr-2`}
-                    to="/auctions"
-                  >
-                    {" "}
-                    Auksjon
-                  </Link>
-                  <Link
-                    className={`rounded-lg px-3 pb-2 pt-1 text-xl font-semibold text-gunmental ${location.pathname == "/buyers" && "bg-gunmental text-lighthouse"} hover:bg-gunmental hover:text-lighthouse md:mr-2`}
-                    to="/buyers"
-                  >
-                    {" "}
-                    Buyere
-                  </Link>
+                  {navigation.map((item) => (
+                    <Link
+                      className={`flex flex-row items-center gap-1 rounded-md border border-medium-gray px-4 pb-1 pt-1 text-xl font-semibold text-gunmental ${location.pathname == item.href && "bg-gunmental text-lighthouse"} hover:bg-gunmental hover:text-lighthouse md:mr-2`}
+                      to={item.href}
+                      key={item.href}
+                    >
+                      {item.icon} {item.name}
+                    </Link>
+                  ))}
                 </div>
               </div>
               <div className="flex flex-row gap-3">
                 <Link
-                  className="group my-1 hidden flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-3 pb-1 pt-1 text-base font-normal text-gunmental hover:bg-gunmental hover:text-lighthouse sm:flex md:text-xl md:font-semibold"
+                  className="my-1 hidden flex-row items-center rounded-md border border-medium-gray bg-lighthouse p-1 text-base font-normal text-gunmental hover:bg-gunmental hover:text-lighthouse sm:flex md:text-xl md:font-semibold"
                   to="/add-new"
                 >
-                  <MdOutlineAddBox
-                    className="mr-2 hidden h-7 w-auto group-hover:block"
-                    color="#F7F8F8"
-                  />
-                  <MdOutlineAddBox
-                    className="mr-2 block h-7 w-auto group-hover:hidden"
-                    color="#1c2628"
-                  />
-                  Legg til
+                  <MdOutlineAddBox className="h-7 w-auto" />
                 </Link>
                 {token ? (
                   <div
-                    className="my-1 hidden cursor-pointer flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-3 pb-1 pt-1 text-base font-normal text-gunmental hover:bg-gunmental hover:text-lighthouse sm:flex md:text-xl md:font-semibold"
+                    className="my-1 hidden cursor-pointer flex-row items-center rounded-md border border-medium-gray bg-lighthouse px-3 pb-1 pt-1 text-base font-normal text-gunmental hover:bg-gunmental hover:text-lighthouse sm:flex md:text-xl md:font-semibold"
                     onClick={() => {
                       localStorage.removeItem("token");
                       window.location.href = "/";
@@ -88,7 +81,7 @@ export default function Navbar() {
                   </div>
                 ) : (
                   <div
-                    className="my-1 hidden cursor-pointer flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-3 pb-1 pt-1 text-base font-normal text-gunmental hover:bg-gunmental hover:text-lighthouse sm:flex md:text-xl md:font-semibold"
+                    className="my-1 hidden cursor-pointer flex-row items-center rounded-md border border-medium-gray bg-lighthouse px-3 pb-1 pt-1 text-base font-normal text-gunmental hover:bg-gunmental hover:text-lighthouse sm:flex md:text-xl md:font-semibold"
                     onClick={() => {
                       setModalOpen(true);
                     }}

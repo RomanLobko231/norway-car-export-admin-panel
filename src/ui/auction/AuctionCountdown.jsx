@@ -17,7 +17,7 @@ const AuctionCountdown = ({ utcEndTime }) => {
   }
 
   return (
-    <p className="text-lg font-bold text-medium-gray">
+    <p className="text-base font-bold text-medium-gray">
       {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s
     </p>
   );

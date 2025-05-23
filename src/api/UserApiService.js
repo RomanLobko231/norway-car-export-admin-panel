@@ -4,7 +4,7 @@ export default class UserApiService {
   static async registerSeller(sellerData) {
     try {
       const response = await api.post(
-        "/api/v1/users/register_seller",
+        "/api/v1/users/register-seller",
         sellerData,
       );
       return response;
@@ -17,7 +17,7 @@ export default class UserApiService {
   static async registerOneTimeSeller(sellerData) {
     try {
       const response = await api.post(
-        "/api/v1/users/register_one_time_seller",
+        "/api/v1/users/register-one-time-seller",
         sellerData,
       );
       return response;
@@ -37,9 +37,41 @@ export default class UserApiService {
     }
   }
 
+  static async getLicencesByCompanyId(id) {
+    try {
+      const response = await api.get(`/api/v1/users/buyers/${id}/licences`);
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  static async getRepresentativeById(id) {
+    try {
+      const response = await api.get(`/api/v1/users/representatives/${id}`);
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  static async getRepresentativeWithCompanyById(id) {
+    try {
+      const response = await api.get(
+        `/api/v1/users/representatives/${id}/with-company`,
+      );
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
   static async getUserByEmail(email) {
     try {
-      const response = await api.get(`/api/v1/users/by_email/${email}`);
+      const response = await api.get(`/api/v1/users/by-email/${email}`);
       return response;
     } catch (error) {
       console.log(error);
@@ -50,6 +82,18 @@ export default class UserApiService {
   static async getAllBuyers() {
     try {
       const response = await api.get("/api/v1/users/buyers");
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  static async getAllBuyersByLockedStatus(isLocked) {
+    try {
+      const response = await api.get(
+        `/api/v1/users/buyers?isLocked=${isLocked}`,
+      );
       return response;
     } catch (error) {
       console.log(error);
@@ -70,7 +114,7 @@ export default class UserApiService {
   static async setUserLock(id, isLocked) {
     try {
       const response = await api.patch(
-        `/api/v1/users/${id}/set_lock?isLocked=${isLocked}`,
+        `/api/v1/users/${id}/set-lock?isLocked=${isLocked}`,
       );
       return response;
     } catch (error) {

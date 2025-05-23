@@ -85,7 +85,7 @@ export default class CarApiService {
         data.append("images", image);
       });
 
-      const response = await api.post("/api/v1/cars/add_complete", data);
+      const response = await api.post("/api/v1/cars/add-complete", data);
       return response;
     } catch (error) {
       console.log(error);
@@ -105,7 +105,7 @@ export default class CarApiService {
         data.append("images", image);
       });
 
-      const response = await api.post("/api/v1/cars/add_complete_user", data);
+      const response = await api.post("/api/v1/cars/add-complete-user", data);
       return response;
     } catch (error) {
       console.log(error);

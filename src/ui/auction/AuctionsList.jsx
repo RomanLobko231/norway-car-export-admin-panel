@@ -14,12 +14,14 @@ const AuctionsList = ({ auctions, deleteAuction, setAuctionStatus }) => {
               onDelete={deleteAuction}
               setAuctionStatus={setAuctionStatus}
             />
-            {index % 2 == 0 && auctions.length > 1 && (
-              <div className="mx-3 hidden h-4/5 w-[1px] bg-gradient-to-b from-transparent via-light-gray/50 to-transparent xl:block" />
-            )}
+            {index % 2 == 0 &&
+              auctions.length > 1 &&
+              index !== auctions.length - 1 && (
+                <div className="mx-3 hidden h-4/5 w-[1px] bg-gradient-to-b from-transparent via-light-gray/50 to-transparent xl:block" />
+              )}
           </div>
 
-          {index !== lastIndex && index !== middleIndex && (
+          {(index !== lastIndex || auctions.length % 2 === 0) && (
             <div className="my-3 hidden h-[1px] w-4/5 bg-gradient-to-r from-transparent via-light-gray/50 to-transparent xl:block" />
           )}
         </div>

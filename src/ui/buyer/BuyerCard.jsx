@@ -8,9 +8,13 @@ import UserApiService from "../../api/UserApiService";
 
 const BuyerCard = ({ buyer, setBuyers }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isLicencesLoading, setIsLicecesLoading] = useState(false);
+
+  const [licences, setLicences] = useState(null);
 
   const approveBuyer = async (id) => {
     try {
@@ -27,6 +31,19 @@ const BuyerCard = ({ buyer, setBuyers }) => {
       setError(error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const fetchLicencesById = async (id) => {
+    setIsLicecesLoading(true);
+    setError(null);
+    try {
+      const response = await UserApiService.getLicencesByCompanyId(id);
+      setLicences(response.data);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setIsLicecesLoading(false);
     }
   };
 
@@ -68,7 +85,7 @@ const BuyerCard = ({ buyer, setBuyers }) => {
 
   const parse = (url) => {
     let arr = url.split("/");
-    return arr.pop();
+    return arr.pop().substring(14, 70);
   };
 
   return (
@@ -101,7 +118,7 @@ const BuyerCard = ({ buyer, setBuyers }) => {
 
       {isExpanded && (
         <div
-          className="mt-4 flex w-full flex-col border-t pt-4"
+          className="mt-4 flex w-full flex-col items-start border-t pt-4"
           onClick={(e) => e.stopPropagation()}
         >
           <h1 className="mb-2 w-full text-start text-lg font-medium text-light-gray">
@@ -124,22 +141,37 @@ const BuyerCard = ({ buyer, setBuyers }) => {
           <h1 className="mb-2 mt-4 w-full text-start text-lg font-medium text-light-gray">
             Organisasjonslisenser:
           </h1>
-          <div className="flex w-full flex-col gap-2">
-            {buyer.organisationLicenceURLs.map((licence) => (
-              <a
-                className="group flex w-full flex-row items-center rounded-md border-[1px] border-dashed border-light-gray bg-white px-3 py-1 hover:bg-gunmental"
-                href={licence}
-                target="_blank"
-                rel="noopener noreferrer"
-                key={licence}
+          {isLicencesLoading ||
+            (!licences && (
+              <button
+                className="flex flex-row items-center rounded-md border border-medium-gray bg-white px-3 py-1 text-base font-medium text-medium-gray hover:bg-gunmental hover:text-lighthouse md:text-lg"
+                onClick={() => {
+                  fetchLicencesById(buyer.id);
+                }}
               >
-                <MdLink className="mr-2 h-6 w-auto text-medium-gray group-hover:text-lighthouse" />
-                <p className="md:text-md truncate text-base font-medium text-medium-gray group-hover:text-lighthouse">
-                  {parse(licence)}
-                </p>
-              </a>
+                <MdLink className="mr-2 h-6 w-auto" />
+                Se Lisenser
+              </button>
             ))}
-          </div>
+          {!isLicencesLoading && licences && (
+            <div className="flex w-full flex-col gap-2">
+              {licences.map((licence) => (
+                <a
+                  className="group flex w-full flex-row items-center rounded-md border-[1px] border-dashed border-light-gray bg-white px-3 py-1 hover:bg-gunmental"
+                  href={licence}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  key={licence}
+                >
+                  <MdLink className="mr-2 h-6 w-auto text-medium-gray group-hover:text-lighthouse" />
+                  <p className="md:text-md truncate text-base font-medium text-medium-gray group-hover:text-lighthouse">
+                    {parse(licence)}
+                  </p>
+                </a>
+              ))}
+            </div>
+          )}
+
           {error && <ErrorMessage error={error.message} />}
           <div className="mt-4 flex justify-start gap-2">
             {buyer.accountLocked ? (

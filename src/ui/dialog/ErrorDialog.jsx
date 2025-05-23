@@ -23,7 +23,9 @@ const ErrorDialog = ({ isOpen, setIsOpen, error }) => {
           <DialogTitle className="text-lg font-bold">
             {`Error: ${error.statusCode}`}
           </DialogTitle>
-          <p className="text-lg font-bold text-gunmental">{error.message}</p>
+          <p className="break-all text-lg font-bold text-gunmental">
+            {error.message}
+          </p>
           <p className="text-xs font-normal text-medium-gray">
             {error.timestamp}
           </p>

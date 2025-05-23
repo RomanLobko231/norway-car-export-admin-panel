@@ -24,8 +24,6 @@ const EditAuctionDialog = ({ open, setOpen, auction }) => {
     expectedPrice: auction.expectedPrice,
   });
 
-  console.log(auction);
-
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -43,6 +41,7 @@ const EditAuctionDialog = ({ open, setOpen, auction }) => {
     try {
       const response = await AuctionApiService.updateAuction(auction);
       setOpen(false);
+      window.location.reload();
     } catch (error) {
       setError(error);
       setIsLoading(false);
@@ -144,6 +143,13 @@ const EditAuctionDialog = ({ open, setOpen, auction }) => {
                 </p>
               )}
               {error && <ErrorMessage error={error.message} />}
+              {auctionData.auctionDuration == 0 && (
+                <ErrorMessage
+                  error={
+                    "Setting duration as '0' means that auction will be closed immeadiately"
+                  }
+                />
+              )}
               {isLoading ? (
                 <p>Loading..</p>
               ) : (

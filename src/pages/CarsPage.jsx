@@ -4,6 +4,9 @@ import DeleteDialog from "../ui/dialog/DeleteDialog";
 import CarsList from "../ui/car/CarsList";
 import ErrorDialog from "../ui/dialog/ErrorDialog";
 import CarApiService from "../api/CarApiService";
+import { useSearchParams } from "react-router";
+
+const CAR_STATUSES = ["Vurdering", "Solgt", "Annet", "Auksjon"];
 
 const CarsPage = () => {
   const [isErrorOpen, setIsErrorOpen] = useState(false);
@@ -12,12 +15,19 @@ const CarsPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [cars, setCars] = useState([]);
 
-  const CAR_STATUSES = ["Vurdering", "Solgt", "Annet"];
-  const [carFilter, setCarFilter] = useState(CAR_STATUSES.at(0));
+  const [searchParams, setSearchParams] = useSearchParams();
+  const statusParam = searchParams.get("status") || CAR_STATUSES.at(0);
+
+  const [carFilter, setCarFilter] = useState(statusParam);
 
   useEffect(() => {
     fetchAllByStatus(carFilter);
   }, [carFilter]);
+
+  const updateFilter = (newFilter) => {
+    setCarFilter(newFilter);
+    setSearchParams({ status: newFilter });
+  };
 
   const fetchAllByStatus = async (status) => {
     setIsLoading(true);
@@ -69,11 +79,12 @@ const CarsPage = () => {
                 : "border-medium-gray bg-lighthouse text-gunmental hover:bg-gray-200"
             }`}
             onClick={() => {
-              setCarFilter(filter);
+              updateFilter(filter);
             }}
             key={filter}
           >
             {filter}
+            {carFilter === filter && `: ${cars.length}`}
           </h1>
         ))}
       </div>

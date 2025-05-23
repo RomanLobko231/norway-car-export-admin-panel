@@ -2,20 +2,29 @@ import { useEffect, useState } from "react";
 import AuctionApiService from "../api/AuctionApiService";
 import AuctionsList from "../ui/auction/AuctionsList";
 import ErrorDialog from "../ui/dialog/ErrorDialog";
+import { useSearchParams } from "react-router";
+
+const AUCTION_STATUSES = ["Aktivt", "Avsluttet", "Deaktivert"];
 
 const AuctionPage = () => {
   const [isErrorOpen, setIsErrorOpen] = useState(false);
   const [error, setError] = useState(null);
-
   const [isLoading, setIsLoading] = useState(false);
-  const [auctions, setAuctions] = useState([]);
 
-  const AUCTION_STATUSES = ["Aktivt", "Avsluttet"];
-  const [auctionFilter, setAuctionFilter] = useState(AUCTION_STATUSES.at(0));
+  const [searchParams, setSearchParams] = useSearchParams();
+  const statusParam = searchParams.get("status") || AUCTION_STATUSES.at(0);
+
+  const [auctions, setAuctions] = useState([]);
+  const [auctionFilter, setAuctionFilter] = useState(statusParam);
 
   useEffect(() => {
     fetchAllByStatus(auctionFilter);
   }, [auctionFilter]);
+
+  const updateFilter = (newFilter) => {
+    setAuctionFilter(newFilter);
+    setSearchParams({ status: newFilter });
+  };
 
   const fetchAllByStatus = async (status) => {
     setIsLoading(true);
@@ -70,7 +79,7 @@ const AuctionPage = () => {
                 : "border-medium-gray bg-lighthouse text-gunmental hover:bg-gray-200"
             }`}
             onClick={() => {
-              setAuctionFilter(filter);
+              updateFilter(filter);
             }}
             key={filter}
           >
