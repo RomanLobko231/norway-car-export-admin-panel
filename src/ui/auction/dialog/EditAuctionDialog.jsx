@@ -4,6 +4,7 @@ import {
   MdAlarm,
   MdClose,
   MdOutlineCheckBox,
+  MdOutlineSaveAs,
   MdOutlineTrendingUp,
 } from "react-icons/md";
 import { TbCoins } from "react-icons/tb";
@@ -41,6 +42,21 @@ const EditAuctionDialog = ({ open, setOpen, auction }) => {
     try {
       const response = await AuctionApiService.updateAuction(auction);
       setOpen(false);
+      //window.location.reload();
+    } catch (error) {
+      setError(error);
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const updateRestartAuction = async (auction) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await AuctionApiService.updateRestartAuction(auction);
+      setOpen(false);
       window.location.reload();
     } catch (error) {
       setError(error);
@@ -50,17 +66,34 @@ const EditAuctionDialog = ({ open, setOpen, auction }) => {
     }
   };
 
-  const submitUpdateAuction = (e) => {
+  const submitUpdate = (e) => {
     e.preventDefault();
     const updatePayload = {
-      minimalStep: auctionData.minimalStep,
-      endDateTime: addHours(new Date(), auctionData.auctionDuration),
-      startingPrice: auctionData.startingPrice,
-      carId: auctionData.carId,
-      id: auctionData.id,
-      expectedPrice: auctionData.expectedPrice,
+      ...auctionData,
+      endDateTime: addHours(
+        new Date(),
+        auctionData.auctionDuration,
+      ).toISOString(),
     };
+
     updateAuction(updatePayload);
+  };
+
+  const submitUpdateRestart = (e) => {
+    e.preventDefault();
+    if (auctionData.auctionDuration <= 0) {
+      setError({ message: "Auction duration must be more than 0 hours" });
+      return;
+    }
+
+    const updatePayload = {
+      ...auctionData,
+      endDateTime: addHours(
+        new Date(),
+        auctionData.auctionDuration,
+      ).toISOString(),
+    };
+    updateRestartAuction(updatePayload);
   };
 
   const calculateAuctionEnd = (hours) => {
@@ -93,10 +126,7 @@ const EditAuctionDialog = ({ open, setOpen, auction }) => {
               />
             </div>
 
-            <form
-              className="flex w-full flex-col items-center md:px-2"
-              onSubmit={submitUpdateAuction}
-            >
+            <form className="flex w-full flex-col items-center md:px-2">
               <NumberInputField
                 label={"Start Pris"}
                 name="startingPrice"
@@ -153,14 +183,26 @@ const EditAuctionDialog = ({ open, setOpen, auction }) => {
               {isLoading ? (
                 <p>Loading..</p>
               ) : (
-                <button
-                  className="buttonsh hover:button_shadow_hover active:button_shadow_click disabled:button_shadow_click mb-2 mt-5 flex flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-4 pb-1 pt-1 text-xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse disabled:bg-light-gray/50 disabled:text-light-gray"
-                  disabled={isLoading}
-                  type="submit"
-                >
-                  Lagre Aukjson
-                  <MdOutlineCheckBox className="ml-1 h-6 w-auto" />
-                </button>
+                <div className="mb-2 mt-5 flex w-full flex-col items-center justify-center gap-4 md:flex-row">
+                  <button
+                    className="buttonsh hover:button_shadow_hover active:button_shadow_click disabled:button_shadow_click flex flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-4 pb-1 pt-1 text-xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse disabled:bg-light-gray/50 disabled:text-light-gray"
+                    disabled={isLoading}
+                    type="button"
+                    onClick={submitUpdate}
+                  >
+                    Lagre
+                    <MdOutlineSaveAs className="ml-1 h-6 w-auto" />
+                  </button>
+                  <button
+                    className="buttonsh hover:button_shadow_hover active:button_shadow_click disabled:button_shadow_click flex flex-row items-center rounded-lg border border-medium-gray bg-lighthouse px-4 pb-1 pt-1 text-xl font-semibold text-gunmental hover:bg-gunmental hover:text-lighthouse disabled:bg-light-gray/50 disabled:text-light-gray"
+                    disabled={isLoading}
+                    type="button"
+                    onClick={submitUpdateRestart}
+                  >
+                    Lagre & Starte På Nytt
+                    <MdOutlineCheckBox className="ml-1 h-6 w-auto" />
+                  </button>
+                </div>
               )}
             </form>
           </DialogPanel>

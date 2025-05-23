@@ -2,7 +2,6 @@ import api from "./api";
 
 export default class AuctionApiService {
   static async startNewAuction(auctionData) {
-    console.log(auctionData);
     try {
       const response = await api.post("/api/v1/auctions/start", auctionData);
       return response;
@@ -37,6 +36,19 @@ export default class AuctionApiService {
   static async updateAuction(auctionData) {
     try {
       const response = await api.put("/api/v1/auctions", auctionData);
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  static async updateRestartAuction(auctionData) {
+    try {
+      const response = await api.put(
+        "/api/v1/auctions/update-restart",
+        auctionData,
+      );
       return response;
     } catch (error) {
       console.log(error);
