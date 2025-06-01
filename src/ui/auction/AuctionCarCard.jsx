@@ -32,13 +32,6 @@ const AuctionCarCard = ({ auctionInfo, onDelete, setAuctionStatus }) => {
       },
     },
     {
-      label: "Markere som Aktivt",
-      onClick: () => {
-        handleSetStatus("Aktivt");
-        setIsMenuOpen(false);
-      },
-    },
-    {
       label: "Markere som Deaktivert",
       onClick: () => {
         handleSetStatus("Deaktivert");

@@ -79,6 +79,16 @@ export default class UserApiService {
     }
   }
 
+  static async getUserByPhoneNumber(phoneNumber) {
+    try {
+      const response = await api.get(`/api/v1/users/by-number/${phoneNumber}`);
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
   static async getAllBuyers() {
     try {
       const response = await api.get("/api/v1/users/buyers");
@@ -104,6 +114,16 @@ export default class UserApiService {
   static async updateUser(owner) {
     try {
       const response = await api.put("/api/v1/users", owner);
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  static async updateUserAsAdmin(owner) {
+    try {
+      const response = await api.put("/api/v1/users/as-admin", owner);
       return response;
     } catch (error) {
       console.log(error);

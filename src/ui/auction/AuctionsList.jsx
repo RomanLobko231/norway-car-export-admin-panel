@@ -1,7 +1,6 @@
 import AuctionCarCard from "./AuctionCarCard";
 
 const AuctionsList = ({ auctions, deleteAuction, setAuctionStatus }) => {
-  const middleIndex = Math.floor(auctions.length / 2) + 1;
   const lastIndex = auctions.length - 1;
 
   return (

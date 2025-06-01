@@ -65,19 +65,21 @@ const BuyerCard = ({ buyer, setBuyers }) => {
     }
   };
 
-  const deleteBuyer = async (id) => {
-    try {
-      setIsLoading(true);
-      setError(null);
-      await UserApiService.deleteUserById(id);
-      setIsLoading(false);
-      setBuyers((prevBuyers) => prevBuyers.filter((b) => b.id !== id));
-    } catch (error) {
-      setError(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const deleteBuyer = useCallback(
+    async (id) => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        await UserApiService.deleteUserById(id);
+        setBuyers((prevBuyers) => prevBuyers.filter((b) => b.id !== id));
+      } catch (error) {
+        setError(error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [setBuyers],
+  );
 
   const handleDelete = useCallback(() => {
     deleteBuyer(buyer.id);
