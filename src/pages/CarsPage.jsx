@@ -5,6 +5,7 @@ import CarsList from "../ui/car/CarsList";
 import ErrorDialog from "../ui/dialog/ErrorDialog";
 import CarApiService from "../api/CarApiService";
 import { useSearchParams } from "react-router";
+import PageArrows from "../ui/PageArrows";
 
 const CAR_STATUSES = ["Vurdering", "Solgt", "Annet", "Auksjon"];
 
@@ -17,12 +18,15 @@ const CarsPage = () => {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const statusParam = searchParams.get("status") || CAR_STATUSES.at(0);
-
   const [carFilter, setCarFilter] = useState(statusParam);
+
+  const [page, setPage] = useState(0);
+  const [size] = useState(8);
+  const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
     fetchAllByStatus(carFilter);
-  }, [carFilter]);
+  }, [carFilter, page]);
 
   const updateFilter = (newFilter) => {
     setCarFilter(newFilter);
@@ -33,8 +37,13 @@ const CarsPage = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await CarApiService.getAllCarsByStatus(status);
-      setCars(response.data);
+      const response = await CarApiService.getAllCarsByStatusPaged(
+        status,
+        page,
+        size,
+      );
+      setCars(response.data.items);
+      setTotalPages(response.data.totalPages);
     } catch (error) {
       setError(error);
       setIsErrorOpen(true);
@@ -90,6 +99,7 @@ const CarsPage = () => {
       </div>
       {isLoading && <h1>Loading..</h1>}
       <CarsList cars={cars} onDelete={deleteCar} setCarStatus={setCarStatus} />
+      <PageArrows page={page} setPage={setPage} totalPages={totalPages} />
       {error && (
         <ErrorDialog
           isOpen={isErrorOpen}

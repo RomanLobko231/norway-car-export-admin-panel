@@ -3,6 +3,8 @@ import AuctionApiService from "../api/AuctionApiService";
 import AuctionsList from "../ui/auction/AuctionsList";
 import ErrorDialog from "../ui/dialog/ErrorDialog";
 import { useSearchParams } from "react-router";
+import { RiArrowLeftBoxLine, RiArrowRightBoxLine } from "react-icons/ri";
+import PageArrows from "../ui/PageArrows";
 
 const AUCTION_STATUSES = ["Aktivt", "Avsluttet", "Deaktivert"];
 
@@ -17,9 +19,13 @@ const AuctionPage = () => {
   const [auctions, setAuctions] = useState([]);
   const [auctionFilter, setAuctionFilter] = useState(statusParam);
 
+  const [page, setPage] = useState(0);
+  const [size] = useState(8);
+  const [totalPages, setTotalPages] = useState(0);
+
   useEffect(() => {
     fetchAllByStatus(auctionFilter);
-  }, [auctionFilter]);
+  }, [auctionFilter, page]);
 
   const updateFilter = (newFilter) => {
     setAuctionFilter(newFilter);
@@ -30,8 +36,13 @@ const AuctionPage = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await AuctionApiService.getAllAuctionsByStatus(status);
-      setAuctions(response.data);
+      const response = await AuctionApiService.getAllAuctionsByStatusPaged(
+        status,
+        page,
+        size,
+      );
+      setAuctions(response.data.items);
+      setTotalPages(response.data.totalPages);
     } catch (error) {
       setError(error);
       setIsErrorOpen(true);
@@ -88,6 +99,7 @@ const AuctionPage = () => {
           </h1>
         ))}
       </div>
+
       {isLoading && (
         <p className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform">
           Loading...
@@ -98,6 +110,8 @@ const AuctionPage = () => {
         deleteAuction={deleteAuctionById}
         setAuctionStatus={setAuctionStatus}
       />
+      <PageArrows page={page} setPage={setPage} totalPages={totalPages} />
+
       {error && (
         <ErrorDialog
           isOpen={isErrorOpen}

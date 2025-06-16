@@ -145,7 +145,7 @@ const CarEditingPanel = ({ car, owner, saveInfo }) => {
                 label={"Fullt Navn"}
                 icon={<MdOutlinePerson2 className="h-6 w-auto" />}
                 name={"name"}
-                initialValue={ownerData.name}
+                initialValue={ownerData?.name || "User is Deleted"}
                 onChange={handleOwnerInputChange}
               />
             </div>
@@ -153,7 +153,7 @@ const CarEditingPanel = ({ car, owner, saveInfo }) => {
               label={"Mobilnummer"}
               icon={<MdOutlinePhone className="h-6 w-auto" />}
               name={"phoneNumber"}
-              initialValue={ownerData.phoneNumber}
+              initialValue={ownerData?.phoneNumber || "User is Deleted"}
               onChange={handleOwnerInputChange}
             />
             {owner.role !== "ONE_TIME_SELLER" && (
@@ -163,7 +163,7 @@ const CarEditingPanel = ({ car, owner, saveInfo }) => {
                   icon={<MdOutlineAlternateEmail className="h-6 w-auto" />}
                   name={"email"}
                   disableCheckbox={true}
-                  initialValue={ownerData.email}
+                  initialValue={ownerData?.email || "User is Deleted"}
                   onChange={handleOwnerInputChange}
                 />
                 {owner.role == "BUYER" && (
@@ -176,7 +176,9 @@ const CarEditingPanel = ({ car, owner, saveInfo }) => {
                         color="#333"
                       />
                     }
-                    initialValue={ownerData.address.country}
+                    initialValue={
+                      ownerData?.address?.country || "User is Deleted"
+                    }
                     onChange={(e) =>
                       setOwnerData((prev) => ({
                         ...prev,
@@ -194,7 +196,9 @@ const CarEditingPanel = ({ car, owner, saveInfo }) => {
                   icon={
                     <MdOutlineLocationOn className="h-6 w-auto" color="#333" />
                   }
-                  initialValue={ownerData.address.streetAddress}
+                  initialValue={
+                    ownerData?.address?.streetAddress || "User is Deleted"
+                  }
                   onChange={(e) =>
                     setOwnerData((prev) => ({
                       ...prev,
@@ -211,7 +215,9 @@ const CarEditingPanel = ({ car, owner, saveInfo }) => {
                       label={"Poststed (By)"}
                       name="postalLocation"
                       icon={<LuMailbox className="h-6 w-auto" />}
-                      initialValue={ownerData.address.postalLocation}
+                      initialValue={
+                        ownerData?.address?.postalLocation || "User is Deleted"
+                      }
                       onChange={(e) =>
                         setOwnerData((prev) => ({
                           ...prev,
@@ -228,7 +234,9 @@ const CarEditingPanel = ({ car, owner, saveInfo }) => {
                       label={"Postnummer"}
                       name="postalCode"
                       icon={<MdNumbers className="h-6 w-auto" />}
-                      initialValue={ownerData.address.postalCode}
+                      initialValue={
+                        ownerData?.address?.postalCode || "User is Deleted"
+                      }
                       onChange={(e) => {
                         const value = e.target.value;
                         let numericValue = value;
@@ -256,14 +264,14 @@ const CarEditingPanel = ({ car, owner, saveInfo }) => {
               label={"Epost"}
               icon={<MdOutlineAlternateEmail className="h-6 w-auto" />}
               name={"email"}
-              initialValue={ownerData.email}
+              initialValue={ownerData?.email || "User is Deleted"}
               onChange={handleOwnerInputChange}
               disableCheckbox={true}
             />
             {userError && <ErrorMessage error={userError.message} />}
             {carData.ownerId && (
               <SuccessMessage
-                message={`Bruker med epost '${ownerData.email}' finnes og ble lagt til`}
+                message={`Bruker med epost '${ownerData?.email || "-"}' finnes og ble lagt til`}
               />
             )}
             <p
@@ -339,7 +347,7 @@ const CarEditingPanel = ({ car, owner, saveInfo }) => {
           initialValue={carData.engineType}
           onChange={handleCarInputChange}
         />
-        <NumberInputField
+        <TextInputField
           label={"Motorvolum/slagvolum"}
           icon={<MdNumbers className="h-6 w-auto" />}
           name={"engineVolume"}

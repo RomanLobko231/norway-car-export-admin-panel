@@ -11,9 +11,11 @@ export default class CarApiService {
     }
   }
 
-  static async getAllCarsByStatus(status) {
+  static async getAllCarsByStatusPaged(status, page, size) {
     try {
-      const response = await api.get(`/api/v1/cars?status=${status}`);
+      const response = await api.get(
+        `/api/v1/cars?status=${status}&page=${page}&size=${size}`,
+      );
       return response;
     } catch (error) {
       console.log(error);

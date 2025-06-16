@@ -2,10 +2,10 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
 const DEV_URL = "http://localhost:8080";
-const PROD_URL = "https://nce-backend-production.up.railway.app/";
+const PROD_URL = "https://nce-backend-production.up.railway.app";
 
 const api = axios.create({
-  baseURL: DEV_URL,
+  baseURL: PROD_URL,
 });
 
 api.interceptors.request.use(
