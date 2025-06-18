@@ -1,10 +1,10 @@
 import { useCallback, useState } from "react";
 import { RiArrowDownBoxLine, RiArrowUpBoxLine } from "react-icons/ri";
-import CarInfoElement from "../car/CarInfoElement";
+import CarInfoElement from "../../car/CarInfoElement";
 import { MdClose, MdLink, MdOutlineCheckBox } from "react-icons/md";
-import ErrorMessage from "../ErrorMessage";
-import MessageDialog from "../dialog/MessageDialog";
-import UserApiService from "../../api/UserApiService";
+import ErrorMessage from "../../ErrorMessage";
+import MessageDialog from "../../dialog/MessageDialog";
+import UserApiService from "../../../api/UserApiService";
 
 const BuyerCard = ({ buyer, setBuyers }) => {
   const [isExpanded, setIsExpanded] = useState(false);

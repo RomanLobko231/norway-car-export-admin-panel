@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ErrorDialog from "../ui/dialog/ErrorDialog";
 import UserApiService from "../api/UserApiService";
 import { useSearchParams } from "react-router";
-import BuyerCard from "../ui/user/BuyerCard";
+import BuyerCard from "../ui/user/buyer/BuyerCard";
 
 const BUYER_STATUSES = [
   { locked: true, status: "I Vurdering" },

@@ -7,7 +7,7 @@ import {
   MdOutlinePhone,
 } from "react-icons/md";
 import { LuMailbox } from "react-icons/lu";
-import TextInputField from "../input/TextInputField";
+import TextInputField from "../../input/TextInputField";
 
 const SellerUserPanel = ({ user, updateUser }) => {
   const [inputDisabled, setInputDisabled] = useState(true);

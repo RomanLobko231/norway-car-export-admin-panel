@@ -27,6 +27,19 @@ export default class UserApiService {
     }
   }
 
+  static async registerAdmin(adminData) {
+    try {
+      const response = await api.post(
+        "/api/v1/users/register-admin",
+        adminData,
+      );
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
   static async getUserById(id) {
     try {
       const response = await api.get(`/api/v1/users/${id}`);
@@ -99,6 +112,16 @@ export default class UserApiService {
     }
   }
 
+  static async getAllAdmins() {
+    try {
+      const response = await api.get("/api/v1/users/admins");
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
   static async getAllBuyersByLockedStatus(isLocked) {
     try {
       const response = await api.get(
@@ -157,6 +180,7 @@ export default class UserApiService {
     try {
       const response = await api.post("/api/v1/users/login", loginData);
       sessionStorage.setItem("token", response.data.token);
+      sessionStorage.setItem("role", response.data.role);
       return response;
     } catch (error) {
       console.log(error);

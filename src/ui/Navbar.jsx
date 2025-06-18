@@ -64,16 +64,20 @@ export default function Navbar() {
               </div>
               <div className="flex flex-row gap-3">
                 <Link
-                  className="my-1 hidden flex-row items-center rounded-md border border-medium-gray bg-lighthouse p-1 text-base font-normal text-gunmental hover:bg-gunmental hover:text-lighthouse sm:flex md:text-xl md:font-semibold"
+                  className="group my-1 hidden flex-row items-center rounded-md border border-medium-gray bg-lighthouse p-1 text-base font-normal text-gunmental hover:bg-gunmental hover:text-lighthouse sm:flex md:text-xl md:font-semibold"
                   to="/add-new"
                 >
                   <MdOutlineAddBox className="h-7 w-auto" />
+                  <p className="mx-2 hidden text-lg font-normal text-lighthouse group-hover:block md:text-xl md:font-semibold">
+                    Legg til bil
+                  </p>
                 </Link>
                 {token ? (
                   <div
                     className="my-1 hidden cursor-pointer flex-row items-center rounded-md border border-medium-gray bg-lighthouse px-3 pb-1 pt-1 text-base font-normal text-gunmental hover:bg-gunmental hover:text-lighthouse sm:flex md:text-xl md:font-semibold"
                     onClick={() => {
-                      localStorage.removeItem("token");
+                      sessionStorage.removeItem("token");
+                      sessionStorage.removeItem("role");
                       window.location.href = "/";
                     }}
                   >

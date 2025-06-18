@@ -3,7 +3,7 @@ import {
   MdOutlinePerson2,
   MdOutlinePhone,
 } from "react-icons/md";
-import TextInputField from "../input/TextInputField";
+import TextInputField from "../../input/TextInputField";
 
 const BuyerRepresentativeUserPanel = ({ user }) => {
   return (

@@ -10,9 +10,10 @@ import {
 import { RiArrowRightBoxLine } from "react-icons/ri";
 import DeleteDialog from "../ui/dialog/DeleteDialog";
 import ErrorDialog from "../ui/dialog/ErrorDialog";
-import CompanyUserPanel from "../ui/user/CompanyUserPanel";
-import BuyerRepresentativeUserPanel from "../ui/user/BuyerRepresentativeUserPanel";
-import SellerUserPanel from "../ui/user/SellerUserPanel";
+import CompanyUserPanel from "../ui/user/buyer/CompanyUserPanel";
+import BuyerRepresentativeUserPanel from "../ui/user/buyer/BuyerRepresentativeUserPanel";
+import SellerUserPanel from "../ui/user/seller/SellerUserPanel";
+import AdminsPanel from "../ui/user/admin/AdminsPanel";
 
 const FIND_FILTER = ["Epost", "Mobilnummer"];
 
@@ -188,14 +189,18 @@ const HomePage = () => {
           {userData.role === "SELLER" && (
             <SellerUserPanel user={userData} updateUser={updateUser} />
           )}
-          <p
-            className="mb-1 mt-7 flex w-auto cursor-pointer border-b-2 border-danger-red/50 text-center text-lg font-medium text-danger-red/50 hover:border-danger-red hover:text-danger-red"
-            onClick={() => setDeleteUserOpen(true)}
-          >
-            Slette bruker
-          </p>
+          {userData.role !== "ADMIN" && userData.role !== "SUPER_ADMIN" && (
+            <p
+              className="mb-1 mt-7 flex w-auto cursor-pointer border-b-2 border-danger-red/50 text-center text-lg font-medium text-danger-red/50 hover:border-danger-red hover:text-danger-red"
+              onClick={() => setDeleteUserOpen(true)}
+            >
+              Slette bruker
+            </p>
+          )}
         </div>
       )}
+      {sessionStorage.getItem("role") === "SUPER_ADMIN" && <AdminsPanel />}
+
       <DeleteDialog
         isOpen={deleteUserOpen}
         setIsOpen={setDeleteUserOpen}
