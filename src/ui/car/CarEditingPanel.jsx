@@ -145,7 +145,7 @@ const CarEditingPanel = ({ car, owner, saveInfo }) => {
                 label={"Fullt Navn"}
                 icon={<MdOutlinePerson2 className="h-6 w-auto" />}
                 name={"name"}
-                initialValue={ownerData?.name || "User is Deleted"}
+                initialValue={ownerData?.name || ""}
                 onChange={handleOwnerInputChange}
               />
             </div>
@@ -153,7 +153,7 @@ const CarEditingPanel = ({ car, owner, saveInfo }) => {
               label={"Mobilnummer"}
               icon={<MdOutlinePhone className="h-6 w-auto" />}
               name={"phoneNumber"}
-              initialValue={ownerData?.phoneNumber || "User is Deleted"}
+              initialValue={ownerData?.phoneNumber || ""}
               onChange={handleOwnerInputChange}
             />
             {owner.role !== "ONE_TIME_SELLER" && (
@@ -163,7 +163,7 @@ const CarEditingPanel = ({ car, owner, saveInfo }) => {
                   icon={<MdOutlineAlternateEmail className="h-6 w-auto" />}
                   name={"email"}
                   disableCheckbox={true}
-                  initialValue={ownerData?.email || "User is Deleted"}
+                  initialValue={ownerData?.email || ""}
                   onChange={handleOwnerInputChange}
                 />
                 {owner.role == "BUYER" && (
@@ -176,9 +176,7 @@ const CarEditingPanel = ({ car, owner, saveInfo }) => {
                         color="#333"
                       />
                     }
-                    initialValue={
-                      ownerData?.address?.country || "User is Deleted"
-                    }
+                    initialValue={ownerData?.address?.country || ""}
                     onChange={(e) =>
                       setOwnerData((prev) => ({
                         ...prev,
@@ -196,9 +194,7 @@ const CarEditingPanel = ({ car, owner, saveInfo }) => {
                   icon={
                     <MdOutlineLocationOn className="h-6 w-auto" color="#333" />
                   }
-                  initialValue={
-                    ownerData?.address?.streetAddress || "User is Deleted"
-                  }
+                  initialValue={ownerData?.address?.streetAddress || ""}
                   onChange={(e) =>
                     setOwnerData((prev) => ({
                       ...prev,
@@ -215,9 +211,7 @@ const CarEditingPanel = ({ car, owner, saveInfo }) => {
                       label={"Poststed (By)"}
                       name="postalLocation"
                       icon={<LuMailbox className="h-6 w-auto" />}
-                      initialValue={
-                        ownerData?.address?.postalLocation || "User is Deleted"
-                      }
+                      initialValue={ownerData?.address?.postalLocation || ""}
                       onChange={(e) =>
                         setOwnerData((prev) => ({
                           ...prev,
@@ -234,9 +228,7 @@ const CarEditingPanel = ({ car, owner, saveInfo }) => {
                       label={"Postnummer"}
                       name="postalCode"
                       icon={<MdNumbers className="h-6 w-auto" />}
-                      initialValue={
-                        ownerData?.address?.postalCode || "User is Deleted"
-                      }
+                      initialValue={ownerData?.address?.postalCode || ""}
                       onChange={(e) => {
                         const value = e.target.value;
                         let numericValue = value;
@@ -264,7 +256,7 @@ const CarEditingPanel = ({ car, owner, saveInfo }) => {
               label={"Epost"}
               icon={<MdOutlineAlternateEmail className="h-6 w-auto" />}
               name={"email"}
-              initialValue={ownerData?.email || "User is Deleted"}
+              initialValue={ownerData?.email || ""}
               onChange={handleOwnerInputChange}
               disableCheckbox={true}
             />
